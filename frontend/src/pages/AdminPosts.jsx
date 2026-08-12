@@ -311,6 +311,28 @@ export const AdminPosts = () => {
                         <td style={{ padding: '12px 16px' }}>
                           <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                             <button className="quick-btn" onClick={() => { setSelectedPostToView(p); setViewPostModalOpen(true); }} style={{ padding: '4px 8px', fontSize: '11px', background: '#3B82F6', color: '#fff', border: '1px solid #3B82F6', borderRadius: '4px', cursor: 'pointer' }}>Xem</button>
+                            <a 
+                              href={`/posts/${p.id}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              style={{ 
+                                padding: '4px 8px', 
+                                fontSize: '11px', 
+                                background: '#0EA5E9', 
+                                color: '#ffffff', 
+                                border: '1px solid #0EA5E9', 
+                                borderRadius: '4px', 
+                                textDecoration: 'none', 
+                                display: 'inline-flex', 
+                                alignItems: 'center', 
+                                gap: '3px',
+                                fontWeight: 600,
+                                whiteSpace: 'nowrap'
+                              }}
+                              title="Mở bài viết ngoài trang chủ"
+                            >
+                              <i className="ti ti-external-link"></i> Xem ở trang chủ
+                            </a>
                             {p.status !== 'approved' && !isExpired && (
                               <button className="quick-btn quick-btn-approve" onClick={() => handleApprove(p.id, p.title)} style={{ padding: '4px 8px', fontSize: '11px' }}>Duyệt</button>
                             )}
@@ -431,6 +453,26 @@ export const AdminPosts = () => {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', borderTop: '1px solid #F1F5F9', paddingTop: '12px' }}>
+              <a 
+                href={`/posts/${selectedPostToView.id}`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ 
+                  fontSize: '12px', 
+                  padding: '6px 14px', 
+                  background: '#0EA5E9', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: '6px', 
+                  textDecoration: 'none', 
+                  display: 'inline-flex', 
+                  alignItems: 'center', 
+                  gap: '4px',
+                  fontWeight: 600 
+                }}
+              >
+                <i className="ti ti-external-link"></i> Xem ở trang chủ
+              </a>
               <button 
                 className="btn" 
                 onClick={() => setViewPostModalOpen(false)}
