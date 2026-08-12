@@ -254,7 +254,7 @@ export const Guide = () => {
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                 {isEn ? "Need instant support?" : "Cần hỗ trợ ngay?"}
               </div>
-              {renderLinkPill(isEn ? "Open AI Assistant" : "Mở Trợ lý AI", "/ai-assistant", "ti-robot")}
+              {renderLinkPill(isEn ? "Open AI Assistant" : "Mở Trợ lý AI", "/ai-chat", "ti-robot")}
             </div>
           </div>
 
@@ -298,7 +298,7 @@ export const Guide = () => {
                     )}
                   </p>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.25rem', marginBottom: '1.5rem' }}>
                     <div style={{ padding: '1.25rem', background: 'var(--surface-1)', borderRadius: '12px', border: '1px solid var(--border)' }}>
                       <h4 style={{ color: 'var(--neon-cyan)', margin: '0 0 8px 0', fontSize: '15px' }}>
                         {isEn ? "Step 1: Business Information" : "Bước 1: Thông tin Doanh nghiệp"}
@@ -579,9 +579,9 @@ export const Guide = () => {
                   </h2>
                   <p style={{ fontSize: '14.5px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.25rem' }}>
                     {isEn ? (
-                      <>Click {renderLinkPill("AI Assistant", "/ai-assistant", "ti-robot")} in the header menu to receive business strategy consultations and market analysis. Gold & Platinum members can switch between cutting-edge LLMs: OpenAI GPT-4o, DeepSeek V3/R1, Claude 4 Opus, and Gemini 3 Flash.</>
+                      <>Click {renderLinkPill("AI Assistant", "/ai-chat", "ti-robot")} in the header menu to receive business strategy consultations and market analysis. Gold & Platinum members can switch between cutting-edge LLMs: OpenAI GPT-4o, DeepSeek V3/R1, Claude 4 Opus, and Gemini 3 Flash.</>
                     ) : (
-                      <>Nhấn vào mục {renderLinkPill("Trợ lý AI", "/ai-assistant", "ti-robot")} trên thanh Header để tư vấn các chiến lược kinh doanh, tra cứu thông tin đối tác và phân tích kinh tế Đồ Sơn. Thành viên gói Gold & Platinum có quyền chuyển đổi giữa các mô hình AI tiên tiến nhất hiện nay: OpenAI GPT-4o, DeepSeek V3/R1, Claude 4 Opus, Gemini 3 Flash.</>
+                      <>Nhấn vào mục {renderLinkPill("Trợ lý AI", "/ai-chat", "ti-robot")} trên thanh Header để tư vấn các chiến lược kinh doanh, tra cứu thông tin đối tác và phân tích kinh tế Đồ Sơn. Thành viên gói Gold & Platinum có quyền chuyển đổi giữa các mô hình AI tiên tiến nhất hiện nay: OpenAI GPT-4o, DeepSeek V3/R1, Claude 4 Opus, Gemini 3 Flash.</>
                     )}
                   </p>
                   <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-strong)' }}>
