@@ -139,7 +139,7 @@ export const Home = () => {
     fetchStats();
   }, []);
 
-  // Fetch Latest Approved Posts (Max 3, featured first)
+  // Fetch Latest Approved Posts (Max 9, featured first)
   useEffect(() => {
     const fetchLatestPosts = async () => {
       try {
@@ -150,7 +150,7 @@ export const Home = () => {
           const allPosts = data.data || [];
           const featured = allPosts.filter(p => p.is_featured === 1);
           const normal = allPosts.filter(p => p.is_featured !== 1);
-          setLatestPosts([...featured, ...normal].slice(0, 3));
+          setLatestPosts([...featured, ...normal].slice(0, 9));
         }
       } catch (err) {
         console.error('Error fetching latest posts:', err);
@@ -312,6 +312,85 @@ export const Home = () => {
     }
   ];
 
+  // Default fallback posts cho tin tức / bài viết nổi bật (9 bài)
+  const demoNewsList = [
+    {
+      id: 'news-1',
+      title: 'Cẩm nang giữ gìn bãi biển Đồ Sơn sạch đẹp: Những việc mỗi người đều có thể thực hiện',
+      summary: 'Hướng dẫn tham gia giữ gìn môi trường biển Đồ Sơn sáng - xanh - sạch - đẹp cho khách du lịch và cư dân địa phương.',
+      image_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+      company_name: 'Ban Quản Lý Du Lịch Đồ Sơn',
+      created_at: '19/8/2026',
+      is_featured: 1
+    },
+    {
+      id: 'news-2',
+      title: 'Khách sạn phù hợp gia đình tại Đồ Sơn – những điều cần biết trước khi trải nghiệm',
+      summary: 'Tổng hợp danh sách các khách sạn, resort sở hữu không gian tiện nghi, an toàn phù hợp cho các gia đình nghỉ dưỡng.',
+      image_url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80',
+      company_name: 'Hiệp Hội Du Lịch Đồ Sơn',
+      created_at: '19/8/2026',
+      is_featured: 1
+    },
+    {
+      id: 'news-3',
+      title: 'Nhà hàng hải sản uy tín tại Đồ Sơn: Hướng dẫn đầy đủ dành cho người mới',
+      summary: 'Bỏ túi bí quyết chọn nhà hàng hải sản tươi sống chất lượng, niêm yết giá công khai chuẩn hóa tại vùng biển Đồ Sơn.',
+      image_url: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80',
+      company_name: 'Ẩm Thực Đồ Sơn',
+      created_at: '19/8/2026',
+      is_featured: 1
+    },
+    {
+      id: 'news-4',
+      title: 'Đồ Sơn đón sóng du lịch hè 2026 với chuỗi lễ hội văn hóa - thể thao quy mô lớn',
+      summary: 'Các hoạt động giải trí, lễ hội âm nhạc bãi biển và giải đua thuyền truyền thống thu hút đông đảo du khách.',
+      image_url: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80',
+      company_name: 'Sở Văn Hóa & Du Lịch',
+      created_at: '18/8/2026'
+    },
+    {
+      id: 'news-5',
+      title: 'Hải Phòng tập trung nâng cấp hạ tầng kết nối giao thông tuyến du lịch Đồ Sơn',
+      summary: 'Dự án mở rộng đường ven biển và nâng cấp các tuyến đường huyết mạch kết nối trực tiếp đến khu du lịch Đồ Sơn.',
+      image_url: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80',
+      company_name: 'Cổng Thông Tin Đồ Sơn',
+      created_at: '17/8/2026'
+    },
+    {
+      id: 'news-6',
+      title: 'Khai mạc mùa du lịch biển Đồ Sơn 2026: Đỉnh cao trải nghiệm nghỉ dưỡng 4 mùa',
+      summary: 'Hệ sinh thái du lịch đa dạng kết hợp giữa nghỉ dưỡng biển, sân golf đẳng cấp quốc tế và công viên giải trí.',
+      image_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+      company_name: 'KDL Quốc Tế Đồi Rồng',
+      created_at: '16/8/2026'
+    },
+    {
+      id: 'news-7',
+      title: 'Điểm tên các món ăn đặc sản Đồ Sơn không thể bỏ qua khi ghé thăm Hải Phòng',
+      summary: 'Bánh đa cua, chả cá thu, bề bề chao, mắm vạn vân và hàng loạt món ngon biển cả trứ danh.',
+      image_url: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80',
+      company_name: 'Ẩm Thực Đồ Sơn',
+      created_at: '15/8/2026'
+    },
+    {
+      id: 'news-8',
+      title: 'Kinh nghiệm du lịch Đồ Sơn tự túc 2 ngày 1 đêm tiết kiệm và trọn vẹn nhất',
+      summary: 'Lịch trình chi tiết từ phương tiện di chuyển, gợi ý điểm lưu trú cho đến danh sách địa điểm check-in cực hot.',
+      image_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+      company_name: 'Đồ Sơn Today',
+      created_at: '14/8/2026'
+    },
+    {
+      id: 'news-9',
+      title: 'Thúc đẩy xúc tiến thương mại và kết nối doanh nghiệp địa phương tại Đồ Sơn',
+      summary: 'Hội nghị kết nối giao thương giữa các doanh nghiệp dịch vụ, nhà hàng, khách sạn và các nhà cung ứng hải sản.',
+      image_url: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80',
+      company_name: 'Hội Doanh Nghiệp Đồ Sơn',
+      created_at: '13/8/2026'
+    }
+  ];
+
   // Select top 3 member businesses prioritizing featured members
   const displayShowroomMembers = useMemo(() => {
     if (featuredMembers && featuredMembers.length > 0) {
@@ -323,6 +402,18 @@ export const Home = () => {
     }
     return defaultFallbackMembers;
   }, [featuredMembers]);
+
+  // Select top 9 news posts prioritizing featured posts
+  const displayNewsPosts = useMemo(() => {
+    if (latestPosts && latestPosts.length > 0) {
+      const realSlice = latestPosts.slice(0, 9);
+      if (realSlice.length < 9) {
+        return [...realSlice, ...demoNewsList.slice(realSlice.length, 9)];
+      }
+      return realSlice;
+    }
+    return demoNewsList;
+  }, [latestPosts]);
 
   const openEventDetail = (event) => {
     if (!token) {
@@ -406,33 +497,7 @@ export const Home = () => {
     margin: 0
   };
 
-  // Fallback demo posts with rich images matching the user's reference design
-  const demoNewsList = [
-    {
-      id: 1,
-      title: 'Tháp Tường Long – di tích lịch sử văn hóa nghìn năm tuổi Hải Phòng',
-      image_url: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80',
-      author_name: 'Đồi Rồng Đồ Sơn',
-      created_at: '10/7/2026',
-      is_featured: 1
-    },
-    {
-      id: 2,
-      title: 'Hội thảo khoa học "Văn hóa biển trong thời đại Hùng Vương": Làm rõ vị trí, vai trò của biển...',
-      image_url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=600&q=80',
-      author_name: 'Đồi Rồng Đồ Sơn',
-      created_at: '10/7/2026',
-      is_featured: 1
-    },
-    {
-      id: 3,
-      title: 'Bến tàu không số K15 tại quận Đồ Sơn - Di tích lịch sử Quốc gia đặc biệt',
-      image_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
-      author_name: 'Đồi Rồng Đồ Sơn',
-      created_at: '10/7/2026',
-      is_featured: 0
-    }
-  ];
+
 
   const activeEvent = events.length > 0 ? events[0] : null;
 
@@ -1168,7 +1233,7 @@ export const Home = () => {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
-            {(latestPosts.length > 0 ? latestPosts : demoNewsList).slice(0, 3).map((post) => {
+            {displayNewsPosts.map((post) => {
               const imageUrl = post.image_url || post.image || "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80";
               const dateStr = post.created_at ? (new Date(post.created_at).toLocaleDateString('vi-VN') !== 'Invalid Date' ? new Date(post.created_at).toLocaleDateString('vi-VN') : post.created_at) : '10/7/2026';
               const publisherName = post.author_name || post.company_name || "Đồi Rồng Đồ Sơn";
@@ -1297,16 +1362,14 @@ export const Home = () => {
           <InteractiveMap />
         </section>
 
-        {/* BLOCK 13.5: Featured Category Section - Chợ Hải Sản Đồ Sơn */}
+        {/* BLOCK 13.5: Featured Category Section - Chợ Hải Sản Đồ Sơn (Chỉ Khung Xanh Header) */}
         <section id="seafood-market" style={{ marginBottom: '4rem' }}>
-          {/* Header Banner */}
           <div 
             style={{
               background: 'linear-gradient(135deg, #0c2340 0%, #0369a1 100%)',
               borderRadius: '20px',
               padding: '2rem 2.25rem',
               color: '#ffffff',
-              marginBottom: '2rem',
               boxShadow: '0 10px 30px rgba(3, 105, 161, 0.2)',
               display: 'flex',
               justifyContent: 'space-between',
@@ -1345,147 +1408,6 @@ export const Home = () => {
             >
               {t('btn_all_seafood')} &rarr;
             </Link>
-          </div>
-
-          {/* Seafood Cards Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
-            {loadingChoHaiSan ? (
-              <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '3rem', color: '#64748b' }}>
-                <i className="ti ti-loader animate-spin" style={{ fontSize: '24px', display: 'block', margin: '0 auto 10px', color: '#0284c7' }}></i>
-                {t('loading_seafood_list')}
-              </div>
-            ) : (choHaiSanPosts.length > 0 ? choHaiSanPosts : demoSeafoodList).map((post) => {
-              const imageUrl = post.image_url || post.image || "https://images.unsplash.com/photo-1559742811-822863c46f43?auto=format&fit=crop&w=600&q=80";
-              const publisherName = post.company_name || post.author_name || (currentLang === 'vi' ? 'Ngư dân Đồ Sơn' : 'Do Son Fishermen');
-              const subCategoryName = post.sub_category || (currentLang === 'vi' ? 'Hải sản tươi sống' : 'Fresh Seafood');
-
-              return (
-                <div 
-                  key={post.id}
-                  className="card-hover-effect"
-                  onClick={() => navigate(`/posts/${post.slug || post.id}`)}
-                  style={{
-                    backgroundColor: '#ffffff',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '16px',
-                    overflow: 'hidden',
-                    boxShadow: '0 4px 14px rgba(12, 35, 64, 0.06)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    cursor: 'pointer',
-                    position: 'relative'
-                  }}
-                >
-                  {/* Image Container */}
-                  <div style={{ height: '190px', position: 'relative', overflow: 'hidden', backgroundColor: '#e2e8f0' }}>
-                    <img 
-                      src={imageUrl} 
-                      alt={post.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    <span 
-                      style={{
-                        position: 'absolute',
-                        top: '12px',
-                        left: '12px',
-                        backgroundColor: 'rgba(12, 35, 64, 0.85)',
-                        backdropFilter: 'blur(4px)',
-                        color: '#38bdf8',
-                        fontSize: '11px',
-                        fontWeight: '700',
-                        padding: '4px 10px',
-                        borderRadius: '6px'
-                      }}
-                    >
-                      🦀 {subCategoryName}
-                    </span>
-                    {post.is_featured === 1 && (
-                      <span 
-                        style={{
-                          position: 'absolute',
-                          top: '12px',
-                          right: '12px',
-                          backgroundColor: '#f59e0b',
-                          color: '#000000',
-                          fontSize: '10px',
-                          fontWeight: '800',
-                          padding: '3px 8px',
-                          borderRadius: '6px',
-                          boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
-                        }}
-                      >
-                        {t('badge_featured') || 'NỔI BẬT ⭐'}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Body Content */}
-                  <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                    <h3 
-                      style={{
-                        fontSize: '16px',
-                        fontWeight: '700',
-                        color: '#0c2340',
-                        lineHeight: '1.45',
-                        marginBottom: '8px',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden'
-                      }}
-                    >
-                      {post.title}
-                    </h3>
-
-                    {post.summary && (
-                      <p 
-                        style={{
-                          fontSize: '13px',
-                          color: '#64748b',
-                          lineHeight: '1.5',
-                          marginBottom: '1rem',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden'
-                        }}
-                      >
-                        {post.summary}
-                      </p>
-                    )}
-
-                    {/* Footer Info */}
-                    <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '12px', marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <i className="ti ti-building-store" style={{ color: '#0284c7', fontSize: '15px' }}></i>
-                        <span style={{ fontSize: '12px', fontWeight: '600', color: '#475569' }}>
-                          {publisherName}
-                        </span>
-                      </div>
-                      <button
-                        onClick={(evt) => {
-                          evt.stopPropagation();
-                          navigate(`/posts/${post.slug || post.id}`);
-                        }}
-                        style={{
-                          backgroundColor: '#0284c7',
-                          color: '#ffffff',
-                          border: 'none',
-                          borderRadius: '6px',
-                          padding: '6px 14px',
-                          fontSize: '12px',
-                          fontWeight: '700',
-                          cursor: 'pointer',
-                          boxShadow: '0 2px 6px rgba(2, 132, 199, 0.25)'
-                        }}
-                      >
-                        {t('btn_view_seafood_post')}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </section>
 
