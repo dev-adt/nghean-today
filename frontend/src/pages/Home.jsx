@@ -1232,7 +1232,7 @@ export const Home = () => {
             </Link>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+          <div className="grid-3-cols" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
             {displayNewsPosts.map((post) => {
               const imageUrl = post.image_url || post.image || "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80";
               const dateStr = post.created_at ? (new Date(post.created_at).toLocaleDateString('vi-VN') !== 'Invalid Date' ? new Date(post.created_at).toLocaleDateString('vi-VN') : post.created_at) : '10/7/2026';

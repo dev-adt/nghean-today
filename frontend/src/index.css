@@ -2629,3 +2629,20 @@ select option {
   background-color: var(--surface-2) !important;
 }
 
+/* Responsive 3-column grid for news section */
+.grid-3-cols {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 24px !important;
+}
+@media (max-width: 992px) {
+  .grid-3-cols {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 640px) {
+  .grid-3-cols {
+    grid-template-columns: 1fr !important;
+  }
+}
+
