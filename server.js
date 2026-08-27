@@ -247,31 +247,6 @@ db.query(`
     }
 
     await db.query(`
-      CREATE TABLE IF NOT EXISTS content_creators (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(100) NOT NULL UNIQUE,
-        password_hash VARCHAR(255) NOT NULL,
-        name VARCHAR(100) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        avatar_url VARCHAR(500) DEFAULT NULL,
-        bio TEXT DEFAULT NULL,
-        status ENUM('pending', 'approved', 'rejected') DEFAULT 'approved',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB COMMENT='Tác giả & Nhà sáng tạo nội dung'
-    `);
-
-    await db.query(`
-      CREATE TABLE IF NOT EXISTS creator_sessions (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        creator_id INT NOT NULL,
-        token VARCHAR(255) NOT NULL UNIQUE,
-        expires_at DATETIME NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (creator_id) REFERENCES content_creators(id) ON DELETE CASCADE
-      ) ENGINE=InnoDB COMMENT='Phiên đăng nhập tác giả'
-    `);
-
-    await db.query(`
       CREATE TABLE IF NOT EXISTS leads (
         id INT AUTO_INCREMENT PRIMARY KEY,
         full_name VARCHAR(150) NOT NULL,
@@ -314,13 +289,6 @@ db.query(`
       await db.query("ALTER TABLE chat_logs ADD COLUMN member_id INT DEFAULT NULL AFTER session_id");
       await db.query("ALTER TABLE chat_logs ADD INDEX idx_member (member_id)");
       console.log('✅ Đã thêm cột member_id vào bảng chat_logs');
-    }
-
-    // Thêm cột creator_id và deadline vào bảng posts
-    const [creatorIdCols] = await db.query("SHOW COLUMNS FROM posts LIKE 'creator_id'");
-    if (!creatorIdCols.length) {
-      await db.query("ALTER TABLE posts ADD COLUMN creator_id INT DEFAULT NULL AFTER member_id");
-      console.log('✅ Đã thêm cột creator_id vào bảng posts');
     }
 
     const [deadlineCols] = await db.query("SHOW COLUMNS FROM posts LIKE 'deadline'");
