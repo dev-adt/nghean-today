@@ -107,7 +107,7 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }));
 // Helper sinh tệp sitemap.xml và robots.txt thực tế vào thư mục public/
 async function generateSitemapFiles() {
   try {
-    const baseUrl = process.env.SITE_URL || 'https://doson.today';
+    const baseUrl = process.env.SITE_URL || 'https://vtv8.today';
     const staticPages = ['', '/posts', '/members', '/events', '/guide', '/register'];
 
     const [approvedPosts] = await db.query(
@@ -168,7 +168,7 @@ app.get('/sitemap.xml', async (req, res) => {
 });
 
 app.get('/robots.txt', (req, res) => {
-  const baseUrl = process.env.SITE_URL || 'https://doson.today';
+  const baseUrl = process.env.SITE_URL || 'https://vtv8.today';
   const content = `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /dashboard\nDisallow: /api/\n\nSitemap: ${baseUrl}/sitemap.xml\n`;
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -176,7 +176,19 @@ app.get('/robots.txt', (req, res) => {
 });
 
 app.use('/img_guide', express.static(path.join(__dirname, 'img_guide')));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    } else if (filePath.includes('/assets/') || filePath.includes('\\assets\\')) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+    }
+  }
+}));
 
 // Tự động tạo bảng admin_sessions nếu chưa có
 db.query(`
@@ -2167,7 +2179,7 @@ app.delete('/api/creator/posts/:id', creatorAuthMiddleware, async (req, res) => 
 // ════════════════════════════════════════════
 app.get('/sitemap.xml', async (req, res) => {
   try {
-    const baseUrl = process.env.SITE_URL || 'https://doson.today';
+    const baseUrl = process.env.SITE_URL || 'https://vtv8.today';
     const staticPages = ['', '/posts', '/members', '/events', '/guide', '/register'];
 
     const [approvedPosts] = await db.query(
@@ -2206,7 +2218,7 @@ app.get('/sitemap.xml', async (req, res) => {
 });
 
 app.get('/robots.txt', (req, res) => {
-  const baseUrl = process.env.SITE_URL || 'https://doson.today';
+  const baseUrl = process.env.SITE_URL || 'https://vtv8.today';
   const content = `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /dashboard\nDisallow: /api/\n\nSitemap: ${baseUrl}/sitemap.xml\n`;
   res.header('Content-Type', 'text/plain');
   res.send(content);
@@ -2733,7 +2745,7 @@ app.post('/api/chat', anyAuthMiddleware, async (req, res) => {
       // Đọc system_instruction từ ai_config
       const [aiConfigs] = await db.query("SELECT system_instruction FROM ai_config WHERE is_active = 1 LIMIT 1");
       const systemInstruction = (aiConfigs[0] && aiConfigs[0].system_instruction) || 
-        "Bạn là trợ lý AI của Đồ Sơn — nền tảng hội viên doanh nghiệp Việt Nam. Trả lời ngắn gọn, thân thiện bằng tiếng Việt.";
+        "Bạn là trợ lý AI VTV8.today — Hệ sinh thái số Văn hóa, Di sản, Lịch sử và Du lịch Việt Nam. Tôn vinh cội nguồn, kết nối thời đại. Hãy trả lời chuyên sâu, chuẩn xác, truyền cảm hứng và thân thiện bằng tiếng Việt hoặc tiếng Anh theo yêu cầu.";
 
       const [members] = await db.query("SELECT name,tier,industry,description,email,phone FROM members WHERE status='approved'");
       const [posts]   = await db.query("SELECT p.title,p.type,p.contact_info,m.name AS company FROM posts p JOIN members m ON p.member_id=m.id WHERE p.status='approved' ORDER BY p.created_at DESC LIMIT 10");
@@ -3230,12 +3242,15 @@ app.get('/api/debug-env', (req, res) => {
 });
 
 // ════════════════════════════════════════════
-// SPA Fallback
+// SPA Fallback (Anti-cache headers cho index.html)
 // ════════════════════════════════════════════
 app.get('*', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ BizHub server đang chạy tại http://localhost:${PORT}`);
+  console.log(`✅ VTV8.today server đang chạy tại http://localhost:${PORT}`);
 });

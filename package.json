@@ -1,7 +1,7 @@
 {
-  "name": "doson-today",
+  "name": "vtv8-today",
   "version": "2.0.0",
-  "description": "Đồ Sơn Today — Hệ thống quản lý hội viên doanh nghiệp với AI + MySQL",
+  "description": "VTV8.today — Hệ sinh thái số Du lịch, Văn hóa, Di sản & Phát triển Cộng đồng Hội viên",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

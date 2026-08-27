@@ -1,16 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from '../contexts/LanguageContext';
 
 export const FloatingAIBot = () => {
   const { t } = useTranslation();
 
   return (
-    <a
-      href="https://chatgpt.com/g/g-6a696c51b9088191b8f3a0c54a04ef66-doson-today"
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      to="/ai-chat"
       className="floating-ai-bot"
-      title={t('floating_ai_tooltip') || "Trợ lý AI Doson.today"}
+      title={t('floating_ai_tooltip') || "Trợ lý AI VTV8.today"}
       style={{
         position: 'fixed',
         right: '20px',
@@ -110,7 +109,7 @@ export const FloatingAIBot = () => {
       >
         {t('floating_ai_label') || "Trợ lý AI"}
       </span>
-    </a>
+    </Link>
   );
 };
 

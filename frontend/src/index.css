@@ -2646,3 +2646,242 @@ select option {
   }
 }
 
+/* ══════════════════════════════════════════════════════════
+   VTV8.TODAY DESIGN SYSTEM EXTENSIONS
+   ══════════════════════════════════════════════════════════ */
+
+:root {
+  --vtv8-navy-dark: #051322;
+  --vtv8-navy: #081d33;
+  --vtv8-navy-card: #0b2542;
+  --vtv8-red: #dc2626;
+  --vtv8-red-gradient: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  --vtv8-gold: #f59e0b;
+  --vtv8-gold-gradient: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  --vtv8-blue: #0284c7;
+  --vtv8-blue-light: #38bdf8;
+  --vtv8-sand: #fbf9f5;
+  --vtv8-sand-card: #ffffff;
+}
+
+/* Category Card with image zoom on hover */
+.vtv8-category-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 220px;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.vtv8-category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(8, 29, 51, 0.25);
+}
+.vtv8-category-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.vtv8-category-card:hover img {
+  transform: scale(1.08);
+}
+.vtv8-category-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 29, 51, 0.15) 0%, rgba(8, 29, 51, 0.88) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.25rem;
+  color: #ffffff;
+}
+
+/* Destination Card */
+.vtv8-dest-card {
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(12, 35, 64, 0.08);
+  box-shadow: 0 4px 20px rgba(12, 35, 64, 0.06);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  display: flex;
+  flex-direction: column;
+}
+.vtv8-dest-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(12, 35, 64, 0.12);
+}
+.vtv8-dest-card .img-wrap {
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+.vtv8-dest-card .img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.vtv8-dest-card:hover .img-wrap img {
+  transform: scale(1.06);
+}
+
+/* Itinerary Card */
+.vtv8-itin-card {
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(12, 35, 64, 0.08);
+  box-shadow: 0 4px 20px rgba(12, 35, 64, 0.06);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  display: flex;
+  flex-direction: column;
+}
+.vtv8-itin-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(12, 35, 64, 0.12);
+}
+.vtv8-itin-card .img-wrap {
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+}
+.vtv8-itin-card .img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.vtv8-itin-card:hover .img-wrap img {
+  transform: scale(1.06);
+}
+
+/* Membership Ecosystem Card (Dark Theme) */
+.vtv8-member-card {
+  background: rgba(11, 37, 66, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 1.75rem 1.5rem;
+  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.vtv8-member-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(11, 37, 66, 0.9);
+}
+
+/* Stats Counter Box */
+.vtv8-stat-item {
+  text-align: center;
+  padding: 1rem;
+}
+.vtv8-stat-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+.vtv8-stat-label {
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* FAQ Accordion Item */
+.vtv8-faq-item {
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.vtv8-faq-item:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+.vtv8-faq-question {
+  width: 100%;
+  padding: 1.1rem 1.4rem;
+  background: none;
+  border: none;
+  display: flex;
+  justifyContent: space-between;
+  align-items: center;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #0f172a;
+  cursor: pointer;
+  text-align: left;
+}
+.vtv8-faq-answer {
+  padding: 0 1.4rem 1.2rem;
+  color: #475569;
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+/* Button Variants */
+.btn-vtv8-red {
+  background: var(--vtv8-red-gradient);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 0.75rem 1.6rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-vtv8-red:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.45);
+  color: #ffffff;
+}
+
+.btn-vtv8-gold {
+  background: var(--vtv8-gold-gradient);
+  color: #1e293b;
+  font-weight: 700;
+  padding: 0.75rem 1.6rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-vtv8-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.45);
+  color: #0f172a;
+}
+
+/* Navbar responsive adjustments */
+@media (max-width: 1024px) {
+  .vtv8-nav-center {
+    display: none !important;
+  }
+  .vtv8-mobile-toggle {
+    display: block !important;
+  }
+}
+
+

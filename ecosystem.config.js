@@ -7,7 +7,7 @@
 module.exports = {
   apps: [
     {
-      name        : 'doson-today',
+      name        : 'vtv8-today',
       script      : 'server.js',
       instances   : 1,           // tăng lên 'max' nếu muốn cluster
       exec_mode   : 'fork',

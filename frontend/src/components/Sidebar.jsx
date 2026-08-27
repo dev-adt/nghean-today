@@ -84,7 +84,7 @@ export const Sidebar = () => {
       <Link to="/admin-dashboard" className="sb-logo" style={{ textDecoration: 'none' }}>
         <div className="sb-logo-icon"><img src="/doson_logo.png" alt="Logo" style={{ width: '20px', height: '20px', objectFit: 'contain' }} /></div>
         <div>
-          <div className="sb-logo-name">Đồ Sơn</div>
+          <div className="sb-logo-name">VTV8.today</div>
           <div className="sb-logo-sub">Hội viên doanh nghiệp</div>
         </div>
       </Link>

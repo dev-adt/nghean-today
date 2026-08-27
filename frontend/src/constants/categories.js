@@ -1,67 +1,95 @@
 /**
- * Cấu hình 6 Chuyên mục chính và các Lĩnh vực con tương ứng
- * dùng chung cho toàn bộ ứng dụng Đồ Sơn Today.
+ * Cấu hình 8 Chuyên mục chính và các Lĩnh vực con tương ứng
+ * dùng chung cho toàn bộ ứng dụng VTV8.today.
  */
 
 export const CATEGORIES_DATA = [
   {
-    id: 'kham-pha-do-son',
-    name: 'Khám phá Đồ Sơn',
-    name_en: 'Explore Do Son',
+    id: 'van-hoa-du-lich',
+    name: 'Văn hóa – Du lịch',
+    name_en: 'Culture & Tourism',
     subcategories: [
-      'Tổng quan Đồ Sơn',
-      'Lịch sử & Di tích',
-      'Văn hóa & Lễ hội'
+      'Bản sắc văn hóa vùng miền',
+      'Lễ hội & Tín ngưỡng',
+      'Tour văn hóa trải nghiệm',
+      'Không gian nghệ thuật'
     ]
   },
   {
-    id: 'du-lich',
-    name: 'Du lịch',
-    name_en: 'Tourism',
+    id: 'di-san-lich-su',
+    name: 'Di sản – Lịch sử',
+    name_en: 'Heritage & History',
     subcategories: [
-      'Điểm đến nổi bật',
-      'Nơi lưu trú & Resort',
-      'Ẩm thực & Hải sản',
-      'Lịch trình gợi ý'
+      'Di sản thế giới UNESCO',
+      'Di tích lịch sử - văn hóa',
+      'Danh nhân & Ký ức thời gian',
+      'Tuyến du lịch di sản'
     ]
   },
   {
-    id: 'doanh-nghiep',
-    name: 'Doanh nghiệp',
-    name_en: 'Enterprises',
+    id: 'diem-den-noi-bat',
+    name: 'Điểm đến nổi bật',
+    name_en: 'Featured Destinations',
     subcategories: [
-      'Danh bạ doanh nghiệp',
-      'Sản phẩm OCOP tiêu biểu',
-      'Nhu cầu mua - bán'
+      'Miền Trung & Duyên hải',
+      'Đại ngàn Tây Nguyên',
+      'Kỳ quan Bắc Bộ',
+      'Sắc màu Phương Nam',
+      'Thiên đường biển đảo'
     ]
   },
   {
-    id: 'dau-tu',
-    name: 'Đầu tư',
-    name_en: 'Investment',
+    id: 'le-hoi-su-kien',
+    name: 'Lễ hội và sự kiện',
+    name_en: 'Festivals & Events',
     subcategories: [
-      'Dự án & Cơ hội hợp tác',
-      'Lĩnh vực tiềm năng'
+      'Lễ hội truyền thống',
+      'Festival văn hóa nghệ thuật',
+      'Sự kiện du lịch & Thể thao',
+      'Hội chợ & Triển lãm'
     ]
   },
   {
-    id: 'cong-dong',
-    name: 'Cộng đồng',
-    name_en: 'Community',
+    id: 'am-thuc-viet-nam',
+    name: 'Ẩm thực Việt Nam',
+    name_en: 'Vietnamese Cuisine',
     subcategories: [
-      'Người Đồ Sơn xa quê',
-      'Chuyên gia & Cố vấn',
-      'CLB Doanh nhân'
+      'Tinh hoa ẩm thực ba miền',
+      'Đặc sản địa phương & OCOP',
+      'Câu chuyện món ngon',
+      'Địa chỉ ẩm thực tuyển chọn'
     ]
   },
   {
-    id: 'tin-tuc-su-kien',
-    name: 'Tin tức - Sự kiện',
-    name_en: 'News & Events',
+    id: 'con-nguoi-lang-nghe',
+    name: 'Con người và làng nghề',
+    name_en: 'People & Craft Villages',
     subcategories: [
-      'Tin tức thời sự',
-      'Sự kiện & Lễ hội',
-      'Thông cáo & Hoạt động'
+      'Nghệ nhân & Người giữ nghề',
+      'Làng nghề truyền thống',
+      'Sản phẩm thủ công mỹ nghệ',
+      'Trải nghiệm làm nghề'
+    ]
+  },
+  {
+    id: 'du-lich-ben-vung',
+    name: 'Du lịch bền vững',
+    name_en: 'Sustainable Tourism',
+    subcategories: [
+      'Hành trình xanh & Sinh thái',
+      'Du lịch cộng đồng & Bản địa',
+      'Quy tắc ứng xử điểm đến'
+    ]
+  },
+  {
+    id: 'doanh-nghiep-dich-vu',
+    name: 'Doanh nghiệp & Dịch vụ',
+    name_en: 'Enterprises & Services',
+    subcategories: [
+      'Lưu trú & Resort cao cấp',
+      'Lữ hành & Vận chuyển',
+      'Showroom số doanh nghiệp',
+      'Nhu cầu hợp tác & Cung ứng'
     ]
   }
 ];
@@ -71,32 +99,55 @@ export const CATEGORIES_DATA = [
  */
 export const CATEGORY_TRANSLATIONS = {
   // Main Categories
-  'Khám phá Đồ Sơn': { vi: 'Khám phá Đồ Sơn', en: 'Explore Do Son' },
-  'Du lịch': { vi: 'Du lịch', en: 'Tourism' },
-  'Doanh nghiệp': { vi: 'Doanh nghiệp', en: 'Enterprises' },
-  'Đầu tư': { vi: 'Đầu tư', en: 'Investment' },
-  'Cộng đồng': { vi: 'Cộng đồng', en: 'Community' },
-  'Tin tức - Sự kiện': { vi: 'Tin tức - Sự kiện', en: 'News & Events' },
+  'Văn hóa – Du lịch': { vi: 'Văn hóa – Du lịch', en: 'Culture & Tourism' },
+  'Di sản – Lịch sử': { vi: 'Di sản – Lịch sử', en: 'Heritage & History' },
+  'Điểm đến nổi bật': { vi: 'Điểm đến nổi bật', en: 'Featured Destinations' },
+  'Lễ hội và sự kiện': { vi: 'Lễ hội và sự kiện', en: 'Festivals & Events' },
+  'Ẩm thực Việt Nam': { vi: 'Ẩm thực Việt Nam', en: 'Vietnamese Cuisine' },
+  'Con người và làng nghề': { vi: 'Con người và làng nghề', en: 'People & Craft Villages' },
+  'Du lịch bền vững': { vi: 'Du lịch bền vững', en: 'Sustainable Tourism' },
+  'Doanh nghiệp & Dịch vụ': { vi: 'Doanh nghiệp & Dịch vụ', en: 'Enterprises & Services' },
 
   // Sub Categories
-  'Tổng quan Đồ Sơn': { vi: 'Tổng quan Đồ Sơn', en: 'Do Son Overview' },
-  'Lịch sử & Di tích': { vi: 'Lịch sử & Di tích', en: 'History & Relics' },
-  'Văn hóa & Lễ hội': { vi: 'Văn hóa & Lễ hội', en: 'Culture & Festivals' },
-  'Điểm đến nổi bật': { vi: 'Điểm đến nổi bật', en: 'Featured Destinations' },
-  'Nơi lưu trú & Resort': { vi: 'Nơi lưu trú & Resort', en: 'Accommodations & Resorts' },
-  'Ẩm thực & Hải sản': { vi: 'Ẩm thực & Hải sản', en: 'Cuisine & Seafood' },
-  'Lịch trình gợi ý': { vi: 'Lịch trình gợi ý', en: 'Suggested Itineraries' },
-  'Danh bạ doanh nghiệp': { vi: 'Danh bạ doanh nghiệp', en: 'Business Directory' },
-  'Sản phẩm OCOP tiêu biểu': { vi: 'Sản phẩm OCOP tiêu biểu', en: 'Featured OCOP Products' },
-  'Nhu cầu mua - bán': { vi: 'Nhu cầu mua - bán', en: 'Trading Needs' },
-  'Dự án & Cơ hội hợp tác': { vi: 'Dự án & Cơ hội hợp tác', en: 'Projects & Opportunities' },
-  'Lĩnh vực tiềm năng': { vi: 'Lĩnh vực tiềm năng', en: 'Potential Sectors' },
-  'Người Đồ Sơn xa quê': { vi: 'Người Đồ Sơn xa quê', en: 'Do Son Expatriates' },
-  'Chuyên gia & Cố vấn': { vi: 'Chuyên gia & Cố vấn', en: 'Experts & Advisors' },
-  'CLB Doanh nhân': { vi: 'CLB Doanh nhân', en: 'Entrepreneurs Club' },
-  'Tin tức thời sự': { vi: 'Tin tức thời sự', en: 'Current News' },
-  'Sự kiện & Lễ hội': { vi: 'Sự kiện & Lễ hội', en: 'Events & Festivals' },
-  'Thông cáo & Hoạt động': { vi: 'Thông cáo & Hoạt động', en: 'Press & Activities' }
+  'Bản sắc văn hóa vùng miền': { vi: 'Bản sắc văn hóa vùng miền', en: 'Regional Cultural Identity' },
+  'Lễ hội & Tín ngưỡng': { vi: 'Lễ hội & Tín ngưỡng', en: 'Festivals & Beliefs' },
+  'Tour văn hóa trải nghiệm': { vi: 'Tour văn hóa trải nghiệm', en: 'Experiential Cultural Tours' },
+  'Không gian nghệ thuật': { vi: 'Không gian nghệ thuật', en: 'Art Spaces' },
+
+  'Di sản thế giới UNESCO': { vi: 'Di sản thế giới UNESCO', en: 'UNESCO World Heritage' },
+  'Di tích lịch sử - văn hóa': { vi: 'Di tích lịch sử - văn hóa', en: 'Historical & Cultural Relics' },
+  'Danh nhân & Ký ức thời gian': { vi: 'Danh nhân & Ký ức thời gian', en: 'Celebrities & Time Memories' },
+  'Tuyến du lịch di sản': { vi: 'Tuyến du lịch di sản', en: 'Heritage Travel Routes' },
+
+  'Miền Trung & Duyên hải': { vi: 'Miền Trung & Duyên hải', en: 'Central Coast Region' },
+  'Đại ngàn Tây Nguyên': { vi: 'Đại ngàn Tây Nguyên', en: 'Central Highlands' },
+  'Kỳ quan Bắc Bộ': { vi: 'Kỳ quan Bắc Bộ', en: 'Northern Wonders' },
+  'Sắc màu Phương Nam': { vi: 'Sắc màu Phương Nam', en: 'Southern Highlights' },
+  'Thiên đường biển đảo': { vi: 'Thiên đường biển đảo', en: 'Island & Marine Paradise' },
+
+  'Lễ hội truyền thống': { vi: 'Lễ hội truyền thống', en: 'Traditional Festivals' },
+  'Festival văn hóa nghệ thuật': { vi: 'Festival văn hóa nghệ thuật', en: 'Cultural & Art Festivals' },
+  'Sự kiện du lịch & Thể thao': { vi: 'Sự kiện du lịch & Thể thao', en: 'Tourism & Sports Events' },
+  'Hội chợ & Triển lãm': { vi: 'Hội chợ & Triển lãm', en: 'Fairs & Exhibitions' },
+
+  'Tinh hoa ẩm thực ba miền': { vi: 'Tinh hoa ẩm thực ba miền', en: 'Culinary Quintessence' },
+  'Đặc sản địa phương & OCOP': { vi: 'Đặc sản địa phương & OCOP', en: 'Local Specialties & OCOP' },
+  'Câu chuyện món ngon': { vi: 'Câu chuyện món ngon', en: 'Food Stories' },
+  'Địa chỉ ẩm thực tuyển chọn': { vi: 'Địa chỉ ẩm thực tuyển chọn', en: 'Selected Culinary Spots' },
+
+  'Nghệ nhân & Người giữ nghề': { vi: 'Nghệ nhân & Người giữ nghề', en: 'Artisans & Heritage Keepers' },
+  'Làng nghề truyền thống': { vi: 'Làng nghề truyền thống', en: 'Traditional Craft Villages' },
+  'Sản phẩm thủ công mỹ nghệ': { vi: 'Sản phẩm thủ công mỹ nghệ', en: 'Handicraft Products' },
+  'Trải nghiệm làm nghề': { vi: 'Trải nghiệm làm nghề', en: 'Hands-on Craft Experiences' },
+
+  'Hành trình xanh & Sinh thái': { vi: 'Hành trình xanh & Sinh thái', en: 'Green & Eco Journeys' },
+  'Du lịch cộng đồng & Bản địa': { vi: 'Du lịch cộng đồng & Bản địa', en: 'Community-based Tourism' },
+  'Quy tắc ứng xử điểm đến': { vi: 'Quy tắc ứng xử điểm đến', en: 'Destination Codes of Conduct' },
+
+  'Lưu trú & Resort cao cấp': { vi: 'Lưu trú & Resort cao cấp', en: 'Accommodations & Luxury Resorts' },
+  'Lữ hành & Vận chuyển': { vi: 'Lữ hành & Vận chuyển', en: 'Travel Agencies & Transport' },
+  'Showroom số doanh nghiệp': { vi: 'Showroom số doanh nghiệp', en: 'Enterprise Digital Showrooms' },
+  'Nhu cầu hợp tác & Cung ứng': { vi: 'Nhu cầu hợp tác & Cung ứng', en: 'Partnership & Supply Needs' }
 };
 
 /**

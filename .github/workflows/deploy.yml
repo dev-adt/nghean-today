@@ -1,0 +1,54 @@
+name: Build and Auto Deploy to Deploy Branch
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - version2
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Install Frontend Dependencies & Build
+        run: |
+          cd frontend
+          npm ci || npm install
+          npm run build
+
+      - name: Prepare Deployment Files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Ensure public directory is tracked for deploy branch
+          git add -f public/
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes in build artifacts."
+          else
+            git commit -m "Auto-build production bundle [skip ci]"
+          fi
+
+      - name: Push to deploy branch
+        run: |
+          # Force push the current compiled state to the 'deploy' branch
+          git push origin HEAD:deploy --force

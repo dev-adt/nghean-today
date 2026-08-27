@@ -148,8 +148,8 @@ export const Posts = () => {
     <div className="public-body">
       <SEOHead 
         title={currentLang === 'en' ? 'Business Opportunities & News' : 'Bảng tin cơ hội & Quảng bá Doanh nghiệp'}
-        description="Khám phá các tin đăng tìm kiếm đối tác, nhu cầu hợp tác thương mại, sự kiện kết nối đầu tư và thông tin doanh nghiệp tại Đồ Sơn, Hải Phòng."
-        keywords="bảng tin doanh nghiệp, cơ hội kinh doanh, Đồ Sơn, Hải Phòng, hợp tác thương mại, quảng bá doanh nghiệp"
+        description="Khám phá các tin đăng tìm kiếm đối tác, nhu cầu hợp tác thương mại, sự kiện kết nối đầu tư và thông tin doanh nghiệp trên toàn quốc."
+        keywords="bảng tin doanh nghiệp, cơ hội kinh doanh, Việt Nam, Miền Trung, Tây Nguyên, hợp tác thương mại, quảng bá doanh nghiệp"
         url="/posts"
       />
 

@@ -907,7 +907,7 @@ export const MemberDashboard = () => {
 
                   <div className="fg">
                     <label>Từ khoá (phân tách bằng dấu phẩy)</label>
-                    <input type="text" id="tags" value={newPostData.tags} onChange={handleNewPostChange} placeholder="Ví dụ: du lịch Đồ Sơn, khách sạn, đối tác thương mại" />
+                    <input type="text" id="tags" value={newPostData.tags} onChange={handleNewPostChange} placeholder="Ví dụ: du lịch di sản, khách sạn Hội An, ẩm thực Huế" />
                   </div>
                 </div>
 

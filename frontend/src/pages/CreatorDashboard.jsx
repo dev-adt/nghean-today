@@ -268,7 +268,7 @@ export const CreatorDashboard = () => {
 
   return (
     <div className="public-body">
-      <SEOHead title="Dashboard Biên tập viên | Đồ Sơn Today" description="Trang quản trị bài viết dành riêng cho Biên tập viên Đồ Sơn Today" />
+      <SEOHead title="Dashboard Biên tập viên | VTV8.today" description="Trang quản trị bài viết dành riêng cho Biên tập viên VTV8.today" />
       <Navbar />
 
       <div className="public-container" style={{ minHeight: '80vh', paddingBottom: '4rem', paddingTop: '2rem' }}>
@@ -294,7 +294,7 @@ export const CreatorDashboard = () => {
               </span>
             </div>
             <p style={{ fontSize: '13.5px', color: 'var(--text-secondary)', margin: 0 }}>
-              Quản trị & xuất bản tin tức, bài viết truyền thông Đồ Sơn Today.
+              Quản trị & xuất bản tin tức, bài viết truyền thông VTV8.today.
             </p>
           </div>
 
@@ -483,7 +483,7 @@ export const CreatorDashboard = () => {
 
                   <div className="fg">
                     <label style={{ fontSize: '13px', fontWeight: 600 }}>Từ khoá SEO (phân tách bằng dấu phẩy)</label>
-                    <input type="text" id="tags" value={newPostData.tags} onChange={handleNewPostChange} placeholder="Ví dụ: du lịch Đồ Sơn, khách sạn, ẩm thực" />
+                    <input type="text" id="tags" value={newPostData.tags} onChange={handleNewPostChange} placeholder="Ví dụ: du lịch di sản, văn hóa Đà Nẵng, lễ hội Huế" />
                   </div>
                 </div>
 

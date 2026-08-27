@@ -3,173 +3,160 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from '../contexts/LanguageContext';
 
 export const Footer = () => {
-  const { t } = useTranslation();
+  const { currentLang } = useTranslation();
 
   return (
-    <footer style={{ backgroundColor: '#0c2340', color: '#93b4d4', padding: '4rem 0 2rem', fontSize: '13px', borderTop: '1px solid rgba(2, 132, 199, 0.2)' }}>
-      <div className="public-container" style={{ margin: '0 auto', maxWidth: '1360px', padding: '0 1.5rem' }}>
-        {/* 5-Column Footer Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '2.5rem', marginBottom: '3rem' }}>
-          
+    <footer style={{
+      backgroundColor: '#051322',
+      color: '#94a3b8',
+      padding: '4.5rem 0 2rem',
+      fontSize: '13.5px',
+      borderTop: '1px solid rgba(255, 255, 255, 0.08)'
+    }}>
+      <div style={{ maxWidth: '1380px', margin: '0 auto', padding: '0 1.5rem' }}>
+        {/* 4-Column Footer Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '3rem',
+          marginBottom: '3.5rem'
+        }}>
           {/* Column 1: Brand Info */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontFamily: 'var(--font-title, sans-serif)', fontSize: '20px', fontWeight: '800', color: '#ffffff', marginBottom: '1.2rem' }}>
-              <div style={{ width: '34px', height: '34px', borderRadius: '8px', background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img src="/doson_logo.png" alt="Logo" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+            <Link to="/" style={{ textDecoration: 'none', display: 'inline-block', marginBottom: '1.2rem' }}>
+              <div style={{
+                fontFamily: "'Outfit', 'Plus Jakarta Sans', sans-serif",
+                fontSize: '24px',
+                fontWeight: '900',
+                color: '#ffffff',
+                letterSpacing: '-0.5px'
+              }}>
+                VTV8<span style={{ color: '#ef4444' }}>.today</span>
               </div>
-              Đồ Sơn Today
-            </div>
-            <p style={{ lineHeight: '1.6', marginBottom: '1.2rem', color: '#93b4d4', fontSize: '12.5px' }}>
-              {t('footer_brand_desc')}
+              <div style={{ fontSize: '9px', letterSpacing: '1px', color: '#93c5fd', fontWeight: '600', textTransform: 'uppercase' }}>
+                {currentLang === 'en' ? 'Culture • Heritage • History • Tourism' : 'VĂN HÓA - DI SẢN - LỊCH SỬ - DU LỊCH'}
+              </div>
+            </Link>
+
+            <p style={{ lineHeight: '1.7', color: '#94a3b8', fontSize: '13px', marginBottom: '1.5rem' }}>
+              {currentLang === 'en'
+                ? 'A specialized digital portal promoting Vietnamese tourism, culture, heritage, history, and fostering an active member ecosystem.'
+                : 'Chuyên trang quảng bá du lịch, văn hóa, di sản, lịch sử và phát triển cộng đồng hội viên.'}
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1', marginBottom: '1.2rem' }}>
-              <div style={{ display: 'flex', gap: '6px', alignItems: 'flex-start' }}><i className="ti ti-map-pin" style={{ color: '#38bdf8', marginTop: '2px' }}></i> {t('footer_address_hn')}</div>
-              <div style={{ display: 'flex', gap: '6px', alignItems: 'flex-start' }}><i className="ti ti-building" style={{ color: '#38bdf8', marginTop: '2px' }}></i> {t('footer_address_hp')}</div>
-              <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}><i className="ti ti-mail" style={{ color: '#38bdf8' }}></i> info@adtgroup.net</div>
-              <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}><i className="ti ti-phone" style={{ color: '#38bdf8' }}></i> 0986 354 152</div>
-            </div>
-            {/* Social Links */}
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <a href="#" style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#e2f0ff' }} title="Facebook"><i className="ti ti-brand-facebook"></i></a>
-              <a href="#" style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#e2f0ff' }} title="YouTube"><i className="ti ti-brand-youtube"></i></a>
-              <a href="#" style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#e2f0ff' }} title="TikTok"><i className="ti ti-brand-tiktok"></i></a>
-              <a href="#" style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#e2f0ff' }} title="Zalo"><i className="ti ti-message"></i></a>
-            </div>
-          </div>
 
-          {/* Column 2: Khám phá Đồ Sơn */}
-          <div>
-            <h4 style={{ color: '#ffffff', fontSize: '13px', fontWeight: '700', marginBottom: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              {t('footer_col2_title')}
-            </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12.5px' }}>
-              <Link to={`/posts?category=${encodeURIComponent('Khám phá Đồ Sơn')}&sub_category=${encodeURIComponent('Tổng quan Đồ Sơn')}`} style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_overview')}
-              </Link>
-              <Link to={`/posts?category=${encodeURIComponent('Du lịch')}&sub_category=${encodeURIComponent('Điểm đến nổi bật')}`} style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_destinations')}
-              </Link>
-              <Link to={`/posts?category=${encodeURIComponent('Du lịch')}&sub_category=${encodeURIComponent('Ẩm thực & Hải sản')}`} style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_cuisine')}
-              </Link>
-              <Link to={`/posts?category=${encodeURIComponent('Du lịch')}&sub_category=${encodeURIComponent('Nơi lưu trú & Resort')}`} style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_stay')}
-              </Link>
-              <Link to="/events" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_events')}
-              </Link>
-              <a href="/#map-section" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_digital_map')}
+            {/* Social Icons */}
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <a href="#" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', textDecoration: 'none' }} title="Facebook">
+                <i className="ti ti-brand-facebook" style={{ fontSize: '16px' }}></i>
               </a>
-              <Link to="/guide" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_travel_guide')}
-              </Link>
-            </div>
-          </div>
-
-          {/* Column 3: Kết nối & Hợp tác */}
-          <div>
-            <h4 style={{ color: '#ffffff', fontSize: '13px', fontWeight: '700', marginBottom: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              {t('footer_col3_title')}
-            </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12.5px' }}>
-              <Link to="/members" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_biz_dir')}
-              </Link>
-              <Link to={`/posts?category=${encodeURIComponent('Doanh nghiệp')}&sub_category=${encodeURIComponent('Sản phẩm OCOP tiêu biểu')}`} style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_ocop')}
-              </Link>
-              <Link to={`/posts?category=${encodeURIComponent('Đầu tư')}`} style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_investment')}
-              </Link>
-              <Link to={`/posts?category=${encodeURIComponent('Doanh nghiệp')}&sub_category=${encodeURIComponent('Nhu cầu mua - bán')}`} style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_trading_needs')}
-              </Link>
-              <Link to={`/posts?category=${encodeURIComponent('Cộng đồng')}`} style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_expats')}
-              </Link>
-              <Link to="/register" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_become_member')}
-              </Link>
-              <Link to="/register" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_reg_biz')}
-              </Link>
-            </div>
-          </div>
-
-          {/* Column 4: Trung tâm trợ giúp */}
-          <div>
-            <h4 style={{ color: '#ffffff', fontSize: '13px', fontWeight: '700', marginBottom: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              {t('footer_col4_title')}
-            </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12.5px' }}>
-              <Link to="/ai-chat" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_ai_guide')}
-              </Link>
-              <Link to="/guide" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_profile_guide')}
-              </Link>
-              <Link to="/guide" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_contact_supp')}
-              </Link>
-              <a href="tel:0986354152" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_hotline')}
+              <a href="#" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', textDecoration: 'none' }} title="YouTube">
+                <i className="ti ti-brand-youtube" style={{ fontSize: '16px' }}></i>
               </a>
-              <Link to="/guide" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_sitemap')}
+              <a href="#" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', textDecoration: 'none' }} title="TikTok">
+                <i className="ti ti-brand-tiktok" style={{ fontSize: '16px' }}></i>
+              </a>
+              <a href="#" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', textDecoration: 'none' }} title="Website">
+                <i className="ti ti-world" style={{ fontSize: '16px' }}></i>
+              </a>
+            </div>
+          </div>
+
+          {/* Column 2: Khám phá */}
+          <div>
+            <h4 style={{ color: '#ffffff', fontSize: '14px', fontWeight: '700', marginBottom: '1.4rem', letterSpacing: '0.02em' }}>
+              {currentLang === 'en' ? 'Explore' : 'Khám phá'}
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px' }}>
+              <Link to="/posts?category=Điểm đến nổi bật" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Destinations' : 'Điểm đến'}
+              </Link>
+              <Link to="/posts?category=Di sản – Lịch sử" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Heritage & History' : 'Di sản'}
+              </Link>
+              <Link to="/posts?category=Văn hóa – Du lịch" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Culture' : 'Văn hóa'}
+              </Link>
+              <Link to="/posts?category=Ẩm thực Việt Nam" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Cuisine' : 'Ẩm thực'}
+              </Link>
+              <Link to="/posts?category=Điểm đến nổi bật&sub_category=Tuyến du lịch di sản" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Itineraries' : 'Hành trình'}
+              </Link>
+              <Link to="/events" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Events & Festivals' : 'Lễ hội & Sự kiện'}
               </Link>
             </div>
           </div>
 
-          {/* Column 5: Pháp lý & Chính sách */}
+          {/* Column 3: Hội viên */}
           <div>
-            <h4 style={{ color: '#ffffff', fontSize: '13px', fontWeight: '700', marginBottom: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              {t('footer_col5_title')}
+            <h4 style={{ color: '#ffffff', fontSize: '14px', fontWeight: '700', marginBottom: '1.4rem', letterSpacing: '0.02em' }}>
+              {currentLang === 'en' ? 'Members' : 'Hội viên'}
             </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12.5px' }}>
-              <Link to="/guide" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_terms')}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px' }}>
+              <Link to="/guide" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Member Benefits' : 'Quyền lợi hội viên'}
               </Link>
-              <Link to="/guide" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_privacy')}
+              <Link to="/register" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Member Registration' : 'Đăng ký hội viên'}
               </Link>
-              <Link to="/guide" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_cookie_policy')}
+              <Link to="/members" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Enterprise Showrooms' : 'Doanh nghiệp hội viên'}
               </Link>
-              <Link to="/guide" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_ai_policy')}
+              <Link to="/register?type=creator" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Content Creators' : 'Nhà sáng tạo'}
               </Link>
-              <Link to="/guide" style={{ color: '#93b4d4', textDecoration: 'none' }}>
-                {t('footer_link_disclaimer_link')}
+              <Link to="/register?type=partner" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Local Partners' : 'Đối tác địa phương'}
+              </Link>
+              <Link to="/ai-chat" style={{ color: '#38bdf8', textDecoration: 'none', fontWeight: '600' }}>
+                {currentLang === 'en' ? 'Multi-Agent AI Assistant' : 'Trợ lý AI đa ngôn ngữ'}
+              </Link>
+            </div>
+          </div>
+
+          {/* Column 4: Hỗ trợ & Pháp lý */}
+          <div>
+            <h4 style={{ color: '#ffffff', fontSize: '14px', fontWeight: '700', marginBottom: '1.4rem', letterSpacing: '0.02em' }}>
+              {currentLang === 'en' ? 'Support & Legal' : 'Hỗ trợ & Pháp lý'}
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px' }}>
+              <Link to="/guide#faq" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Frequently Asked Questions' : 'Câu hỏi thường gặp'}
+              </Link>
+              <Link to="/guide#privacy" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Privacy Policy' : 'Chính sách bảo mật'}
+              </Link>
+              <Link to="/guide#terms" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Terms of Service' : 'Điều khoản sử dụng'}
+              </Link>
+              <Link to="/guide#content-rules" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Content Regulations' : 'Quy chế nội dung'}
+              </Link>
+              <Link to="/guide#copyright" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                {currentLang === 'en' ? 'Copyright Policy' : 'Chính sách bản quyền'}
               </Link>
             </div>
           </div>
         </div>
 
-
-        {/* Bottom Rights & Links Row */}
-        <div 
-          style={{
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-            paddingTop: '1.5rem',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: '1rem',
-            fontSize: '11.5px',
-            color: '#64748b'
-          }}
-        >
+        {/* Copyright & Disclaimer Bar */}
+        <div style={{
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          paddingTop: '1.8rem',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '1rem',
+          fontSize: '12px',
+          color: '#64748b'
+        }}>
           <div>
-            © 2026 <strong>Doson.today</strong>. {t('footer_rights')}. ADT Group.
+            © 2026 <strong>VTV8.today</strong>. {currentLang === 'en' ? 'All rights reserved.' : 'Nội dung, hình ảnh và dấu hiệu nhận diện được sử dụng theo phạm vi quyền được cấp.'}
           </div>
           <div style={{ display: 'flex', gap: '16px' }}>
-            <button style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: '11.5px' }}>
-              {t('footer_cookie_opt')}
-            </button>
-            <span>|</span>
-            <span>{t('footer_licence')}</span>
+            <span>{currentLang === 'en' ? 'Version 2.0 • Live' : 'Phiên bản 2.0 • Trực tuyến'}</span>
           </div>
         </div>
       </div>

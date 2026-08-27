@@ -169,7 +169,7 @@ export const Register = () => {
           </div>
           
           <div className="register-sidebar-text">
-            <h2>Đồ Sơn Connection</h2>
+            <h2>VTV8.today Ecosystem</h2>
             <p>{t('register_sidebar_desc')}</p>
           </div>
         </div>
@@ -458,7 +458,7 @@ export const Register = () => {
                         <option value="">{t('placeholder_referral')}</option>
                         <option value="Mạng xã hội (Facebook, LinkedIn...)">Mạng xã hội (Facebook, LinkedIn...)</option>
                         <option value="Báo chí, truyền thông">Báo chí, truyền thông</option>
-                        <option value="Được hội viên Đồ Sơn giới thiệu">Được hội viên Đồ Sơn giới thiệu</option>
+                        <option value="Được hội viên VTV8.today giới thiệu">Được hội viên VTV8.today giới thiệu</option>
                         <option value="Tìm kiếm Google">Tìm kiếm Google</option>
                         <option value="Hội thảo, sự kiện">Hội thảo, sự kiện</option>
                       </select>
