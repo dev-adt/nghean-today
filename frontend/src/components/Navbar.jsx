@@ -117,13 +117,13 @@ export const Navbar = () => {
       overflow: 'visible'
     }}>
       <div style={{
-        maxWidth: '100%',
+        maxWidth: '1280px',
         margin: '0 auto',
-        padding: '0.45rem 1.25rem',
+        padding: '0.45rem 1.5rem',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: 'clamp(0.5rem, 1.2vw, 1.25rem)',
+        gap: 'clamp(0.6rem, 1.5vw, 1.5rem)',
         flexWrap: 'nowrap',
         overflow: 'visible'
       }}>
@@ -166,13 +166,15 @@ export const Navbar = () => {
           </span>
         </Link>
 
-        {/* 2. CENTER NAVIGATION: PURE TRANSPARENT BACKGROUND WITH CRISP WHITE/CYAN TEXT */}
+        {/* 2. CENTER NAVIGATION: BALANCED & CENTER-FOCUSED */}
         <nav className="vtv8-nav-center" style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 'clamp(0.2rem, 0.4vw, 0.5rem)',
+          justifyContent: 'center',
+          gap: 'clamp(0.25rem, 0.6vw, 0.75rem)',
           flexWrap: 'nowrap',
-          flexShrink: 1,
+          flex: 1,
+          margin: '0 0.75rem',
           backgroundColor: 'transparent',
           border: 'none',
           overflow: 'visible'
