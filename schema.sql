@@ -193,5 +193,4 @@ INSERT INTO events (title, event_date, location, organizer, status) VALUES
 ('Diễn đàn Hợp tác Phát triển Du lịch Di sản & Chuyển đổi số VTV8.today', '2026-10-05 09:00:00', 'Đà Nẵng — Trực tuyến toàn quốc', 'Ban Biên tập VTV8.today', 'upcoming');
 
 -- Cấu hình AI mặc định
-INSERT INTO ai_config (provider, model, is_active) VALUES ('gemini', 'gemini-1.5-flash', 1)
-ON DUPLICATE KEY UPDATE is_active=VALUES(is_active);
+INSERT INTO ai_config (provider, model, is_active) VALUES ('openrouter', 'google/gemini-3-flash-preview', 1);
