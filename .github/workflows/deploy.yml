@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-      - master
-      - version2
   workflow_dispatch:
 
 permissions:
@@ -23,14 +21,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          cache-dependency-path: 'frontend/package-lock.json'
 
       - name: Install Frontend Dependencies & Build
         run: |
           cd frontend
-          npm ci || npm install
+          npm install
           npm run build
 
       - name: Prepare Deployment Files
@@ -38,10 +36,10 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Ensure public directory is tracked for deploy branch
+          # Force add compiled public directory
           git add -f public/
           
-          # Check if there are changes to commit
+          # Commit build output if changed
           if git diff --staged --quiet; then
             echo "No changes in build artifacts."
           else
@@ -50,5 +48,5 @@ jobs:
 
       - name: Push to deploy branch
         run: |
-          # Force push the current compiled state to the 'deploy' branch
+          # Force push compiled code to deploy branch
           git push origin HEAD:deploy --force
