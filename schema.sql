@@ -97,6 +97,7 @@ CREATE TABLE IF NOT EXISTS admins (
   name          VARCHAR(100) NOT NULL,
   email         VARCHAR(255) NOT NULL,
   role          ENUM('superadmin','admin','editor','creator','member') DEFAULT 'admin',
+  last_login    TIMESTAMP NULL DEFAULT NULL,
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB COMMENT='Tài khoản quản trị và biên tập viên';
 

@@ -235,6 +235,17 @@ db.query(`
     `);
     console.log('✅ Bảng member_sessions đã sẵn sàng');
 
+    // Tự động kiểm tra và thêm cột last_login vào bảng admins
+    try {
+      const [adminCols] = await db.query("SHOW COLUMNS FROM admins LIKE 'last_login'");
+      if (!adminCols.length) {
+        await db.query("ALTER TABLE admins ADD COLUMN last_login TIMESTAMP NULL DEFAULT NULL");
+        console.log('✅ Đã thêm cột last_login vào bảng admins');
+      }
+    } catch (e) {
+      console.warn('Cảnh báo kiểm tra cột last_login trong admins:', e.message);
+    }
+
     await db.query(`
       CREATE TABLE IF NOT EXISTS chat_logs (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -816,7 +827,11 @@ app.post('/api/auth/login', async (req, res) => {
           'INSERT INTO admin_sessions (admin_id, token, expires_at) VALUES (?, ?, ?)',
           [admin.id, token, expiresAt]
         );
-        await db.query('UPDATE admins SET last_login = NOW() WHERE id = ?', [admin.id]);
+        try {
+          await db.query('UPDATE admins SET last_login = NOW() WHERE id = ?', [admin.id]);
+        } catch (e) {
+          // Bỏ qua nếu cột chưa tồn tại
+        }
         return res.json({
           success: true,
           role: 'admin',
@@ -931,7 +946,11 @@ app.post('/api/admin/login', async (req, res) => {
     );
 
     // Cập nhật last_login
-    await db.query('UPDATE admins SET last_login = NOW() WHERE id = ?', [admin.id]);
+    try {
+      await db.query('UPDATE admins SET last_login = NOW() WHERE id = ?', [admin.id]);
+    } catch (e) {
+      // Bỏ qua nếu cột chưa tồn tại
+    }
 
     res.json({
       success: true,
