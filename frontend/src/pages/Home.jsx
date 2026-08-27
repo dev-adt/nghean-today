@@ -30,7 +30,7 @@ export const Home = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
 
-  // Dynamic Live Data
+  // Dynamic Live Posts (up to 9 posts: 3 rows x 3 columns, featured prioritized)
   const [latestPosts, setLatestPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
 
@@ -38,7 +38,7 @@ export const Home = () => {
     let isMounted = true;
     const fetchHomeData = async () => {
       try {
-        const res = await fetch('/api/posts?limit=6');
+        const res = await fetch('/api/posts?limit=9');
         if (res.ok) {
           const data = await res.json();
           if (data.success && Array.isArray(data.data) && isMounted) {
@@ -83,21 +83,25 @@ export const Home = () => {
 
     setFormLoading(true);
     try {
-      await fetch('/api/members', {
+      const res = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: formData.fullName,
+          fullName: formData.fullName,
           phone: formData.phone,
           email: formData.email,
           city: formData.city,
-          tier: formData.memberType === 'member_biz' ? 'Gold' : 'Silver',
-          company_name: formData.companyName || formData.fullName,
-          notes: formData.notes,
-          description: `Đăng ký qua trang chủ VTV8.today: ${formData.memberType}. Ghi chú: ${formData.notes || 'N/A'}`
+          memberType: formData.memberType,
+          companyName: formData.companyName,
+          notes: formData.notes
         })
       });
-      setFormSubmitted(true);
+      if (res.ok) {
+        setFormSubmitted(true);
+      } else {
+        const errJson = await res.json();
+        alert('Lỗi: ' + (errJson.error || 'Không thể gửi form.'));
+      }
     } catch (err) {
       console.error('Submit form error:', err);
       alert(currentLang === 'en' ? 'An error occurred. Please try again.' : 'Đã có lỗi xảy ra. Vui lòng thử lại sau.');
@@ -790,8 +794,193 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* 5. GỢI Ý HÀNH TRÌNH */}
-      <section id="goi-y-hanh-trinh" style={{ padding: '5.5rem 1.5rem', backgroundColor: '#ffffff' }}>
+      {/* 5. BLOCK BÀI VIẾT MỚI NHẤT & TIÊU BIỂU (3 HÀNG X 3 CỘT = 9 BÀI) */}
+      <section id="bai-viet-moi-nhat" style={{ padding: '5.5rem 1.5rem', backgroundColor: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
+        <div style={{ maxWidth: '1240px', margin: '0 auto', textAlign: 'center' }}>
+          <div style={{
+            fontSize: '12px',
+            fontWeight: '800',
+            letterSpacing: '1.5px',
+            color: '#dc2626',
+            textTransform: 'uppercase',
+            marginBottom: '0.6rem'
+          }}>
+            {currentLang === 'en' ? 'LATEST & FEATURED ARTICLES' : 'BÀI VIẾT & TIN TỨC MỚI NHẤT'}
+          </div>
+          <h2 style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: 'clamp(1.8rem, 3.2vw, 2.5rem)',
+            fontWeight: '800',
+            color: '#0f172a',
+            marginBottom: '1rem'
+          }}>
+            {currentLang === 'en' ? 'Stories from VTV8.today Ecosystem' : 'Khám phá câu chuyện mới nhất từ VTV8.today'}
+          </h2>
+          <p style={{
+            color: '#475569',
+            fontSize: '15px',
+            maxWidth: '780px',
+            margin: '0 auto 3.5rem',
+            lineHeight: '1.7'
+          }}>
+            {currentLang === 'en'
+              ? 'Stay updated with cultural insights, travel experiences, festivals, and verified enterprise opportunities across Vietnam.'
+              : 'Cập nhật những góc nhìn sâu sắc, hành trình trải nghiệm và tin tức du lịch - văn hóa tiêu biểu nhất.'}
+          </p>
+
+          {loadingPosts ? (
+            <div style={{ padding: '3rem', color: '#64748b' }}>
+              <i className="ti ti-loader-2 animate-spin" style={{ fontSize: '28px', marginRight: '8px' }}></i>
+              <span>{currentLang === 'en' ? 'Loading articles...' : 'Đang tải danh sách bài viết...'}</span>
+            </div>
+          ) : latestPosts.length === 0 ? (
+            <div style={{ padding: '3rem', backgroundColor: '#f8fafc', borderRadius: '12px', color: '#64748b' }}>
+              <i className="ti ti-news" style={{ fontSize: '36px', marginBottom: '8px', display: 'block', color: '#cbd5e1' }}></i>
+              <span>{currentLang === 'en' ? 'No articles published yet.' : 'Chưa có bài viết nào được xuất bản.'}</span>
+            </div>
+          ) : (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+              gap: '2rem',
+              textAlign: 'left',
+              marginBottom: '3.5rem'
+            }}>
+              {latestPosts.map((post) => (
+                <div
+                  key={post.id}
+                  className="vtv8-dest-card"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => navigate(`/posts/${post.slug || post.id}`)}
+                >
+                  <div className="img-wrap" style={{ height: '190px' }}>
+                    <img 
+                      src={post.image_url || 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=600&q=80'} 
+                      alt={post.title} 
+                    />
+                    
+                    {/* Category Badge */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '12px',
+                      left: '12px',
+                      backgroundColor: 'rgba(15, 23, 42, 0.85)',
+                      backdropFilter: 'blur(8px)',
+                      color: '#ffffff',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      border: '1px solid rgba(255, 255, 255, 0.2)'
+                    }}>
+                      {post.category || 'Văn hóa'}
+                    </div>
+
+                    {/* Featured Star Badge */}
+                    {post.is_featured === 1 && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '12px',
+                        right: '12px',
+                        backgroundColor: '#f59e0b',
+                        color: '#ffffff',
+                        fontSize: '10.5px',
+                        fontWeight: '800',
+                        padding: '3px 8px',
+                        borderRadius: '20px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '3px',
+                        boxShadow: '0 2px 8px rgba(245, 158, 11, 0.5)'
+                      }}>
+                        <i className="ti ti-star-filled" style={{ fontSize: '11px' }}></i>
+                        <span>{currentLang === 'en' ? 'Featured' : 'Tiêu biểu'}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div style={{ padding: '1.4rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    {/* Meta info: Date & Views */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#94a3b8', fontSize: '11.5px', marginBottom: '0.6rem' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <i className="ti ti-calendar"></i>
+                        {post.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : 'Mới cập nhật'}
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <i className="ti ti-eye"></i>
+                        {post.views || 0} {currentLang === 'en' ? 'views' : 'lượt xem'}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 style={{
+                      fontSize: '16.5px',
+                      fontWeight: '800',
+                      color: '#0f172a',
+                      marginBottom: '0.6rem',
+                      lineHeight: '1.4',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      height: '46px'
+                    }}>
+                      {post.title}
+                    </h3>
+
+                    {/* Summary / Body Excerpt */}
+                    <p style={{
+                      fontSize: '13px',
+                      color: '#64748b',
+                      lineHeight: '1.6',
+                      flex: 1,
+                      marginBottom: '1.2rem',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      height: '42px'
+                    }}>
+                      {post.summary || post.body?.replace(/<[^>]*>?/gm, '').substring(0, 110) || 'Đang cập nhật nội dung chi tiết...'}
+                    </p>
+
+                    {/* Bottom Author & Read Link */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      borderTop: '1px solid #f1f5f9',
+                      paddingTop: '0.8rem',
+                      marginTop: 'auto'
+                    }}>
+                      <span style={{ fontSize: '12px', color: '#475569', fontWeight: '600' }}>
+                        ✍️ {post.company_name || 'Ban Biên tập VTV8'}
+                      </span>
+                      <span style={{ fontSize: '12px', fontWeight: '700', color: '#dc2626', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                        <span>{currentLang === 'en' ? 'Read article' : 'Đọc tiếp'}</span>
+                        <i className="ti ti-arrow-right"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* View All Posts Button */}
+          <Link
+            to="/posts"
+            className="btn-vtv8-red"
+            style={{ fontSize: '14.5px', padding: '0.9rem 2.4rem' }}
+          >
+            <i className="ti ti-layout-grid"></i>
+            <span>{currentLang === 'en' ? 'View All Articles' : 'Xem toàn bộ bài viết'}</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* 6. GỢI Ý HÀNH TRÌNH */}
+      <section id="goi-y-hanh-trinh" style={{ padding: '5.5rem 1.5rem', backgroundColor: '#fcfbfa' }}>
         <div style={{ maxWidth: '1240px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{
             fontSize: '12px',
@@ -896,7 +1085,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* 6. CỘNG ĐỒNG & DOANH NGHIỆP */}
+      {/* 7. CỘNG ĐỒNG & DOANH NGHIỆP */}
       <section id="gia-nhap-cong-dong" style={{
         padding: '6rem 1.5rem',
         background: 'linear-gradient(180deg, #081d33 0%, #051322 100%)',
@@ -1060,7 +1249,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* 7. CÔNG NGHỆ THÔNG MINH */}
+      {/* 8. CÔNG NGHỆ THÔNG MINH */}
       <section style={{ padding: '6rem 1.5rem', backgroundColor: '#fcfbfa' }}>
         <div style={{
           maxWidth: '1240px',
@@ -1235,7 +1424,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* 8. DẢI THỐNG KÊ */}
+      {/* 9. DẢI THỐNG KÊ */}
       <section style={{
         backgroundColor: '#051322',
         padding: '3.5rem 1.5rem',
@@ -1280,7 +1469,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* 9. THAM GIA HỆ SINH THÁI */}
+      {/* 10. THAM GIA HỆ SINH THÁI */}
       <section id="lien-he-he-sinh-thai" style={{ padding: '6rem 1.5rem', backgroundColor: '#fcfbfa' }}>
         <div style={{ maxWidth: '780px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{
@@ -1476,7 +1665,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* 10. GIẢI ĐÁP THẮC MẮC */}
+      {/* 11. GIẢI ĐÁP THẮC MẮC */}
       <section style={{ padding: '5.5rem 1.5rem', backgroundColor: '#ffffff' }}>
         <div style={{ maxWidth: '840px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{
@@ -1530,7 +1719,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* 11. BOTTOM BANNER */}
+      {/* 12. BOTTOM BANNER */}
       <section style={{
         background: 'linear-gradient(135deg, #081d33 0%, #030b14 100%)',
         color: '#ffffff',

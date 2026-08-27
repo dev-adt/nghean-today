@@ -24,6 +24,7 @@ import AdminConfig from './pages/AdminConfig';
 import AdminEvents from './pages/AdminEvents';
 import AdminCategories from './pages/AdminCategories';
 import AdminCreators from './pages/AdminCreators';
+import AdminLeads from './pages/AdminLeads';
 
 // Tự động cuộn lên đầu trang khi chuyển tuyến đường
 function ScrollToTop() {
@@ -121,6 +122,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminCreators />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin-leads" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <AdminLeads />
                 </ProtectedRoute>
               } 
             />

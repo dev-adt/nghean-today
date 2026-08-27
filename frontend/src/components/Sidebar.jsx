@@ -149,6 +149,14 @@ export const Sidebar = () => {
       </NavLink>
 
       <NavLink 
+        to="/admin-leads" 
+        className={({ isActive }) => `sb-item ${isActive ? 'active' : ''}`}
+        style={{ textDecoration: 'none' }}
+      >
+        <i className="ti ti-mail-forward"></i> Liên hệ / Đăng ký
+      </NavLink>
+
+      <NavLink 
         to="/admin-events" 
         className={({ isActive }) => `sb-item ${isActive ? 'active' : ''}`}
         style={{ textDecoration: 'none' }}

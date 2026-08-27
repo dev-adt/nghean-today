@@ -247,6 +247,51 @@ db.query(`
     }
 
     await db.query(`
+      CREATE TABLE IF NOT EXISTS content_creators (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(100) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        name VARCHAR(100) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        avatar_url VARCHAR(500) DEFAULT NULL,
+        bio TEXT DEFAULT NULL,
+        status ENUM('pending', 'approved', 'rejected') DEFAULT 'approved',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB COMMENT='Tác giả & Nhà sáng tạo nội dung'
+    `);
+
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS creator_sessions (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        creator_id INT NOT NULL,
+        token VARCHAR(255) NOT NULL UNIQUE,
+        expires_at DATETIME NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (creator_id) REFERENCES content_creators(id) ON DELETE CASCADE
+      ) ENGINE=InnoDB COMMENT='Phiên đăng nhập tác giả'
+    `);
+
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS leads (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        full_name VARCHAR(150) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        city VARCHAR(100) DEFAULT NULL,
+        member_type VARCHAR(100) DEFAULT 'member_personal',
+        company_name VARCHAR(255) DEFAULT NULL,
+        notes TEXT DEFAULT NULL,
+        status ENUM('pending', 'contacted', 'other') DEFAULT 'pending',
+        admin_notes TEXT DEFAULT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        INDEX idx_status (status),
+        INDEX idx_created (created_at)
+      ) ENGINE=InnoDB COMMENT='Danh sách liên hệ / Đăng ký từ trang chủ'
+    `);
+    console.log('✅ Bảng leads đã sẵn sàng');
+
+    await db.query(`
       CREATE TABLE IF NOT EXISTS chat_logs (
         id INT AUTO_INCREMENT PRIMARY KEY,
         session_id VARCHAR(100) NOT NULL,
@@ -271,10 +316,23 @@ db.query(`
       console.log('✅ Đã thêm cột member_id vào bảng chat_logs');
     }
 
+    // Thêm cột creator_id và deadline vào bảng posts
+    const [creatorIdCols] = await db.query("SHOW COLUMNS FROM posts LIKE 'creator_id'");
+    if (!creatorIdCols.length) {
+      await db.query("ALTER TABLE posts ADD COLUMN creator_id INT DEFAULT NULL AFTER member_id");
+      console.log('✅ Đã thêm cột creator_id vào bảng posts');
+    }
+
+    const [deadlineCols] = await db.query("SHOW COLUMNS FROM posts LIKE 'deadline'");
+    if (!deadlineCols.length) {
+      await db.query("ALTER TABLE posts ADD COLUMN deadline VARCHAR(50) DEFAULT NULL AFTER contact_info");
+      console.log('✅ Đã thêm cột deadline vào bảng posts');
+    }
+
     // Thêm cột image_url vào bảng posts để hội viên tự tải ảnh minh họa bài viết
     const [postCols] = await db.query("SHOW COLUMNS FROM posts LIKE 'image_url'");
     if (!postCols.length) {
-      await db.query("ALTER TABLE posts ADD COLUMN image_url VARCHAR(1000) DEFAULT NULL AFTER deadline");
+      await db.query("ALTER TABLE posts ADD COLUMN image_url VARCHAR(1000) DEFAULT NULL");
       console.log('✅ Đã thêm cột image_url vào bảng posts');
     }
 
@@ -1811,7 +1869,7 @@ app.get('/api/posts', async (req, res) => {
       console.warn('Cảnh báo tự động ẩn bài viết quá hạn:', e.message);
     }
 
-    let sql = `SELECT p.*, COALESCE(c.name, m.name, 'Ban Biên tập VTV8.today') AS company_name, COALESCE(m.tier, 'Standard') AS company_tier
+    let sql = `SELECT p.*, COALESCE(c.name, m.name, p.author_name, 'Ban Biên tập VTV8.today') AS company_name, COALESCE(m.tier, 'Standard') AS company_tier
                FROM posts p 
                LEFT JOIN members m ON p.member_id = m.id 
                LEFT JOIN content_creators c ON p.creator_id = c.id
@@ -1826,8 +1884,6 @@ app.get('/api/posts', async (req, res) => {
       } else {
         sql += " AND p.status = 'approved'";
       }
-      sql += " AND (p.deadline IS NULL OR p.deadline = '' OR p.deadline = '0000-00-00' OR p.deadline >= ?)";
-      params.push(todayStr);
     } else {
       // Dành cho Admin / Member / Creator đã đăng nhập
       if (status && status !== 'all') {
@@ -1844,7 +1900,15 @@ app.get('/api/posts', async (req, res) => {
       const searchPattern = `%${search}%`;
       params.push(searchPattern, searchPattern, searchPattern);
     }
-    sql += ' ORDER BY p.created_at DESC';
+    
+    // Sắp xếp: Ưu tiên bài nổi bật trước, sau đó tới bài mới nhất
+    sql += ' ORDER BY p.is_featured DESC, p.created_at DESC';
+
+    const { limit } = req.query;
+    if (limit && Number(limit) > 0) {
+      sql += ' LIMIT ?';
+      params.push(Number(limit));
+    }
 
     const [rows] = await db.query(sql, params);
 
@@ -1856,6 +1920,7 @@ app.get('/api/posts', async (req, res) => {
 
     res.json({ success: true, data: safeRows, total: safeRows.length });
   } catch (err) {
+    console.error('Lỗi tải bài viết GET /api/posts:', err.message);
     res.status(500).json({ success: false, error: err.message });
   }
 });
@@ -3430,11 +3495,81 @@ app.put('/api/admin/sub-categories/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// Admin: Delete subcategory
-app.delete('/api/admin/sub-categories/:id', authMiddleware, async (req, res) => {
+// ════════════════════════════════════════════
+// LEADS / TIẾP NHẬN ĐĂNG KÝ TRANG CHỦ API
+// ════════════════════════════════════════════
+
+// Public: Gửi form đăng ký từ trang chủ
+app.post('/api/leads', async (req, res) => {
+  const { fullName, phone, email, city, memberType, companyName, notes } = req.body;
+  if (!fullName || !phone || !email) {
+    return res.status(400).json({ success: false, error: 'Thiếu thông tin bắt buộc: Họ tên, Số điện thoại hoặc Email.' });
+  }
   try {
-    await db.query('DELETE FROM sub_categories WHERE id = ?', [req.params.id]);
-    res.json({ success: true, message: 'Đã xóa lĩnh vực con.' });
+    const [result] = await db.query(
+      `INSERT INTO leads (full_name, phone, email, city, member_type, company_name, notes, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')`,
+      [fullName, phone, email, city || null, memberType || 'member_personal', companyName || null, notes || null]
+    );
+
+    res.json({
+      success: true,
+      id: result.insertId,
+      message: 'Đăng ký thành công! Đội ngũ phát triển VTV8.today sẽ liên hệ với bạn trong thời gian sớm nhất.'
+    });
+  } catch (err) {
+    console.error('Lỗi lưu lead /api/leads:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Lấy danh sách Leads
+app.get('/api/admin/leads', authMiddleware, async (req, res) => {
+  try {
+    const { status, search } = req.query;
+    let sql = 'SELECT * FROM leads WHERE 1=1';
+    const params = [];
+
+    if (status && status !== 'all') {
+      sql += ' AND status = ?';
+      params.push(status);
+    }
+
+    if (search) {
+      sql += ' AND (full_name LIKE ? OR phone LIKE ? OR email LIKE ? OR company_name LIKE ? OR city LIKE ?)';
+      const searchPattern = `%${search}%`;
+      params.push(searchPattern, searchPattern, searchPattern, searchPattern, searchPattern);
+    }
+
+    sql += ' ORDER BY created_at DESC';
+
+    const [rows] = await db.query(sql, params);
+    res.json({ success: true, data: rows, total: rows.length });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Cập nhật trạng thái và ghi chú cho Lead
+app.put('/api/admin/leads/:id', authMiddleware, async (req, res) => {
+  const { status, admin_notes } = req.body;
+  const leadId = req.params.id;
+  try {
+    await db.query(
+      'UPDATE leads SET status = ?, admin_notes = ? WHERE id = ?',
+      [status || 'pending', admin_notes || null, leadId]
+    );
+    res.json({ success: true, message: 'Cập nhật thông tin liên hệ thành công.' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Xóa Lead
+app.delete('/api/admin/leads/:id', authMiddleware, async (req, res) => {
+  try {
+    await db.query('DELETE FROM leads WHERE id = ?', [req.params.id]);
+    res.json({ success: true, message: 'Đã xóa thông tin liên hệ.' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
