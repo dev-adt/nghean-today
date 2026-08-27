@@ -235,6 +235,23 @@ db.query(`
     `);
     console.log('✅ Bảng member_sessions đã sẵn sàng');
 
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS chat_logs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        session_id VARCHAR(100) NOT NULL,
+        member_id INT DEFAULT NULL,
+        role VARCHAR(20) NOT NULL,
+        content LONGTEXT NOT NULL,
+        provider VARCHAR(50),
+        model VARCHAR(100),
+        tokens_in INT DEFAULT 0,
+        tokens_out INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_session (session_id),
+        INDEX idx_member (member_id)
+      ) ENGINE=InnoDB COMMENT='Lịch sử chat AI'
+    `);
+
     // Thêm cột member_id vào chat_logs để phân tách lịch sử chat theo tài khoản
     const [chatCols] = await db.query("SHOW COLUMNS FROM chat_logs LIKE 'member_id'");
     if (!chatCols.length) {
