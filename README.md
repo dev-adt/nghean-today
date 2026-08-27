@@ -43,32 +43,39 @@ vtv8-today/
 ## 🚀 HƯỚNG DẪN DEPLOY TRÊN AAPANEL VPS (TỪNG BƯỚC CHI TIẾT)
 
 ### Bước 1: Tạo Database MySQL trên aaPanel
-1. Đăng nhập vào bảng điều khiển **aaPanel** của bạn.
-2. Chọn menu **Databases** > Nhấn **Add Database**:
+1. Đăng nhập vào bảng điều khiển **aaPanel** > Chọn menu **Databases** > Nhấn **Add Database**:
    - **DBName**: `vtv8`
    - **Username**: `vtv8`
-   - **Password**: *(Đặt mật khẩu mạnh của bạn và lưu lại để điền vào .env)*
+   - **Password**: *(Đặt mật khẩu của bạn và lưu lại để điền vào .env)*
    - **Character Set**: `utf8mb4`
-3. Sau khi tạo xong, nhấn **Import** bên cạnh database `vtv8` > Upload và Import tệp `schema.sql` (nằm trong thư mục nguồn của dự án) để tạo đầy đủ các bảng dữ liệu.
+2. Bấm **Submit** để tạo database.
 
 ---
 
-### Bước 2: Clone Mã nguồn về VPS (Sử dụng nhánh `deploy`)
+### Bước 2: Clone Mã nguồn về VPS & Import Database
 Mở **Terminal** trên aaPanel (hoặc SSH vào VPS) và chạy các lệnh sau:
 
 ```bash
 # 1. Di chuyển vào thư mục web của aaPanel
 cd /www/wwwroot
 
-# 2. Clone mã nguồn từ branch 'deploy' (nhánh đã được GitHub Actions tự động build sẵn thư mục public)
+# 2. Clone mã nguồn từ branch 'deploy' (đã có sẵn thư mục public và schema.sql)
 git clone -b deploy https://github.com/dev-adt/vtv8-today.git dev.vtv8.today
 
 # 3. Đi vào thư mục dự án
 cd /www/wwwroot/dev.vtv8.today
 
-# 4. Cài đặt các thư viện backend
+# 4. Import cấu trúc bảng vào MySQL bằng lệnh Terminal (nhập mật khẩu DB khi được hỏi):
+mysql -u vtv8 -p vtv8 < schema.sql
+
+# 5. Cài đặt các thư viện backend
 npm install --production
 ```
+
+> **Mẹo**: Nếu dùng tài khoản root MySQL trên aaPanel, bạn cũng có thể chạy:
+> ```bash
+> mysql -u root -p vtv8 < schema.sql
+> ```
 
 ---
 
