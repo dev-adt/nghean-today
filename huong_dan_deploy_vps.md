@@ -1,6 +1,6 @@
 # Hướng Dẫn Triển Khai (Deploy) Lên VPS Lần Đầu
 
-Tài liệu này hướng dẫn chi tiết cách triển khai hệ thống **Đồ Sơn Today** lên Linux VPS của bạn chạy tại cổng **3013** dưới tên miền **doson.today**.
+Tài liệu này hướng dẫn chi tiết cách triển khai hệ thống **VTV8.today** lên Linux VPS của bạn chạy tại cổng **3023** dưới tên miền **dev.vtv8.today**.
 
 ---
 

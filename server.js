@@ -436,73 +436,116 @@ db.query(`
     }
 
     const [catCount] = await db.query('SELECT COUNT(*) as count FROM categories');
-    if (catCount[0].count === 0) {
-      console.log('🌱 Đang khởi tạo dữ liệu Chuyên mục & Lĩnh vực mặc định...');
+    const [hasOldCategories] = await db.query("SELECT COUNT(*) as count FROM categories WHERE name LIKE '%Đồ Sơn%'");
+
+    if (catCount[0].count === 0 || hasOldCategories[0].count > 0) {
+      console.log('🌱 Đang khởi tạo/đồng bộ dữ liệu 8 Chuyên mục & Lĩnh vực VTV8.today...');
+      if (hasOldCategories[0].count > 0) {
+        await db.query('DELETE FROM categories WHERE name LIKE "%Đồ Sơn%"');
+      }
+
       const defaultCategories = [
         {
-          name: 'Khám phá Đồ Sơn', name_en: 'Explore Do Son', order: 1,
+          name: 'Văn hóa – Du lịch', name_en: 'Culture & Tourism', order: 1,
           subs: [
-            { vi: 'Tổng quan Đồ Sơn', en: 'Do Son Overview' },
-            { vi: 'Lịch sử & Di tích', en: 'History & Relics' },
-            { vi: 'Văn hóa & Lễ hội', en: 'Culture & Festivals' }
+            { vi: 'Bản sắc văn hóa vùng miền', en: 'Regional Cultural Identity' },
+            { vi: 'Lễ hội & Tín ngưỡng', en: 'Festivals & Beliefs' },
+            { vi: 'Tour văn hóa trải nghiệm', en: 'Experiential Cultural Tours' },
+            { vi: 'Không gian nghệ thuật', en: 'Art Spaces' }
           ]
         },
         {
-          name: 'Du lịch', name_en: 'Tourism', order: 2,
+          name: 'Di sản – Lịch sử', name_en: 'Heritage & History', order: 2,
           subs: [
-            { vi: 'Điểm đến nổi bật', en: 'Featured Destinations' },
-            { vi: 'Nơi lưu trú & Resort', en: 'Accommodations & Resorts' },
-            { vi: 'Ẩm thực & Hải sản', en: 'Cuisine & Seafood' },
-            { vi: 'Lịch trình gợi ý', en: 'Suggested Itineraries' }
+            { vi: 'Di sản thế giới UNESCO', en: 'UNESCO World Heritage' },
+            { vi: 'Di tích lịch sử - văn hóa', en: 'Historical & Cultural Relics' },
+            { vi: 'Danh nhân & Ký ức thời gian', en: 'Celebrities & Time Memories' },
+            { vi: 'Tuyến du lịch di sản', en: 'Heritage Travel Routes' }
           ]
         },
         {
-          name: 'Doanh nghiệp', name_en: 'Enterprises', order: 3,
+          name: 'Điểm đến nổi bật', name_en: 'Featured Destinations', order: 3,
           subs: [
-            { vi: 'Danh bạ doanh nghiệp', en: 'Business Directory' },
-            { vi: 'Sản phẩm OCOP tiêu biểu', en: 'Featured OCOP Products' },
-            { vi: 'Nhu cầu mua - bán', en: 'Trading Needs' }
+            { vi: 'Miền Trung & Duyên hải', en: 'Central Coast Region' },
+            { vi: 'Đại ngàn Tây Nguyên', en: 'Central Highlands' },
+            { vi: 'Kỳ quan Bắc Bộ', en: 'Northern Wonders' },
+            { vi: 'Sắc màu Phương Nam', en: 'Southern Highlights' },
+            { vi: 'Thiên đường biển đảo', en: 'Island & Marine Paradise' }
           ]
         },
         {
-          name: 'Đầu tư', name_en: 'Investment', order: 4,
+          name: 'Lễ hội và sự kiện', name_en: 'Festivals & Events', order: 4,
           subs: [
-            { vi: 'Dự án & Cơ hội hợp tác', en: 'Projects & Opportunities' },
-            { vi: 'Lĩnh vực tiềm năng', en: 'Potential Sectors' }
+            { vi: 'Lễ hội truyền thống', en: 'Traditional Festivals' },
+            { vi: 'Festival văn hóa nghệ thuật', en: 'Cultural & Art Festivals' },
+            { vi: 'Sự kiện du lịch & Thể thao', en: 'Tourism & Sports Events' },
+            { vi: 'Hội chợ & Triển lãm', en: 'Fairs & Exhibitions' }
           ]
         },
         {
-          name: 'Cộng đồng', name_en: 'Community', order: 5,
+          name: 'Ẩm thực Việt Nam', name_en: 'Vietnamese Cuisine', order: 5,
           subs: [
-            { vi: 'Người Đồ Sơn xa quê', en: 'Do Son Expatriates' },
-            { vi: 'Chuyên gia & Cố vấn', en: 'Experts & Advisors' },
-            { vi: 'CLB Doanh nhân', en: 'Entrepreneurs Club' }
+            { vi: 'Tinh hoa ẩm thực ba miền', en: 'Culinary Quintessence' },
+            { vi: 'Đặc sản địa phương & OCOP', en: 'Local Specialties & OCOP' },
+            { vi: 'Câu chuyện món ngon', en: 'Food Stories' },
+            { vi: 'Địa chỉ ẩm thực tuyển chọn', en: 'Selected Culinary Spots' }
           ]
         },
         {
-          name: 'Tin tức - Sự kiện', name_en: 'News & Events', order: 6,
+          name: 'Con người và làng nghề', name_en: 'People & Craft Villages', order: 6,
           subs: [
-            { vi: 'Tin tức thời sự', en: 'Current News' },
-            { vi: 'Sự kiện & Lễ hội', en: 'Events & Festivals' },
-            { vi: 'Thông cáo & Hoạt động', en: 'Press & Activities' }
+            { vi: 'Nghệ nhân & Người giữ nghề', en: 'Artisans & Heritage Keepers' },
+            { vi: 'Làng nghề truyền thống', en: 'Traditional Craft Villages' },
+            { vi: 'Sản phẩm thủ công mỹ nghệ', en: 'Handicraft Products' },
+            { vi: 'Trải nghiệm làm nghề', en: 'Craft Village Experience' }
+          ]
+        },
+        {
+          name: 'Du lịch bền vững', name_en: 'Sustainable Tourism', order: 7,
+          subs: [
+            { vi: 'Hành trình xanh & Sinh thái', en: 'Eco & Green Travel' },
+            { vi: 'Du lịch cộng đồng & Bản địa', en: 'Community-Based Tourism' },
+            { vi: 'Quy tắc ứng xử điểm đến', en: 'Destination Code of Conduct' }
+          ]
+        },
+        {
+          name: 'Doanh nghiệp & Dịch vụ', name_en: 'Enterprises & Services', order: 8,
+          subs: [
+            { vi: 'Lưu trú & Resort cao cấp', en: 'Accommodations & Luxury Resorts' },
+            { vi: 'Lữ hành & Vận chuyển', en: 'Travel & Transport' },
+            { vi: 'Showroom số doanh nghiệp', en: 'Digital Business Showroom' },
+            { vi: 'Nhu cầu hợp tác & Cung ứng', en: 'Partnership & Supply Needs' }
           ]
         }
       ];
 
       for (const cat of defaultCategories) {
-        const [res] = await db.query(
-          'INSERT INTO categories (name, name_en, order_index, status) VALUES (?, ?, ?, "active")',
-          [cat.name, cat.name_en, cat.order]
-        );
-        const catId = res.insertId;
-        for (let i = 0; i < cat.subs.length; i++) {
-          await db.query(
-            'INSERT INTO sub_categories (category_id, name, name_en, order_index, status) VALUES (?, ?, ?, ?, "active")',
-            [catId, cat.subs[i].vi, cat.subs[i].en, i + 1]
+        const [existing] = await db.query('SELECT id FROM categories WHERE name = ?', [cat.name]);
+        let catId;
+        if (existing.length > 0) {
+          catId = existing[0].id;
+        } else {
+          const [res] = await db.query(
+            'INSERT INTO categories (name, name_en, slug, order_index, status) VALUES (?, ?, ?, ?, "active")',
+            [cat.name, cat.name_en, slugify(cat.name), cat.order]
           );
+          catId = res.insertId;
+        }
+
+        for (let i = 0; i < cat.subs.length; i++) {
+          const [subExisting] = await db.query(
+            'SELECT id FROM sub_categories WHERE category_id = ? AND name = ?',
+            [catId, cat.subs[i].vi]
+          );
+          if (subExisting.length === 0) {
+            await db.query(
+              'INSERT INTO sub_categories (category_id, name, name_en, slug, order_index, status) VALUES (?, ?, ?, ?, ?, "active")',
+              [catId, cat.subs[i].vi, cat.subs[i].en, slugify(cat.subs[i].vi), i + 1]
+            );
+          }
         }
       }
-      console.log('✅ Khởi tạo dữ liệu Chuyên mục & Lĩnh vực mặc định hoàn tất!');
+      console.log('✅ Khởi tạo/đồng bộ 8 Chuyên mục & Lĩnh vực VTV8.today hoàn tất!');
     }
 
     // Tạo thư mục kiến thức
@@ -1015,22 +1058,22 @@ app.post('/api/forgot-password', async (req, res) => {
     // Gửi mail thông báo mật khẩu mới
     if (transporter) {
       const mailOptions = {
-        from: process.env.SMTP_FROM || `"Đồ Sơn" <${process.env.SMTP_USER}>`,
+        from: process.env.SMTP_FROM || `"VTV8.today" <${process.env.SMTP_USER}>`,
         to: email,
         bcc: process.env.SMTP_BCC || undefined,
-        subject: '[Đồ Sơn] Khôi phục mật khẩu tài khoản',
+        subject: '[VTV8.today] Khôi phục mật khẩu tài khoản',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
             <h2 style="color: #1E88E5; border-bottom: 2px solid #1E88E5; padding-bottom: 10px;">Cấp lại mật khẩu thành công!</h2>
             <p>Xin chào <strong>${member.name}</strong>,</p>
-            <p>Chúng tôi nhận được yêu cầu khôi phục mật khẩu của bạn cho tài khoản kết nối doanh nghiệp trên <strong>Đồ Sơn</strong>.</p>
+            <p>Chúng tôi nhận được yêu cầu khôi phục mật khẩu của bạn cho tài khoản kết nối doanh nghiệp trên <strong>VTV8.today</strong>.</p>
             <p>Mật khẩu mới của bạn đã được khởi tạo ngẫu nhiên như sau:</p>
             <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin: 20px 0; text-align: center;">
               <span style="font-family: monospace; font-size: 20px; font-weight: bold; color: #1E88E5; letter-spacing: 2px;">${newPassword}</span>
             </div>
             <p style="color: #d32f2f;"><strong>Khuyến cáo bảo mật:</strong> Vui lòng đăng nhập ngay bằng mật khẩu tạm thời này và truy cập vào Dashboard thành viên để đổi lại mật khẩu cá nhân của bạn.</p>
-            <p>Trân trọng,<br/>Ban Quản Trị Đồ Sơn</p>
-            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống Đồ Sơn. Vui lòng không trả lời thư này.</p>
+            <p>Trân trọng,<br/>Ban Quản Trị VTV8.today</p>
+            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống VTV8.today. Vui lòng không trả lời thư này.</p>
           </div>
         `
       };
@@ -1504,15 +1547,15 @@ app.post('/api/members', async (req, res) => {
     // Gửi email thông báo đăng ký (nếu có nhập email)
     if (transporter && cleanEmail) {
       const mailOptions = {
-        from: process.env.SMTP_FROM || `"Đồ Sơn" <${process.env.SMTP_USER}>`,
+        from: process.env.SMTP_FROM || `"VTV8.today" <${process.env.SMTP_USER}>`,
         to: cleanEmail,
         bcc: process.env.SMTP_BCC || undefined,
-        subject: '[Đồ Sơn] Đăng ký tài khoản thành công',
+        subject: '[VTV8.today] Đăng ký tài khoản thành công',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
-            <h2 style="color: #1E88E5; border-bottom: 2px solid #1E88E5; padding-bottom: 10px;">Gia nhập Đồ Sơn Connection thành công!</h2>
+            <h2 style="color: #1E88E5; border-bottom: 2px solid #1E88E5; padding-bottom: 10px;">Gia nhập Hệ sinh thái VTV8.today thành công!</h2>
             <p>Xin chào <strong>${name}</strong>,</p>
-            <p>Cảm ơn doanh nghiệp của bạn đã đăng ký tài khoản hội viên trên nền tảng kết nối giao thương <strong>Đồ Sơn</strong>.</p>
+            <p>Cảm ơn doanh nghiệp của bạn đã đăng ký tài khoản hội viên trên nền tảng kết nối <strong>VTV8.today</strong>.</p>
             <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin: 15px 0;">
               <h4 style="margin-top: 0; color: #333;">Thông tin đăng ký của bạn:</h4>
               <table style="width: 100%; border-collapse: collapse;">
@@ -1532,7 +1575,7 @@ app.post('/api/members', async (req, res) => {
             </div>
             <p>Hồ sơ đăng ký của bạn hiện đang ở trạng thái <strong>Chờ duyệt (Pending)</strong>. Ban quản trị sẽ nhanh chóng kiểm tra thông tin và phê duyệt tài khoản của bạn trong thời gian sớm nhất.</p>
             <p>Khi hồ sơ được phê duyệt, bạn sẽ nhận được thông báo tiếp theo và có thể đăng nhập để sử dụng đầy đủ các tính năng giao thương và trợ lý AI.</p>
-            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống Đồ Sơn. Vui lòng không trả lời thư này.</p>
+            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống VTV8.today. Vui lòng không trả lời thư này.</p>
           </div>
         `
       };
@@ -1749,7 +1792,7 @@ app.get('/api/posts', async (req, res) => {
       console.warn('Cảnh báo tự động ẩn bài viết quá hạn:', e.message);
     }
 
-    let sql = `SELECT p.*, COALESCE(c.name, m.name, 'Ban Biên tập Đồ Sơn Today') AS company_name, COALESCE(m.tier, 'Standard') AS company_tier
+    let sql = `SELECT p.*, COALESCE(c.name, m.name, 'Ban Biên tập VTV8.today') AS company_name, COALESCE(m.tier, 'Standard') AS company_tier
                FROM posts p 
                LEFT JOIN members m ON p.member_id = m.id 
                LEFT JOIN content_creators c ON p.creator_id = c.id
@@ -3235,12 +3278,144 @@ app.put('/api/admin/events/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// Admin: Xóa sự kiện
-app.delete('/api/admin/events/:id', authMiddleware, async (req, res) => {
+// ════════════════════════════════════════════
+// CATEGORIES & SUB-CATEGORIES API
+// ════════════════════════════════════════════
+
+// Public categories tree with active subcategories
+app.get('/api/categories', async (req, res) => {
   try {
-    const eventId = req.params.id;
-    await db.query('DELETE FROM events WHERE id = ?', [eventId]);
-    res.json({ success: true, message: 'Đã xóa sự kiện thành công.' });
+    const [categories] = await db.query(
+      'SELECT * FROM categories WHERE status = "active" ORDER BY order_index ASC, id ASC'
+    );
+    const [subCategories] = await db.query(
+      'SELECT * FROM sub_categories WHERE status = "active" ORDER BY order_index ASC, id ASC'
+    );
+
+    const data = categories.map(cat => {
+      const subs = subCategories.filter(s => s.category_id === cat.id);
+      return {
+        id: cat.id,
+        name: cat.name,
+        name_en: cat.name_en,
+        slug: cat.slug,
+        order_index: cat.order_index,
+        status: cat.status,
+        subcategories: subs.map(s => s.name),
+        sub_categories: subs
+      };
+    });
+
+    res.json({ success: true, data });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Get all categories with subcategories
+app.get('/api/admin/categories', authMiddleware, async (req, res) => {
+  try {
+    const [categories] = await db.query(
+      'SELECT * FROM categories ORDER BY order_index ASC, id ASC'
+    );
+    const [subCategories] = await db.query(
+      'SELECT * FROM sub_categories ORDER BY order_index ASC, id ASC'
+    );
+
+    const data = categories.map(cat => {
+      const subs = subCategories.filter(s => s.category_id === cat.id);
+      return {
+        ...cat,
+        subcategories: subs.map(s => s.name),
+        sub_categories: subs
+      };
+    });
+
+    res.json({ success: true, data });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Create category
+app.post('/api/admin/categories', authMiddleware, async (req, res) => {
+  const { name, name_en, order_index, status } = req.body;
+  if (!name) return res.status(400).json({ success: false, error: 'Thiếu tên chuyên mục.' });
+  try {
+    const slug = slugify(name);
+    const [result] = await db.query(
+      'INSERT INTO categories (name, name_en, slug, order_index, status) VALUES (?, ?, ?, ?, ?)',
+      [name, name_en || null, slug, order_index || 0, status || 'active']
+    );
+    res.json({ success: true, id: result.insertId, message: 'Thêm chuyên mục thành công.' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Update category
+app.put('/api/admin/categories/:id', authMiddleware, async (req, res) => {
+  const { name, name_en, order_index, status } = req.body;
+  if (!name) return res.status(400).json({ success: false, error: 'Thiếu tên chuyên mục.' });
+  try {
+    const slug = slugify(name);
+    await db.query(
+      'UPDATE categories SET name = ?, name_en = ?, slug = ?, order_index = ?, status = ? WHERE id = ?',
+      [name, name_en || null, slug, order_index || 0, status || 'active', req.params.id]
+    );
+    res.json({ success: true, message: 'Cập nhật chuyên mục thành công.' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Delete category
+app.delete('/api/admin/categories/:id', authMiddleware, async (req, res) => {
+  try {
+    await db.query('DELETE FROM categories WHERE id = ?', [req.params.id]);
+    res.json({ success: true, message: 'Đã xóa chuyên mục.' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Create subcategory
+app.post('/api/admin/sub-categories', authMiddleware, async (req, res) => {
+  const { category_id, name, name_en, order_index, status } = req.body;
+  if (!category_id || !name) return res.status(400).json({ success: false, error: 'Thiếu chuyên mục cha hoặc tên lĩnh vực con.' });
+  try {
+    const slug = slugify(name);
+    const [result] = await db.query(
+      'INSERT INTO sub_categories (category_id, name, name_en, slug, order_index, status) VALUES (?, ?, ?, ?, ?, ?)',
+      [category_id, name, name_en || null, slug, order_index || 0, status || 'active']
+    );
+    res.json({ success: true, id: result.insertId, message: 'Thêm lĩnh vực con thành công.' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Update subcategory
+app.put('/api/admin/sub-categories/:id', authMiddleware, async (req, res) => {
+  const { name, name_en, order_index, status } = req.body;
+  if (!name) return res.status(400).json({ success: false, error: 'Thiếu tên lĩnh vực con.' });
+  try {
+    const slug = slugify(name);
+    await db.query(
+      'UPDATE sub_categories SET name = ?, name_en = ?, slug = ?, order_index = ?, status = ? WHERE id = ?',
+      [name, name_en || null, slug, order_index || 0, status || 'active', req.params.id]
+    );
+    res.json({ success: true, message: 'Cập nhật lĩnh vực con thành công.' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Delete subcategory
+app.delete('/api/admin/sub-categories/:id', authMiddleware, async (req, res) => {
+  try {
+    await db.query('DELETE FROM sub_categories WHERE id = ?', [req.params.id]);
+    res.json({ success: true, message: 'Đã xóa lĩnh vực con.' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

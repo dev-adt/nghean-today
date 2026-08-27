@@ -279,10 +279,10 @@ export default function InteractiveMap() {
       const L = window.L;
       if (!L) return;
 
-      // Default view centered on Đồ Sơn
+      // Default view centered on Vietnam / Central Heritage
       const map = L.map(mapContainerRef.current, {
-        center: [20.695, 106.788],
-        zoom: 13,
+        center: [16.0544, 108.2022],
+        zoom: 7,
         zoomControl: true
       });
       mapInstanceRef.current = map;
@@ -474,7 +474,7 @@ export default function InteractiveMap() {
     // Attach global ask AI handler for popup button
     window.askAiAboutLoc = (encodedName) => {
       const name = decodeURIComponent(encodedName);
-      navigate(`/ai-chat?q=${encodeURIComponent('Cho tôi thông tin chi tiết và kinh nghiệm tham quan ' + name + ' ở Đồ Sơn')}`);
+      navigate(`/ai-chat?q=${encodeURIComponent('Cho tôi thông tin chi tiết và kinh nghiệm tham quan ' + name + ' tại Việt Nam')}`);
     };
 
     // Auto-fit bounds if filtered items exist
@@ -1198,7 +1198,7 @@ export default function InteractiveMap() {
               <div style={{ padding: '14px 14px 10px 14px', borderBottom: '1px solid #e2e8f0', backgroundColor: '#ffffff' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                   <span style={{ fontSize: '12px', fontWeight: '800', color: '#0284c7', textTransform: 'uppercase' }}>
-                    🗺️ BẢN ĐỒ ĐỒ SƠN ({filteredLocations.length})
+                    🗺️ {t('map_badge', 'BẢN ĐỒ ĐIỂM ĐẾN & DI SẢN')} ({filteredLocations.length})
                   </span>
                   <button
                     onClick={() => setSidebarOpen(false)}

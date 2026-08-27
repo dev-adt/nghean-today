@@ -35,22 +35,24 @@ export const Home = () => {
   const [loadingPosts, setLoadingPosts] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchHomeData = async () => {
       try {
         const res = await fetch('/api/posts?limit=6');
         if (res.ok) {
           const data = await res.json();
-          if (data.success && Array.isArray(data.data)) {
+          if (data.success && Array.isArray(data.data) && isMounted) {
             setLatestPosts(data.data);
           }
         }
       } catch (e) {
         console.warn('Could not fetch latest posts:', e);
       } finally {
-        setLoadingPosts(false);
+        if (isMounted) setLoadingPosts(false);
       }
     };
     fetchHomeData();
+    return () => { isMounted = false; };
   }, []);
 
   const handleSearchSubmit = (e) => {
@@ -71,7 +73,7 @@ export const Home = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!formData.fullName || !formData.phone || !formData.email) {
-      alert(currentLang === 'en' ? 'Please fill in all required fields.' : 'Vui lòng điền đầy đủ các trường bắt buộc (*).');
+      alert(currentLang === 'en' ? 'Please fill in all required fields (*).' : 'Vui lòng điền đầy đủ các trường bắt buộc (*).');
       return;
     }
     if (!formData.agreeTerms) {
@@ -98,20 +100,20 @@ export const Home = () => {
       setFormSubmitted(true);
     } catch (err) {
       console.error('Submit form error:', err);
-      setFormSubmitted(true);
+      alert(currentLang === 'en' ? 'An error occurred. Please try again.' : 'Đã có lỗi xảy ra. Vui lòng thử lại sau.');
     } finally {
       setFormLoading(false);
     }
   };
 
-  // 6 Danh mục nội dung chính
+  // 6 Chuyên mục chính
   const CATEGORY_CARDS = [
     {
       id: 'van-hoa-du-lich',
       title: currentLang === 'en' ? 'Culture & Tourism' : 'Văn hóa – Du lịch',
       desc: currentLang === 'en'
-        ? 'Experience rich regional cultural identities tied to native traditions...'
-        : 'Trải nghiệm bản sắc văn hóa phong phú của các vùng miền gắn liền với...',
+        ? 'Experience rich regional cultural identities tied to native traditions, beliefs, and artistic spaces.'
+        : 'Trải nghiệm bản sắc văn hóa phong phú của các vùng miền gắn liền với lễ hội, tín ngưỡng và tour văn hóa.',
       img: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=600&q=80',
       category: 'Văn hóa – Du lịch'
     },
@@ -119,8 +121,8 @@ export const Home = () => {
       id: 'di-san-lich-su',
       title: currentLang === 'en' ? 'Heritage & History' : 'Di sản – Lịch sử',
       desc: currentLang === 'en'
-        ? 'Listen to heroic historical chapters and tangible, intangible heritage...'
-        : 'Lắng nghe những trang sử hào hùng và các di sản văn hóa vật thể, phi vật...',
+        ? 'Listen to heroic historical chapters and explore UNESCO world heritage and cultural relics.'
+        : 'Lắng nghe những trang sử hào hùng và các di sản văn hóa thế giới UNESCO, di tích lịch sử ngàn năm.',
       img: 'https://images.unsplash.com/photo-1583417319070-4a69db38a482?auto=format&fit=crop&w=600&q=80',
       category: 'Di sản – Lịch sử'
     },
@@ -128,8 +130,8 @@ export const Home = () => {
       id: 'diem-den-noi-bat',
       title: currentLang === 'en' ? 'Featured Destinations' : 'Điểm đến nổi bật',
       desc: currentLang === 'en'
-        ? 'From magnificent Central beaches to vast Central Highlands forests...'
-        : 'Từ những bãi biển miền Trung tuyệt đẹp đến núi rừng Tây Nguyên đại...',
+        ? 'From magnificent Central beaches to vast Central Highlands forests and northern wonders.'
+        : 'Từ những bãi biển miền Trung tuyệt đẹp đến núi rừng Tây Nguyên đại ngàn và sắc màu phương Nam.',
       img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
       category: 'Điểm đến nổi bật'
     },
@@ -137,8 +139,8 @@ export const Home = () => {
       id: 'le-hoi-su-kien',
       title: currentLang === 'en' ? 'Festivals & Events' : 'Lễ hội và sự kiện',
       desc: currentLang === 'en'
-        ? 'Constantly updated traditional festive seasons and cultural arts events...'
-        : 'Cập nhật liên tục các mùa lễ hội truyền thống, sự kiện văn hóa nghệ...',
+        ? 'Constantly updated traditional festive seasons, cultural arts festivals, and tourism events.'
+        : 'Cập nhật liên tục các mùa lễ hội truyền thống, festival văn hóa nghệ thuật và sự kiện du lịch lớn.',
       img: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=600&q=80',
       category: 'Lễ hội và sự kiện'
     },
@@ -146,8 +148,8 @@ export const Home = () => {
       id: 'am-thuc-viet-nam',
       title: currentLang === 'en' ? 'Vietnamese Cuisine' : 'Ẩm thực Việt Nam',
       desc: currentLang === 'en'
-        ? 'A rich gastronomic journey through three regions with distinctive specialties...'
-        : 'Hành trình vị giác phong phú qua các món ăn đặc sản ba miền mang...',
+        ? 'A rich gastronomic journey through three regions with distinctive specialties and OCOP delicacies.'
+        : 'Hành trình vị giác phong phú qua các món ăn đặc sản ba miền, sản phẩm OCOP và câu chuyện món ngon.',
       img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
       category: 'Ẩm thực Việt Nam'
     },
@@ -155,8 +157,8 @@ export const Home = () => {
       id: 'con-nguoi-lang-nghe',
       title: currentLang === 'en' ? 'People & Craft Villages' : 'Con người và làng nghề',
       desc: currentLang === 'en'
-        ? 'Honoring dedicated artisans keeping traditional flames alive in craft villages...'
-        : 'Tôn vinh những nghệ nhân tâm huyết giữ lửa truyền thống tại các làng...',
+        ? 'Honoring dedicated artisans keeping traditional flames alive in time-honored craft villages.'
+        : 'Tôn vinh những nghệ nhân tâm huyết giữ lửa truyền thống và trải nghiệm các làng nghề thủ công mỹ nghệ.',
       img: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
       category: 'Con người và làng nghề'
     }
@@ -166,8 +168,8 @@ export const Home = () => {
   const FEATURED_DESTINATIONS = [
     {
       id: 'hoi-an',
-      badge: 'Di sản UNESCO',
-      city: 'Quảng Nam',
+      badge: currentLang === 'en' ? 'UNESCO Heritage' : 'Di sản UNESCO',
+      city: currentLang === 'en' ? 'Quang Nam' : 'Quảng Nam',
       name: currentLang === 'en' ? 'Hoi An Ancient Town' : 'Phố cổ Hội An',
       desc: currentLang === 'en'
         ? 'Where time stands still among mossy roofs, vibrant lanterns, and unique trading heritage.'
@@ -176,18 +178,18 @@ export const Home = () => {
     },
     {
       id: 'da-nang',
-      badge: 'Thành phố đáng sống',
-      city: 'Đà Nẵng',
-      name: currentLang === 'en' ? 'Da Nang City' : 'Thành phố Đà Nẵng',
+      badge: currentLang === 'en' ? 'Liveable City' : 'Thành phố đáng sống',
+      city: currentLang === 'en' ? 'Da Nang' : 'Đà Nẵng',
+      name: currentLang === 'en' ? 'Da Nang Coastal City' : 'Thành phố biển Đà Nẵng',
       desc: currentLang === 'en'
         ? 'Harmonious blend of modern urban space, pristine My Khe beach, and iconic architectural wonders.'
         : 'Hài hòa giữa không gian đô thị hiện đại, bãi biển Mỹ Khê tuyệt mỹ và những công trình kiến trúc biểu tượng.',
-      img: 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=600&q=80'
+      img: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=600&q=80'
     },
     {
       id: 'da-lat',
-      badge: 'Du lịch sinh thái',
-      city: 'Lâm Đồng - Tây Nguyên',
+      badge: currentLang === 'en' ? 'Eco Retreat' : 'Du lịch sinh thái',
+      city: currentLang === 'en' ? 'Lam Dong - Highlands' : 'Lâm Đồng - Tây Nguyên',
       name: currentLang === 'en' ? 'Da Lat Plateau' : 'Cao nguyên Đà Lạt',
       desc: currentLang === 'en'
         ? 'City of thousand flowers nestled in morning mist, offering soothing retreats and authentic highland coffee.'
@@ -200,7 +202,7 @@ export const Home = () => {
   const SUGGESTED_ITINERARIES = [
     {
       id: 'itin-1',
-      tag: '48 Giờ • 5 Điểm đến',
+      tag: currentLang === 'en' ? '48 Hours • 5 Stops' : '48 Giờ • 5 Điểm đến',
       name: currentLang === 'en' ? 'Explore Central Heritage Trail' : 'Khám phá di sản miền Trung',
       desc: currentLang === 'en'
         ? 'Itinerary connecting Hue – Da Nang – Hoi An, immersing into distinctive world heritage spaces.'
@@ -209,7 +211,7 @@ export const Home = () => {
     },
     {
       id: 'itin-2',
-      tag: '3 Ngày 2 Đêm • 4 Điểm đến',
+      tag: currentLang === 'en' ? '3 Days 2 Nights • 4 Stops' : '3 Ngày 2 Đêm • 4 Điểm đến',
       name: currentLang === 'en' ? 'Blue Seas & Local Gastronomy' : 'Biển xanh và ẩm thực địa phương',
       desc: currentLang === 'en'
         ? 'Immerse in turquoise waters and relish the vibrant culinary paradise of the central coast.'
@@ -218,7 +220,7 @@ export const Home = () => {
     },
     {
       id: 'itin-3',
-      tag: '4 Ngày 3 Đêm • 6 Điểm đến',
+      tag: currentLang === 'en' ? '4 Days 3 Nights • 6 Stops' : '4 Ngày 3 Đêm • 6 Điểm đến',
       name: currentLang === 'en' ? 'Central Highlands Cultural Journey' : 'Khám phá văn hóa Tây Nguyên',
       desc: currentLang === 'en'
         ? 'Tune into gong echoes, majestic highland landscapes, and time-honored indigenous culture.'
@@ -230,32 +232,46 @@ export const Home = () => {
   // 5 FAQs
   const FAQS = [
     {
-      q: 'VTV8.today cung cấp những nội dung gì?',
-      a: 'VTV8.today là hệ sinh thái số chuyên sâu về du lịch, văn hóa, di sản và lịch sử Việt Nam (đặc biệt là miền Trung - Tây Nguyên và mở rộng toàn quốc). Nền tảng cung cấp các bài viết chuyên đề, bản đồ số, gợi ý hành trình, cẩm nang trải nghiệm, tin tức sự kiện lễ hội và danh bạ showroom số của các doanh nghiệp du lịch uy tín.'
+      q: currentLang === 'en' ? 'What content does VTV8.today provide?' : 'VTV8.today cung cấp những nội dung gì?',
+      a: currentLang === 'en'
+        ? 'VTV8.today is a dedicated digital ecosystem for Vietnamese tourism, culture, heritage, and history (especially Central & Central Highlands, expanding nationwide). It provides specialized articles, interactive digital maps, curated itineraries, travel guides, event/festival updates, and digital showrooms for verified tourism businesses.'
+        : 'VTV8.today là hệ sinh thái số chuyên sâu về du lịch, văn hóa, di sản và lịch sử Việt Nam (đặc biệt là miền Trung - Tây Nguyên và mở rộng toàn quốc). Nền tảng cung cấp các bài viết chuyên đề, bản đồ số, gợi ý hành trình, cẩm nang trải nghiệm, tin tức sự kiện lễ hội và danh bạ showroom số của các doanh nghiệp du lịch uy tín.'
     },
     {
-      q: 'Ai có thể đăng ký trở thành hội viên?',
-      a: 'Mọi cá nhân du khách, nhà sáng tạo nội dung (KOL/KOC/Tác giả), doanh nghiệp du lịch (khách sạn, nhà hàng, lữ hành, dịch vụ) và các cơ quan quản lý/hiệp hội điểm đến đều có thể đăng ký tham gia hệ sinh thái để nhận các quyền lợi chuyên biệt.'
+      q: currentLang === 'en' ? 'Who can register as a member?' : 'Ai có thể đăng ký trở thành hội viên?',
+      a: currentLang === 'en'
+        ? 'Travelers, content creators (KOL/KOC/Writers), tourism businesses (hotels, resorts, restaurants, tour operators), and destination authorities can all register to unlock tailored digital benefits.'
+        : 'Mọi cá nhân du khách, nhà sáng tạo nội dung (KOL/KOC/Tác giả), doanh nghiệp du lịch (khách sạn, nhà hàng, lữ hành, dịch vụ) và các cơ quan quản lý/hiệp hội điểm đến đều có thể đăng ký tham gia hệ sinh thái để nhận các quyền lợi chuyên biệt.'
     },
     {
-      q: 'Doanh nghiệp đăng ký showroom số như thế nào?',
-      a: 'Doanh nghiệp chỉ cần chọn gói Hội viên Doanh nghiệp tại trang Đăng ký, điền hồ sơ năng lực và sản phẩm. Sau khi được ban biên tập xác thực pháp nhân, doanh nghiệp sẽ sở hữu showroom số đa ngôn ngữ xuất hiện trên bản đồ và hệ thống gợi ý AI của nền tảng.'
+      q: currentLang === 'en' ? 'How do businesses register digital showrooms?' : 'Doanh nghiệp đăng ký showroom số như thế nào?',
+      a: currentLang === 'en'
+        ? 'Businesses choose the Business Member tier on the Registration page and provide company profiles. Once verified, businesses receive a bilingual digital showroom integrated with interactive maps and AI recommendation engines.'
+        : 'Doanh nghiệp chỉ cần chọn gói Hội viên Doanh nghiệp tại trang Đăng ký, điền hồ sơ năng lực và sản phẩm. Sau khi được ban biên tập xác thực pháp nhân, doanh nghiệp sẽ sở hữu showroom số đa ngôn ngữ xuất hiện trên bản đồ và hệ thống gợi ý AI của nền tảng.'
     },
     {
-      q: 'Trợ lý AI sử dụng những nguồn dữ liệu nào?',
-      a: 'Trợ lý AI VTV8.today được huấn luyện và đối chiếu từ nguồn tri thức chuẩn xác về lịch sử, văn hóa, di sản đã được kiểm duyệt của VTV8, kết hợp với dữ liệu thời gian thực từ cơ sở dữ liệu điểm đến, lịch sự kiện và hồ sơ doanh nghiệp đã xác minh.'
+      q: currentLang === 'en' ? 'What knowledge sources power the AI Assistant?' : 'Trợ lý AI sử dụng những nguồn dữ liệu nào?',
+      a: currentLang === 'en'
+        ? 'The VTV8.today AI Assistant is trained and cross-referenced with verified cultural and historical knowledge archives from VTV8, combined with real-time destination databases, event calendars, and authenticated member profiles.'
+        : 'Trợ lý AI VTV8.today được huấn luyện và đối chiếu từ nguồn tri thức chuẩn xác về lịch sử, văn hóa, di sản đã được kiểm duyệt của VTV8, kết hợp với dữ liệu thời gian thực từ cơ sở dữ liệu điểm đến, lịch sự kiện và hồ sơ doanh nghiệp đã xác minh.'
     },
     {
-      q: 'Làm thế nào để đề nghị hợp tác truyền thông?',
-      a: 'Bạn có thể để lại thông tin tại Form Đăng ký hợp tác trên trang chủ hoặc liên hệ trực tiếp với Ban quản trị qua mục Liên hệ để được xây dựng chiến dịch quảng bá điểm đến và sản phẩm phù hợp nhất.'
+      q: currentLang === 'en' ? 'How to submit media and destination collaboration proposals?' : 'Làm thế nào để đề nghị hợp tác truyền thông?',
+      a: currentLang === 'en'
+        ? 'You can submit your inquiries via the Registration form on the homepage or reach out directly to the Editorial Board via the Contact section to co-create tailored destination campaigns.'
+        : 'Bạn có thể để lại thông tin tại Form Đăng ký hợp tác trên trang chủ hoặc liên hệ trực tiếp với Ban quản trị qua mục Liên hệ để được xây dựng chiến dịch quảng bá điểm đến và sản phẩm phù hợp nhất.'
     }
   ];
 
   return (
     <div className="vtv8-homepage-wrapper" style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#0f172a' }}>
       <SEOHead
-        title="VTV8.today — Tôn vinh cội nguồn, kết nối thời đại | Chuyên trang Du lịch, Văn hóa, Di sản"
-        description="Nền tảng số VTV8.today kết nối văn hóa, di sản, lịch sử và du lịch Việt Nam với cộng đồng hội viên, doanh nghiệp và du khách."
+        title={currentLang === 'en' 
+          ? "VTV8.today — Honoring Heritage, Connecting the Era | Tourism, Culture & Heritage Portal"
+          : "VTV8.today — Tôn vinh cội nguồn, kết nối thời đại | Chuyên trang Du lịch, Văn hóa, Di sản"}
+        description={currentLang === 'en'
+          ? "Digital platform VTV8.today connects Vietnamese culture, heritage, history and tourism with businesses, members and global travelers."
+          : "Nền tảng số VTV8.today kết nối văn hóa, di sản, lịch sử và du lịch Việt Nam với cộng đồng hội viên, doanh nghiệp và du khách."}
       />
       <Navbar />
 
@@ -285,7 +301,7 @@ export const Home = () => {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '8px',
-            padding: '4px 14px',
+            padding: '5px 16px',
             borderRadius: '20px',
             backgroundColor: 'rgba(255, 255, 255, 0.08)',
             border: '1px solid rgba(255, 255, 255, 0.15)',
@@ -296,25 +312,40 @@ export const Home = () => {
             textTransform: 'uppercase',
             marginBottom: '1.5rem'
           }}>
-            <span>VTV8.TODAY • HỆ SINH THÁI SỐ DU LỊCH & VĂN HÓA</span>
+            <span>{currentLang === 'en' ? 'VTV8.TODAY • DIGITAL TOURISM & CULTURE ECOSYSTEM' : 'VTV8.TODAY • HỆ SINH THÁI SỐ DU LỊCH & VĂN HÓA'}</span>
           </div>
 
           <h1 style={{
             fontFamily: "'Outfit', 'Plus Jakarta Sans', sans-serif",
-            fontSize: 'clamp(2.5rem, 5.5vw, 4.2rem)',
+            fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
             fontWeight: '900',
             lineHeight: '1.12',
             letterSpacing: '-0.5px',
             marginBottom: '1.5rem'
           }}>
-            TÔN VINH CỘI NGUỒN<br />
-            <span style={{
-              background: 'linear-gradient(135deg, #ffffff 30%, #38bdf8 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              KẾT NỐI THỜI ĐẠI
-            </span>
+            {currentLang === 'en' ? (
+              <>
+                HONORING THE ROOTS<br />
+                <span style={{
+                  background: 'linear-gradient(135deg, #ffffff 30%, #38bdf8 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}>
+                  CONNECTING THE ERA
+                </span>
+              </>
+            ) : (
+              <>
+                TÔN VINH CỘI NGUỒN<br />
+                <span style={{
+                  background: 'linear-gradient(135deg, #ffffff 30%, #38bdf8 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}>
+                  KẾT NỐI THỜI ĐẠI
+                </span>
+              </>
+            )}
           </h1>
 
           <p style={{
@@ -428,7 +459,7 @@ export const Home = () => {
             textTransform: 'uppercase',
             marginBottom: '0.6rem'
           }}>
-            VỀ CHÚNG TÔI
+            {currentLang === 'en' ? 'ABOUT US' : 'VỀ CHÚNG TÔI'}
           </div>
           <h2 style={{
             fontFamily: "'Outfit', sans-serif",
@@ -437,7 +468,7 @@ export const Home = () => {
             color: '#0f172a',
             marginBottom: '1rem'
           }}>
-            Một nền tảng – Hàng triệu câu chuyện Việt Nam
+            {currentLang === 'en' ? 'One Platform – Millions of Vietnamese Stories' : 'Một nền tảng – Hàng triệu câu chuyện Việt Nam'}
           </h2>
           <p style={{
             color: '#475569',
@@ -446,7 +477,9 @@ export const Home = () => {
             margin: '0 auto 3.5rem',
             lineHeight: '1.7'
           }}>
-            VTV8.today được định hướng trở thành hệ sinh thái số chuyên sâu về văn hóa, di sản, lịch sử và du lịch, kết hợp nội dung chất lượng, cộng đồng hội viên, dữ liệu điểm đến và trợ lý AI đa ngôn ngữ.
+            {currentLang === 'en'
+              ? 'VTV8.today is a dedicated digital ecosystem for culture, heritage, history, and tourism, combining quality journalism, community members, rich destination data, and multilingual AI assistance.'
+              : 'VTV8.today được định hướng trở thành hệ sinh thái số chuyên sâu về văn hóa, di sản, lịch sử và du lịch, kết hợp nội dung chất lượng, cộng đồng hội viên, dữ liệu điểm đến và trợ lý AI đa ngôn ngữ.'}
           </p>
 
           <div style={{
@@ -477,10 +510,12 @@ export const Home = () => {
                 <i className="ti ti-book"></i>
               </div>
               <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#0f172a', marginBottom: '0.6rem' }}>
-                Nội dung tin cậy
+                {currentLang === 'en' ? 'Trusted Content' : 'Nội dung tin cậy'}
               </h3>
               <p style={{ fontSize: '13.5px', color: '#64748b', lineHeight: '1.65' }}>
-                Những câu chuyện có chiều sâu về điểm đến, văn hóa, lịch sử và di sản được kiểm chứng kỹ lưỡng từ các chuyên gia.
+                {currentLang === 'en'
+                  ? 'Deeply investigated stories on destinations, culture, and heritage thoroughly verified by field experts.'
+                  : 'Những câu chuyện có chiều sâu về điểm đến, văn hóa, lịch sử và di sản được kiểm chứng kỹ lưỡng từ các chuyên gia.'}
               </p>
             </div>
 
@@ -506,10 +541,12 @@ export const Home = () => {
                 <i className="ti ti-users"></i>
               </div>
               <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#0f172a', marginBottom: '0.6rem' }}>
-                Cộng đồng hội viên
+                {currentLang === 'en' ? 'Member Community' : 'Cộng đồng hội viên'}
               </h3>
               <p style={{ fontSize: '13.5px', color: '#64748b', lineHeight: '1.65' }}>
-                Kết nối du khách, doanh nghiệp, nghệ nhân, địa phương và nhà sáng tạo thành một khối đoàn kết phát triển du lịch bền vững.
+                {currentLang === 'en'
+                  ? 'Connecting travelers, businesses, artisans, local authorities, and creators into a unified tourism ecosystem.'
+                  : 'Kết nối du khách, doanh nghiệp, nghệ nhân, địa phương và nhà sáng tạo thành một khối đoàn kết phát triển du lịch bền vững.'}
               </p>
             </div>
 
@@ -535,10 +572,12 @@ export const Home = () => {
                 <i className="ti ti-map-pin"></i>
               </div>
               <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#0f172a', marginBottom: '0.6rem' }}>
-                Dữ liệu điểm đến
+                {currentLang === 'en' ? 'Destination Database' : 'Dữ liệu điểm đến'}
               </h3>
               <p style={{ fontSize: '13.5px', color: '#64748b', lineHeight: '1.65' }}>
-                Chuẩn hóa thông tin phong phú để người dùng dễ dàng tìm kiếm, tra cứu và lập hành trình khám phá thuận tiện nhất.
+                {currentLang === 'en'
+                  ? 'Standardized comprehensive data enabling users to seamlessly search, discover, and build travel itineraries.'
+                  : 'Chuẩn hóa thông tin phong phú để người dùng dễ dàng tìm kiếm, tra cứu và lập hành trình khám phá thuận tiện nhất.'}
               </p>
             </div>
 
@@ -564,10 +603,12 @@ export const Home = () => {
                 <i className="ti ti-robot"></i>
               </div>
               <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#0f172a', marginBottom: '0.6rem' }}>
-                Trợ lý AI đa ngôn ngữ
+                {currentLang === 'en' ? 'Multilingual AI Assistant' : 'Trợ lý AI đa ngôn ngữ'}
               </h3>
               <p style={{ fontSize: '13.5px', color: '#64748b', lineHeight: '1.65' }}>
-                Tư vấn hành trình thông minh, giải đáp chi tiết thông tin văn hóa lịch sử và kết nối dịch vụ phù hợp theo thời gian thực.
+                {currentLang === 'en'
+                  ? 'Smart itinerary suggestions, real-time cultural & historical insights, and personalized service matching.'
+                  : 'Tư vấn hành trình thông minh, giải đáp chi tiết thông tin văn hóa lịch sử và kết nối dịch vụ phù hợp theo thời gian thực.'}
               </p>
             </div>
           </div>
@@ -585,7 +626,7 @@ export const Home = () => {
             textTransform: 'uppercase',
             marginBottom: '0.6rem'
           }}>
-            DANH MỤC NỘI DUNG
+            {currentLang === 'en' ? 'CONTENT CATEGORIES' : 'DANH MỤC NỘI DUNG'}
           </div>
           <h2 style={{
             fontFamily: "'Outfit', sans-serif",
@@ -594,7 +635,7 @@ export const Home = () => {
             color: '#0f172a',
             marginBottom: '1rem'
           }}>
-            Khám phá chiều sâu của Việt Nam
+            {currentLang === 'en' ? 'Discover the Depth of Vietnam' : 'Khám phá chiều sâu của Việt Nam'}
           </h2>
           <p style={{
             color: '#475569',
@@ -603,7 +644,9 @@ export const Home = () => {
             margin: '0 auto 3.5rem',
             lineHeight: '1.7'
           }}>
-            Khám phá hệ thống chuyên mục đa dạng, phản ánh toàn diện diện mạo văn hóa, kinh tế du lịch và di sản đất nước.
+            {currentLang === 'en'
+              ? 'Explore our comprehensive category system reflecting the multifaceted culture, tourism economy, and heritage of Vietnam.'
+              : 'Khám phá hệ thống chuyên mục đa dạng, phản ánh toàn diện diện mạo văn hóa, kinh tế du lịch và di sản đất nước.'}
           </p>
 
           <div style={{
@@ -627,7 +670,7 @@ export const Home = () => {
                     {cat.desc}
                   </p>
                   <span style={{ fontSize: '12px', fontWeight: '700', color: '#f59e0b', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    <span>Khám phá ngay</span>
+                    <span>{currentLang === 'en' ? 'Explore now' : 'Khám phá ngay'}</span>
                     <i className="ti ti-arrow-narrow-right"></i>
                   </span>
                 </div>
@@ -648,7 +691,7 @@ export const Home = () => {
             textTransform: 'uppercase',
             marginBottom: '0.6rem'
           }}>
-            ĐIỂM ĐẾN TIÊU BIỂU
+            {currentLang === 'en' ? 'FEATURED DESTINATIONS' : 'ĐIỂM ĐẾN TIÊU BIỂU'}
           </div>
           <h2 style={{
             fontFamily: "'Outfit', sans-serif",
@@ -657,7 +700,7 @@ export const Home = () => {
             color: '#0f172a',
             marginBottom: '1rem'
           }}>
-            Điểm đến đang chờ bạn khám phá
+            {currentLang === 'en' ? 'Destinations Awaiting Your Exploration' : 'Điểm đến đang chờ bạn khám phá'}
           </h2>
           <p style={{
             color: '#475569',
@@ -666,7 +709,9 @@ export const Home = () => {
             margin: '0 auto 3.5rem',
             lineHeight: '1.7'
           }}>
-            Những tọa độ du lịch hấp dẫn hàng đầu tại miền Trung - Tây Nguyên và mở rộng trên khắp mọi miền Tổ quốc.
+            {currentLang === 'en'
+              ? 'Top attractive destinations across the Central Coast, Central Highlands, and nationwide.'
+              : 'Những tọa độ du lịch hấp dẫn hàng đầu tại miền Trung - Tây Nguyên và mở rộng trên khắp mọi miền Tổ quốc.'}
           </p>
 
           <div style={{
@@ -716,10 +761,10 @@ export const Home = () => {
                       className="btn-vtv8-red"
                       style={{ flex: 1, padding: '0.65rem 1rem', fontSize: '13px' }}
                     >
-                      <span>Xem hành trình</span>
+                      <span>{currentLang === 'en' ? 'View Itinerary' : 'Xem hành trình'}</span>
                     </Link>
                     <button
-                      onClick={() => alert(`Đã lưu ${dest.name} vào bộ sưu tập hành trình của bạn!`)}
+                      onClick={() => alert(currentLang === 'en' ? `Saved ${dest.name} to your travel collection!` : `Đã lưu ${dest.name} vào bộ sưu tập hành trình của bạn!`)}
                       style={{
                         width: '38px',
                         height: '38px',
@@ -733,7 +778,7 @@ export const Home = () => {
                         justifyContent: 'center',
                         fontSize: '16px'
                       }}
-                      title="Lưu điểm đến"
+                      title={currentLang === 'en' ? "Save destination" : "Lưu điểm đến"}
                     >
                       <i className="ti ti-bookmark"></i>
                     </button>
@@ -756,7 +801,7 @@ export const Home = () => {
             textTransform: 'uppercase',
             marginBottom: '0.6rem'
           }}>
-            GỢI Ý HÀNH TRÌNH
+            {currentLang === 'en' ? 'SUGGESTED ITINERARIES' : 'GỢI Ý HÀNH TRÌNH'}
           </div>
           <h2 style={{
             fontFamily: "'Outfit', sans-serif",
@@ -765,7 +810,7 @@ export const Home = () => {
             color: '#0f172a',
             marginBottom: '1rem'
           }}>
-            Chọn một hành trình – Chạm vào một câu chuyện
+            {currentLang === 'en' ? 'Choose a Journey – Touch a Story' : 'Chọn một hành trình – Chạm vào một câu chuyện'}
           </h2>
           <p style={{
             color: '#475569',
@@ -774,7 +819,9 @@ export const Home = () => {
             margin: '0 auto 3.5rem',
             lineHeight: '1.7'
           }}>
-            Các gói hành trình được thiết kế chuẩn hóa giúp du khách tối ưu thời gian và trải nghiệm trọn vẹn văn hóa bản địa.
+            {currentLang === 'en'
+              ? 'Standardized itinerary packages designed to optimize time and fully immerse into authentic local culture.'
+              : 'Các gói hành trình được thiết kế chuẩn hóa giúp du khách tối ưu thời gian và trải nghiệm trọn vẹn văn hóa bản địa.'}
           </p>
 
           <div style={{
@@ -813,16 +860,16 @@ export const Home = () => {
 
                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                     <Link
-                      to="/posts?category=Điểm đến nổi bật&sub_category=Tuyến du lịch di sản"
+                      to="/posts?category=Điểm đến nổi bật"
                       className="btn-vtv8-red"
                       style={{ flex: 1, padding: '0.65rem 1rem', fontSize: '13px' }}
                     >
-                      <span>Xem chi tiết</span>
+                      <span>{currentLang === 'en' ? 'View Details' : 'Xem chi tiết'}</span>
                     </Link>
                     <button
                       onClick={() => {
                         navigator.clipboard?.writeText(window.location.href);
-                        alert('Đã sao chép liên kết hành trình!');
+                        alert(currentLang === 'en' ? 'Itinerary link copied!' : 'Đã sao chép liên kết hành trình!');
                       }}
                       style={{
                         width: '38px',
@@ -837,7 +884,7 @@ export const Home = () => {
                         justifyContent: 'center',
                         fontSize: '16px'
                       }}
-                      title="Chia sẻ hành trình"
+                      title={currentLang === 'en' ? "Share itinerary" : "Chia sẻ hành trình"}
                     >
                       <i className="ti ti-share"></i>
                     </button>
@@ -864,7 +911,7 @@ export const Home = () => {
             textTransform: 'uppercase',
             marginBottom: '0.6rem'
           }}>
-            CỘNG ĐỒNG & DOANH NGHIỆP
+            {currentLang === 'en' ? 'COMMUNITY & ENTERPRISES' : 'CỘNG ĐỒNG & DOANH NGHIỆP'}
           </div>
           <h2 style={{
             fontFamily: "'Outfit', sans-serif",
@@ -873,7 +920,7 @@ export const Home = () => {
             color: '#ffffff',
             marginBottom: '1rem'
           }}>
-            Gia nhập cộng đồng VTV8.today
+            {currentLang === 'en' ? 'Join the VTV8.today Ecosystem' : 'Gia nhập cộng đồng VTV8.today'}
           </h2>
           <p style={{
             color: '#94a3b8',
@@ -882,7 +929,9 @@ export const Home = () => {
             margin: '0 auto 3.5rem',
             lineHeight: '1.7'
           }}>
-            Mỗi hội viên sở hữu một hồ sơ số, quyền lợi thiết thực và cơ hội đóng góp vào hệ sinh thái du lịch - văn hóa Việt Nam.
+            {currentLang === 'en'
+              ? 'Every member owns a digital profile, tangible benefits, and opportunities to co-create Vietnam’s tourism-culture ecosystem.'
+              : 'Mỗi hội viên sở hữu một hồ sơ số, quyền lợi thiết thực và cơ hội đóng góp vào hệ sinh thái du lịch - văn hóa Việt Nam.'}
           </p>
 
           <div style={{
@@ -896,25 +945,25 @@ export const Home = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.2rem' }}>
                 <i className="ti ti-user" style={{ color: '#f59e0b', fontSize: '24px' }}></i>
                 <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff' }}>
-                  Hội viên cá nhân
+                  {currentLang === 'en' ? 'Individual Members' : 'Hội viên cá nhân'}
                 </h3>
               </div>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px', color: '#cbd5e1', lineHeight: '1.5' }}>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Lưu và quản lý hành trình cá nhân</span>
+                  <span>{currentLang === 'en' ? 'Save & manage personalized itineraries' : 'Lưu và quản lý hành trình cá nhân'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Nhận nội dung chuyên sâu theo sở thích</span>
+                  <span>{currentLang === 'en' ? 'Receive interest-based curated stories' : 'Nhận nội dung chuyên sâu theo sở thích'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Tham gia sự kiện văn hóa độc quyền</span>
+                  <span>{currentLang === 'en' ? 'Join exclusive cultural events' : 'Tham gia sự kiện văn hóa độc quyền'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Nhận ưu đãi đặc quyền từ đối tác</span>
+                  <span>{currentLang === 'en' ? 'Exclusive partner discounts & perks' : 'Nhận ưu đãi đặc quyền từ đối tác'}</span>
                 </li>
               </ul>
             </div>
@@ -923,25 +972,25 @@ export const Home = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.2rem' }}>
                 <i className="ti ti-camera" style={{ color: '#38bdf8', fontSize: '24px' }}></i>
                 <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff' }}>
-                  Nhà sáng tạo
+                  {currentLang === 'en' ? 'Content Creators' : 'Nhà sáng tạo'}
                 </h3>
               </div>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px', color: '#cbd5e1', lineHeight: '1.5' }}>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Xây dựng trang tác giả chuyên nghiệp</span>
+                  <span>{currentLang === 'en' ? 'Build a verified author channel' : 'Xây dựng trang tác giả chuyên nghiệp'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Giới thiệu hình ảnh, video, bài viết</span>
+                  <span>{currentLang === 'en' ? 'Publish photos, videos, travel guides' : 'Giới thiệu hình ảnh, video, bài viết'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Tham gia chiến dịch truyền thông lớn</span>
+                  <span>{currentLang === 'en' ? 'Participate in large media campaigns' : 'Tham gia chiến dịch truyền thông lớn'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Thương mại hóa nội dung theo chính sách</span>
+                  <span>{currentLang === 'en' ? 'Monetize content under platform terms' : 'Thương mại hóa nội dung theo chính sách'}</span>
                 </li>
               </ul>
             </div>
@@ -950,25 +999,25 @@ export const Home = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.2rem' }}>
                 <i className="ti ti-building" style={{ color: '#ec4899', fontSize: '24px' }}></i>
                 <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff' }}>
-                  Doanh nghiệp du lịch
+                  {currentLang === 'en' ? 'Tourism Enterprises' : 'Doanh nghiệp du lịch'}
                 </h3>
               </div>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px', color: '#cbd5e1', lineHeight: '1.5' }}>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Xây dựng showroom số đa ngôn ngữ</span>
+                  <span>{currentLang === 'en' ? 'Build a multilingual digital showroom' : 'Xây dựng showroom số đa ngôn ngữ'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Giới thiệu sản phẩm, dịch vụ, ưu đãi</span>
+                  <span>{currentLang === 'en' ? 'Showcase hospitality services & deals' : 'Giới thiệu sản phẩm, dịch vụ, ưu đãi'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Xuất hiện trực tiếp trên bản đồ điểm đến</span>
+                  <span>{currentLang === 'en' ? 'Directly featured on interactive maps' : 'Xuất hiện trực tiếp trên bản đồ điểm đến'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Tiếp nhận khách hàng tiềm năng chất lượng</span>
+                  <span>{currentLang === 'en' ? 'Acquire qualified prospective travelers' : 'Tiếp nhận khách hàng tiềm năng chất lượng'}</span>
                 </li>
               </ul>
             </div>
@@ -977,25 +1026,25 @@ export const Home = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.2rem' }}>
                 <i className="ti ti-map-2" style={{ color: '#a855f7', fontSize: '24px' }}></i>
                 <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff' }}>
-                  Đối tác địa phương
+                  {currentLang === 'en' ? 'Local Partners' : 'Đối tác địa phương'}
                 </h3>
               </div>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px', color: '#cbd5e1', lineHeight: '1.5' }}>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Xây dựng chuyên trang địa phương riêng</span>
+                  <span>{currentLang === 'en' ? 'Dedicated destination landing portals' : 'Xây dựng chuyên trang địa phương riêng'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Quảng bá điểm đến và sự kiện đặc quyền</span>
+                  <span>{currentLang === 'en' ? 'Promote key festivals & landmarks' : 'Quảng bá điểm đến và sự kiện đặc quyền'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Phát triển cộng đồng doanh nghiệp liên kết</span>
+                  <span>{currentLang === 'en' ? 'Cultivate regional business networks' : 'Phát triển cộng đồng doanh nghiệp liên kết'}</span>
                 </li>
                 <li style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                   <i className="ti ti-check" style={{ color: '#10b981', marginTop: '2px', flexShrink: 0 }}></i>
-                  <span>Theo dõi dữ liệu quan tâm của du khách</span>
+                  <span>{currentLang === 'en' ? 'Monitor visitor interest & engagement' : 'Theo dõi dữ liệu quan tâm của du khách'}</span>
                 </li>
               </ul>
             </div>
@@ -1006,7 +1055,7 @@ export const Home = () => {
             className="btn-vtv8-gold"
             style={{ fontSize: '15px', padding: '0.9rem 2.2rem' }}
           >
-            <span>Đăng ký tham gia ngay</span>
+            <span>{currentLang === 'en' ? 'Register and Join Now' : 'Đăng ký tham gia ngay'}</span>
           </Link>
         </div>
       </section>
@@ -1030,7 +1079,7 @@ export const Home = () => {
               textTransform: 'uppercase',
               marginBottom: '0.6rem'
             }}>
-              CÔNG NGHỆ THÔNG MINH
+              {currentLang === 'en' ? 'SMART TECHNOLOGY' : 'CÔNG NGHỆ THÔNG MINH'}
             </div>
             <h2 style={{
               fontFamily: "'Outfit', sans-serif",
@@ -1040,7 +1089,7 @@ export const Home = () => {
               marginBottom: '1.2rem',
               lineHeight: '1.2'
             }}>
-              Trợ lý AI đồng hành trên mỗi hành trình
+              {currentLang === 'en' ? 'AI Assistant Accompanying Every Journey' : 'Trợ lý AI đồng hành trên mỗi hành trình'}
             </h2>
             <p style={{
               color: '#475569',
@@ -1048,25 +1097,27 @@ export const Home = () => {
               lineHeight: '1.7',
               marginBottom: '2rem'
             }}>
-              Trợ lý AI VTV8.today giúp du khách khám phá điểm đến, tìm hiểu lịch sử – văn hóa, lập lịch trình, tìm sự kiện và kết nối dịch vụ bằng nhiều ngôn ngữ một cách nhanh chóng, chính xác.
+              {currentLang === 'en'
+                ? 'VTV8.today AI Assistant helps travelers explore destinations, understand historical culture, design customized itineraries, and find verified services in multiple languages accurately.'
+                : 'Trợ lý AI VTV8.today giúp du khách khám phá điểm đến, tìm hiểu lịch sử – văn hóa, lập lịch trình, tìm sự kiện và kết nối dịch vụ bằng nhiều ngôn ngữ một cách nhanh chóng, chính xác.'}
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '2.5rem' }}>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', fontSize: '14px', color: '#1e293b', fontWeight: '500' }}>
                 <i className="ti ti-circle-check-filled" style={{ color: '#10b981', fontSize: '18px' }}></i>
-                <span>Gợi ý điểm đến cá nhân hóa theo sở thích riêng</span>
+                <span>{currentLang === 'en' ? 'Personalized destination recommendations' : 'Gợi ý điểm đến cá nhân hóa theo sở thích riêng'}</span>
               </div>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', fontSize: '14px', color: '#1e293b', fontWeight: '500' }}>
                 <i className="ti ti-circle-check-filled" style={{ color: '#10b981', fontSize: '18px' }}></i>
-                <span>Lập hành trình chi tiết theo thời gian và ngân sách</span>
+                <span>{currentLang === 'en' ? 'Detailed schedules matched to time and budget' : 'Lập hành trình chi tiết theo thời gian và ngân sách'}</span>
               </div>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', fontSize: '14px', color: '#1e293b', fontWeight: '500' }}>
                 <i className="ti ti-circle-check-filled" style={{ color: '#10b981', fontSize: '18px' }}></i>
-                <span>Tra cứu lịch sử, văn hóa, di sản trực quan</span>
+                <span>{currentLang === 'en' ? 'Visual lookups for history, culture, and relics' : 'Tra cứu lịch sử, văn hóa, di sản trực quan'}</span>
               </div>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', fontSize: '14px', color: '#1e293b', fontWeight: '500' }}>
                 <i className="ti ti-circle-check-filled" style={{ color: '#10b981', fontSize: '18px' }}></i>
-                <span>Tìm khách sạn, nhà hàng và doanh nghiệp hội viên</span>
+                <span>{currentLang === 'en' ? 'Locate member hotels, restaurants & showrooms' : 'Tìm khách sạn, nhà hàng và doanh nghiệp hội viên'}</span>
               </div>
             </div>
 
@@ -1076,7 +1127,7 @@ export const Home = () => {
               style={{ fontSize: '14.5px', padding: '0.85rem 1.8rem' }}
             >
               <i className="ti ti-sparkles"></i>
-              <span>Trải nghiệm trợ lý AI</span>
+              <span>{currentLang === 'en' ? 'Experience AI Assistant' : 'Trải nghiệm trợ lý AI'}</span>
             </Link>
           </div>
 
@@ -1100,10 +1151,10 @@ export const Home = () => {
               </div>
               <div>
                 <div style={{ color: '#ffffff', fontWeight: '700', fontSize: '13.5px' }}>
-                  Trợ lý du lịch VTV8.today
+                  {currentLang === 'en' ? 'VTV8.today Travel Assistant' : 'Trợ lý du lịch VTV8.today'}
                 </div>
                 <div style={{ color: '#93c5fd', fontSize: '11px' }}>
-                  Sẵn sàng hỗ trợ đa ngôn ngữ 24/7
+                  {currentLang === 'en' ? 'Multilingual Support 24/7' : 'Sẵn sàng hỗ trợ đa ngôn ngữ 24/7'}
                 </div>
               </div>
             </div>
@@ -1119,7 +1170,9 @@ export const Home = () => {
                 fontSize: '13px',
                 lineHeight: '1.5'
               }}>
-                Tôi có 3 ngày khám phá miền Trung. Hãy xây dựng hành trình kết hợp di sản, biển và ẩm thực.
+                {currentLang === 'en'
+                  ? 'I have 3 days to explore Central Vietnam. Please create a schedule combining heritage, beach, and local gastronomy.'
+                  : 'Tôi có 3 ngày khám phá miền Trung. Hãy xây dựng hành trình kết hợp di sản, biển và ẩm thực.'}
               </div>
 
               <div style={{
@@ -1133,7 +1186,11 @@ export const Home = () => {
                 lineHeight: '1.6',
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
               }}>
-                Xin chào! Dựa trên yêu cầu của bạn, tôi đề xuất hành trình 3 ngày 2 đêm: <strong>Đà Nẵng – Hội An – Huế</strong>. Ngày 1 tham quan Ngũ Hành Sơn và phố cổ Hội An; Ngày 2 trải nghiệm bãi biển Mỹ Khê và thưởng thức Mỳ Quảng; Ngày 3 khám phá Đại Nội Huế. Bạn muốn lưu lại hành trình này không?
+                {currentLang === 'en' ? (
+                  <>Hello! Based on your request, I propose a 3-day 2-night itinerary: <strong>Da Nang – Hoi An – Hue</strong>. Day 1: Marble Mountains & Hoi An Ancient Town; Day 2: My Khe Beach & local delicacies; Day 3: Imperial City of Hue. Would you like to save this itinerary?</>
+                ) : (
+                  <>Xin chào! Dựa trên yêu cầu của bạn, tôi đề xuất hành trình 3 ngày 2 đêm: <strong>Đà Nẵng – Hội An – Huế</strong>. Ngày 1 tham quan Ngũ Hành Sơn và phố cổ Hội An; Ngày 2 trải nghiệm bãi biển Mỹ Khê và thưởng thức Mỳ Quảng; Ngày 3 khám phá Đại Nội Huế. Bạn muốn lưu lại hành trình này không?</>
+                )}
               </div>
 
               <div style={{
@@ -1145,7 +1202,7 @@ export const Home = () => {
                 flexWrap: 'wrap'
               }}>
                 <button
-                  onClick={() => navigate('/ai-chat?q=Gợi ý ẩm thực đặc sản Đà Nẵng và Hội An')}
+                  onClick={() => navigate(`/ai-chat?q=${encodeURIComponent(currentLang === 'en' ? 'Specialty food recommendations for Da Nang and Hoi An' : 'Gợi ý ẩm thực đặc sản Đà Nẵng và Hội An')}`)}
                   style={{
                     backgroundColor: 'rgba(255, 255, 255, 0.08)',
                     border: '1px solid rgba(255, 255, 255, 0.15)',
@@ -1156,10 +1213,10 @@ export const Home = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  🍜 Đặc sản Đà Nẵng - Hội An
+                  🍜 {currentLang === 'en' ? 'Da Nang - Hoi An Cuisine' : 'Đặc sản Đà Nẵng - Hội An'}
                 </button>
                 <button
-                  onClick={() => navigate('/ai-chat?q=Lịch trình 2 ngày 1 đêm khám phá Đà Lạt')}
+                  onClick={() => navigate(`/ai-chat?q=${encodeURIComponent(currentLang === 'en' ? '2-day 1-night travel schedule for Da Lat' : 'Lịch trình 2 ngày 1 đêm khám phá Đà Lạt')}`)}
                   style={{
                     backgroundColor: 'rgba(255, 255, 255, 0.08)',
                     border: '1px solid rgba(255, 255, 255, 0.15)',
@@ -1170,7 +1227,7 @@ export const Home = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  🌲 Lịch trình 2N1Đ Đà Lạt
+                  🌲 {currentLang === 'en' ? '2D1N Da Lat Itinerary' : 'Lịch trình 2N1Đ Đà Lạt'}
                 </button>
               </div>
             </div>
@@ -1195,31 +1252,31 @@ export const Home = () => {
         }}>
           <div className="vtv8-stat-item">
             <div className="vtv8-stat-num">150+</div>
-            <div className="vtv8-stat-label">Điểm đến giới thiệu</div>
+            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Featured Destinations' : 'Điểm đến giới thiệu'}</div>
           </div>
           <div className="vtv8-stat-item">
             <div className="vtv8-stat-num">500+</div>
-            <div className="vtv8-stat-label">Câu chuyện văn hóa - di sản</div>
+            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Cultural Stories' : 'Câu chuyện văn hóa - di sản'}</div>
           </div>
           <div className="vtv8-stat-item">
             <div className="vtv8-stat-num">120+</div>
-            <div className="vtv8-stat-label">Doanh nghiệp hội viên</div>
+            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Member Enterprises' : 'Doanh nghiệp hội viên'}</div>
           </div>
           <div className="vtv8-stat-item">
             <div className="vtv8-stat-num">1,200+</div>
-            <div className="vtv8-stat-label">Hành trình được tạo</div>
+            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Itineraries Created' : 'Hành trình được tạo'}</div>
           </div>
           <div className="vtv8-stat-item">
             <div className="vtv8-stat-num">34</div>
-            <div className="vtv8-stat-label">Tỉnh thành tham gia</div>
+            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Provinces Participating' : 'Tỉnh thành tham gia'}</div>
           </div>
           <div className="vtv8-stat-item">
             <div className="vtv8-stat-num">02</div>
-            <div className="vtv8-stat-label">Ngôn ngữ hỗ trợ (VI/EN)</div>
+            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Bilingual Support (VI/EN)' : 'Ngôn ngữ hỗ trợ (VI/EN)'}</div>
           </div>
         </div>
         <div style={{ textAlign: 'center', marginTop: '1.2rem', fontSize: '11px', color: '#64748b' }}>
-          * DỮ LIỆU MINH HỌA TRONG GIAI ĐOẠN PHÁT TRIỂN NỀN TẢNG VTV8.TODAY
+          * {currentLang === 'en' ? 'METRICS IN DEVELOPMENT STAGE OF VTV8.TODAY' : 'DỮ LIỆU MINH HỌA TRONG GIAI ĐOẠN PHÁT TRIỂN NỀN TẢNG VTV8.TODAY'}
         </div>
       </section>
 
@@ -1234,7 +1291,7 @@ export const Home = () => {
             textTransform: 'uppercase',
             marginBottom: '0.6rem'
           }}>
-            THAM GIA HỆ SINH THÁI
+            {currentLang === 'en' ? 'JOIN THE ECOSYSTEM' : 'THAM GIA HỆ SINH THÁI'}
           </div>
           <h2 style={{
             fontFamily: "'Outfit', sans-serif",
@@ -1243,7 +1300,7 @@ export const Home = () => {
             color: '#0f172a',
             marginBottom: '1rem'
           }}>
-            Trở thành một phần của VTV8.today
+            {currentLang === 'en' ? 'Be Part of VTV8.today' : 'Trở thành một phần của VTV8.today'}
           </h2>
           <p style={{
             color: '#475569',
@@ -1251,7 +1308,9 @@ export const Home = () => {
             lineHeight: '1.7',
             marginBottom: '3rem'
           }}>
-            Điền thông tin bên dưới để đăng ký tài khoản hội viên, tạo showroom doanh nghiệp hoặc đề nghị hợp tác truyền thông.
+            {currentLang === 'en'
+              ? 'Submit your details below to register member accounts, setup business showrooms, or propose media collaboration.'
+              : 'Điền thông tin bên dưới để đăng ký tài khoản hội viên, tạo showroom doanh nghiệp hoặc đề nghị hợp tác truyền thông.'}
           </p>
 
           <div style={{
@@ -1268,17 +1327,19 @@ export const Home = () => {
                   <i className="ti ti-check"></i>
                 </div>
                 <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#0f172a', marginBottom: '0.5rem' }}>
-                  Đăng ký thành công!
+                  {currentLang === 'en' ? 'Registration Successful!' : 'Đăng ký thành công!'}
                 </h3>
                 <p style={{ color: '#64748b', fontSize: '14px', lineHeight: '1.6' }}>
-                  Cảm ơn bạn đã tham gia hệ sinh thái VTV8.today. Đội ngũ phát triển sẽ liên hệ với bạn trong thời gian sớm nhất.
+                  {currentLang === 'en'
+                    ? 'Thank you for joining VTV8.today. Our editorial and development team will contact you shortly.'
+                    : 'Cảm ơn bạn đã tham gia hệ sinh thái VTV8.today. Đội ngũ phát triển sẽ liên hệ với bạn trong thời gian sớm nhất.'}
                 </p>
                 <button
                   onClick={() => setFormSubmitted(false)}
                   className="btn-vtv8-red"
                   style={{ marginTop: '1.5rem', fontSize: '13.5px' }}
                 >
-                  Gửi thêm thông tin
+                  {currentLang === 'en' ? 'Submit Another Request' : 'Gửi thêm thông tin'}
                 </button>
               </div>
             ) : (
@@ -1286,28 +1347,28 @@ export const Home = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.2rem', marginBottom: '1.2rem' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#334155', marginBottom: '6px' }}>
-                      Họ và tên *
+                      {currentLang === 'en' ? 'Full Name *' : 'Họ và tên *'}
                     </label>
                     <input
                       type="text"
                       required
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      placeholder="Nhập họ và tên của bạn"
+                      placeholder={currentLang === 'en' ? 'Enter your full name' : 'Nhập họ và tên của bạn'}
                       style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13.5px', outline: 'none' }}
                     />
                   </div>
 
                   <div>
                     <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#334155', marginBottom: '6px' }}>
-                      Số điện thoại *
+                      {currentLang === 'en' ? 'Phone Number *' : 'Số điện thoại *'}
                     </label>
                     <input
                       type="tel"
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="Nhập số điện thoại liên hệ"
+                      placeholder={currentLang === 'en' ? 'Enter contact phone number' : 'Nhập số điện thoại liên hệ'}
                       style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13.5px', outline: 'none' }}
                     />
                   </div>
@@ -1316,27 +1377,27 @@ export const Home = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.2rem', marginBottom: '1.2rem' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#334155', marginBottom: '6px' }}>
-                      Email *
+                      {currentLang === 'en' ? 'Email Address *' : 'Email *'}
                     </label>
                     <input
                       type="email"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="Nhập địa chỉ email"
+                      placeholder={currentLang === 'en' ? 'Enter email address' : 'Nhập địa chỉ email'}
                       style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13.5px', outline: 'none' }}
                     />
                   </div>
 
                   <div>
                     <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#334155', marginBottom: '6px' }}>
-                      Tỉnh / Thành phố
+                      {currentLang === 'en' ? 'Province / City' : 'Tỉnh / Thành phố'}
                     </label>
                     <input
                       type="text"
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      placeholder="Ví dụ: Đà Nẵng, Quảng Nam..."
+                      placeholder={currentLang === 'en' ? 'e.g., Da Nang, Quang Nam...' : 'Ví dụ: Đà Nẵng, Quảng Nam...'}
                       style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13.5px', outline: 'none' }}
                     />
                   </div>
@@ -1345,29 +1406,29 @@ export const Home = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.2rem', marginBottom: '1.2rem' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#334155', marginBottom: '6px' }}>
-                      Loại hội viên muốn đăng ký *
+                      {currentLang === 'en' ? 'Member Category *' : 'Loại hội viên muốn đăng ký *'}
                     </label>
                     <select
                       value={formData.memberType}
                       onChange={(e) => setFormData({ ...formData, memberType: e.target.value })}
                       style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13.5px', outline: 'none', backgroundColor: '#fff' }}
                     >
-                      <option value="member_personal">Hội viên cá nhân / Du khách</option>
-                      <option value="member_creator">Nhà sáng tạo nội dung / Tác giả</option>
-                      <option value="member_biz">Doanh nghiệp du lịch / Lưu trú / Dịch vụ</option>
-                      <option value="member_partner">Đối tác địa phương / Cơ quan / Hiệp hội</option>
+                      <option value="member_personal">{currentLang === 'en' ? 'Individual Member / Traveler' : 'Hội viên cá nhân / Du khách'}</option>
+                      <option value="member_creator">{currentLang === 'en' ? 'Content Creator / Author' : 'Nhà sáng tạo nội dung / Tác giả'}</option>
+                      <option value="member_biz">{currentLang === 'en' ? 'Tourism Enterprise / Hospitality' : 'Doanh nghiệp du lịch / Lưu trú / Dịch vụ'}</option>
+                      <option value="member_partner">{currentLang === 'en' ? 'Destination Authority / Association' : 'Đối tác địa phương / Cơ quan / Hiệp hội'}</option>
                     </select>
                   </div>
 
                   <div>
                     <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#334155', marginBottom: '6px' }}>
-                      Tên doanh nghiệp hoặc đơn vị (Nếu có)
+                      {currentLang === 'en' ? 'Company / Organization Name' : 'Tên doanh nghiệp hoặc đơn vị (Nếu có)'}
                     </label>
                     <input
                       type="text"
                       value={formData.companyName}
                       onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                      placeholder="Tên công ty, khách sạn, nhà hàng..."
+                      placeholder={currentLang === 'en' ? 'Company, Hotel, Resort name...' : 'Tên công ty, khách sạn, nhà hàng...'}
                       style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13.5px', outline: 'none' }}
                     />
                   </div>
@@ -1375,13 +1436,13 @@ export const Home = () => {
 
                 <div style={{ marginBottom: '1.4rem' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#334155', marginBottom: '6px' }}>
-                    Nhu cầu hợp tác / Nội dung cần tư vấn
+                    {currentLang === 'en' ? 'Collaboration Needs / Notes' : 'Nhu cầu hợp tác / Nội dung cần tư vấn'}
                   </label>
                   <textarea
                     rows={3}
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    placeholder="Chia sẻ thêm về nhu cầu kết nối hoặc xây dựng showroom số của bạn..."
+                    placeholder={currentLang === 'en' ? 'Share your connection goals or digital showroom requirements...' : 'Chia sẻ thêm về nhu cầu kết nối hoặc xây dựng showroom số của bạn...'}
                     style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13.5px', outline: 'none', fontFamily: 'inherit' }}
                   />
                 </div>
@@ -1395,7 +1456,7 @@ export const Home = () => {
                     style={{ width: '16px', height: '16px', cursor: 'pointer' }}
                   />
                   <label htmlFor="agreeCheck" style={{ cursor: 'pointer' }}>
-                    Tôi đồng ý với chính sách bảo vệ dữ liệu và điều khoản sử dụng của VTV8.today.
+                    {currentLang === 'en' ? 'I agree with VTV8.today data protection policy and terms of service.' : 'Tôi đồng ý với chính sách bảo vệ dữ liệu và điều khoản sử dụng của VTV8.today.'}
                   </label>
                 </div>
 
@@ -1405,7 +1466,9 @@ export const Home = () => {
                   className="btn-vtv8-red"
                   style={{ width: '100%', padding: '0.9rem', fontSize: '15px' }}
                 >
-                  {formLoading ? 'Đang gửi thông tin...' : 'Đăng ký tham gia ngay'}
+                  {formLoading 
+                    ? (currentLang === 'en' ? 'Submitting...' : 'Đang gửi thông tin...') 
+                    : (currentLang === 'en' ? 'Register and Join Now' : 'Đăng ký tham gia ngay')}
                 </button>
               </form>
             )}
@@ -1424,7 +1487,7 @@ export const Home = () => {
             textTransform: 'uppercase',
             marginBottom: '0.6rem'
           }}>
-            GIẢI ĐÁP THẮC MẮC
+            {currentLang === 'en' ? 'FAQS' : 'GIẢI ĐÁP THẮC MẮC'}
           </div>
           <h2 style={{
             fontFamily: "'Outfit', sans-serif",
@@ -1433,7 +1496,7 @@ export const Home = () => {
             color: '#0f172a',
             marginBottom: '1rem'
           }}>
-            Câu hỏi thường gặp
+            {currentLang === 'en' ? 'Frequently Asked Questions' : 'Câu hỏi thường gặp'}
           </h2>
           <p style={{
             color: '#475569',
@@ -1441,7 +1504,9 @@ export const Home = () => {
             lineHeight: '1.7',
             marginBottom: '3rem'
           }}>
-            Tổng hợp thông tin chi tiết về cơ chế hoạt động, quyền lợi hội viên và định hướng phát triển của VTV8.today.
+            {currentLang === 'en'
+              ? 'Detailed insights on operations, membership advantages, and strategic vision of VTV8.today.'
+              : 'Tổng hợp thông tin chi tiết về cơ chế hoạt động, quyền lợi hội viên và định hướng phát triển của VTV8.today.'}
           </p>
 
           <div style={{ textAlign: 'left' }}>
@@ -1481,7 +1546,7 @@ export const Home = () => {
             marginBottom: '1rem',
             lineHeight: '1.2'
           }}>
-            Mỗi vùng đất đều có một câu chuyện đáng được kể
+            {currentLang === 'en' ? 'Every Land Holds a Story Worth Telling' : 'Mỗi vùng đất đều có một câu chuyện đáng được kể'}
           </h2>
           <p style={{
             color: '#94a3b8',
@@ -1489,7 +1554,9 @@ export const Home = () => {
             lineHeight: '1.7',
             marginBottom: '2.5rem'
           }}>
-            Hãy cùng VTV8.today tôn vinh những giá trị của Việt Nam, kết nối cộng đồng và kiến tạo những hành trình mới.
+            {currentLang === 'en'
+              ? 'Join VTV8.today in honoring Vietnamese heritage, connecting communities, and creating inspirational new journeys.'
+              : 'Hãy cùng VTV8.today tôn vinh những giá trị của Việt Nam, kết nối cộng đồng và kiến tạo những hành trình mới.'}
           </p>
 
           <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -1501,14 +1568,14 @@ export const Home = () => {
               className="btn-vtv8-gold"
               style={{ fontSize: '14.5px', padding: '0.85rem 1.8rem' }}
             >
-              Khám phá ngay
+              {currentLang === 'en' ? 'Explore Now' : 'Khám phá ngay'}
             </button>
             <Link
               to="/register"
               className="btn-vtv8-red"
               style={{ fontSize: '14.5px', padding: '0.85rem 1.8rem' }}
             >
-              Đăng ký hội viên
+              {currentLang === 'en' ? 'Register as Member' : 'Đăng ký hội viên'}
             </Link>
           </div>
         </div>

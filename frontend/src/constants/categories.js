@@ -175,6 +175,8 @@ export const getCategoryLabel = (item, lang = 'vi') => {
   return strName;
 };
 
+export const getSubCategoryLabel = getCategoryLabel;
+
 // Helper lấy danh sách tên tất cả Chuyên mục (Category lớn)
 export const ALL_CATEGORIES = CATEGORIES_DATA.map(c => c.name);
 
