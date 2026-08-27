@@ -423,6 +423,39 @@ db.query(`
       console.warn("⚠️ Cảnh báo cập nhật status bảng posts:", e.message);
     }
 
+    // Đảm bảo bảng events và event_interests có đầy đủ cột
+    try {
+      const [eventsCols] = await db.query("SHOW COLUMNS FROM events LIKE 'capacity'");
+      if (!eventsCols.length) {
+        await db.query("ALTER TABLE events ADD COLUMN capacity INT DEFAULT NULL AFTER organizer");
+        console.log('✅ Đã thêm cột capacity vào bảng events');
+      }
+      const [eventsImgCols] = await db.query("SHOW COLUMNS FROM events LIKE 'image_url'");
+      if (!eventsImgCols.length) {
+        await db.query("ALTER TABLE events ADD COLUMN image_url VARCHAR(500) DEFAULT NULL AFTER capacity");
+        console.log('✅ Đã thêm cột image_url vào bảng events');
+      }
+      const [interestMemberCols] = await db.query("SHOW COLUMNS FROM event_interests LIKE 'member_id'");
+      if (!interestMemberCols.length) {
+        await db.query("ALTER TABLE event_interests ADD COLUMN member_id INT DEFAULT NULL AFTER event_id, ADD INDEX idx_member (member_id)");
+        console.log('✅ Đã thêm cột member_id vào bảng event_interests');
+      }
+
+      // Seed dữ liệu sự kiện mẫu nếu bảng events trống
+      const [existingEvents] = await db.query("SELECT id FROM events LIMIT 1");
+      if (!existingEvents.length) {
+        await db.query(`
+          INSERT INTO events (title, description, event_date, end_date, location, organizer, capacity, status, image_url) VALUES
+          ('Festival Văn hóa & Du lịch Miền Trung 2026', 'Sự kiện quảng bá di sản, biểu diễn nghệ thuật truyền thống và kết nối giao thương du lịch các tỉnh miền Trung.', '2026-09-15 08:30:00', '2026-09-18 21:00:00', 'Công viên Biển Đông, TP. Đà Nẵng', 'Ban Quản trị VTV8.today & Sở Du lịch Đà Nẵng', 500, 'upcoming', 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80'),
+          ('Không gian Văn hóa Cồng chiêng Tây Nguyên 2026', 'Ngày hội giao lưu văn hóa nghệ thuật cồng chiêng, ẩm thực rượu cần và trình diễn nghề dệt thổ cẩm truyền thống.', '2026-10-20 09:00:00', '2026-10-22 18:00:00', 'Quảng trường 10/3, TP. Buôn Ma Thuột, Đắk Lắk', 'Hiệp hội Du lịch Tây Nguyên & VTV8.today', 300, 'upcoming', 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80'),
+          ('Diễn đàn Chuyển đổi số & Du lịch Di sản Thông minh 2026', 'Hội thảo chuyên sâu kết nối các doanh nghiệp lữ hành, khách sạn, nhà cung cấp công nghệ VR/AR và trợ lý AI.', '2026-11-05 13:30:00', '2026-11-05 17:30:00', 'Trung tâm Hội nghị Quốc tế, TP. Huế', 'Trung tâm Bảo tồn Di tích Cố đô Huế & VTV8.today', 200, 'upcoming', 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80')
+        `);
+        console.log('✅ Đã khởi tạo 3 sự kiện mẫu tiêu biểu cho VTV8.today');
+      }
+    } catch (e) {
+      console.warn('Cảnh báo kiểm tra bảng events:', e.message);
+    }
+
     // Thêm cột system_instruction vào bảng ai_config
     const [aiCols] = await db.query("SHOW COLUMNS FROM ai_config LIKE 'system_instruction'");
     if (!aiCols.length) {
@@ -3142,18 +3175,29 @@ Preserve all HTML tags, line breaks, formatting, and markdown if present. Do not
 // EVENTS API
 // ════════════════════════════════════════════
 
+// ════════════════════════════════════════════
+// EVENTS API
+// ════════════════════════════════════════════
+
 // Lấy danh sách sự kiện
 app.get('/api/events', async (req, res) => {
   try {
-    let limit = req.query.limit ? parseInt(req.query.limit, 10) : null;
-    let upcomingOnly = req.query.upcoming === 'true';
+    const { status, search, limit } = req.query;
 
-    // Fallback tự động nếu client gọi không có tham số (do cache JS cũ trên trình duyệt/CDN)
-    const referer = req.headers.referer || '';
-    if (!req.query.limit && (referer.endsWith('/') || referer.endsWith('/index.html') || (!referer.includes('/events') && !referer.includes('/admin')))) {
-      limit = 3;
-      upcomingOnly = true;
-      console.log(`[Events GET Fallback] Detected homepage referer: "${referer}". Enforcing limit=3 and upcoming=true`);
+    let isAdmin = false;
+    let memberId = null;
+    const authHeader = req.headers['authorization'];
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.substring(7);
+      const [adminSess] = await db.query('SELECT id FROM admin_sessions WHERE token = ? AND expires_at > NOW()', [token]);
+      if (adminSess.length) {
+        isAdmin = true;
+      } else {
+        const [memberSess] = await db.query('SELECT member_id FROM member_sessions WHERE token = ? AND expires_at > NOW()', [token]);
+        if (memberSess.length) {
+          memberId = memberSess[0].member_id;
+        }
+      }
     }
 
     // Tự động cập nhật trạng thái sự kiện dựa trên ngày hiện tại
@@ -3174,78 +3218,50 @@ app.get('/api/events', async (req, res) => {
       console.error('Lỗi tự động cập nhật trạng thái sự kiện:', e.message);
     }
 
-    let memberId = null;
-    const authHeader = req.headers['authorization'];
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.substring(7);
-      const [sessions] = await db.query(
-        `SELECT member_id FROM member_sessions WHERE token = ? AND expires_at > NOW()`, 
-        [token]
-      );
-      if (sessions.length) {
-        memberId = sessions[0].member_id;
-      }
-    }
-
-    let sql = '';
-    let params = [];
-    let whereClause = '';
-
-    if (upcomingOnly) {
-      // Khi lọc trang chủ: Chỉ lấy các sự kiện chưa kết thúc/chưa hủy
-      whereClause = ` WHERE e.status IN ('upcoming', 'ongoing') `;
-    }
-
-    console.log(`[Events GET] Limit: ${limit}, Upcoming: ${upcomingOnly}, Member ID: ${memberId}`);
-
+    let sql = `
+      SELECT e.*, 
+             COALESCE((SELECT COUNT(*) FROM event_interests WHERE event_id = e.id), 0) AS interest_count,
+             ${memberId ? `(SELECT COUNT(*) FROM event_interests WHERE event_id = e.id AND member_id = ?) > 0` : '0'} AS is_interested
+      FROM events e
+      WHERE 1=1
+    `;
+    const params = [];
     if (memberId) {
-      // Đã đăng nhập -> Lấy đầy đủ thông tin sự kiện và trạng thái quan tâm
-      sql = `
-        SELECT e.*, 
-               (SELECT COUNT(*) FROM event_interests WHERE event_id = e.id) AS interest_count,
-               (SELECT COUNT(*) FROM event_interests WHERE event_id = e.id AND member_id = ?) > 0 AS is_interested
-        FROM events e
-        ${whereClause}
-        ORDER BY 
-          CASE status
-            WHEN 'ongoing' THEN 1
-            WHEN 'upcoming' THEN 2
-            WHEN 'completed' THEN 3
-            WHEN 'cancelled' THEN 4
-            ELSE 5
-          END ASC,
-          e.event_date ASC
-      `;
       params.push(memberId);
-    } else {
-      // Khách vãng lai -> Chỉ trả về thông tin hạn chế (mô tả, địa điểm bị ẩn/mã hóa)
-      sql = `
-        SELECT e.id, e.title, e.event_date, e.organizer, e.status, e.created_at, e.capacity,
-               (SELECT COUNT(*) FROM event_interests WHERE event_id = e.id) AS interest_count,
-               0 AS is_interested
-        FROM events e
-        ${whereClause}
-        ORDER BY 
-          CASE status
-            WHEN 'ongoing' THEN 1
-            WHEN 'upcoming' THEN 2
-            WHEN 'completed' THEN 3
-            WHEN 'cancelled' THEN 4
-            ELSE 5
-          END ASC,
-          e.event_date ASC
-      `;
     }
 
-    if (limit) {
-      sql += ` LIMIT ? `;
-      params.push(limit);
+    if (status && status !== 'all') {
+      sql += ' AND e.status = ?';
+      params.push(status);
+    }
+
+    if (search) {
+      sql += ' AND (e.title LIKE ? OR e.organizer LIKE ? OR e.location LIKE ? OR e.description LIKE ?)';
+      const searchPattern = `%${search}%`;
+      params.push(searchPattern, searchPattern, searchPattern, searchPattern);
+    }
+
+    sql += `
+      ORDER BY 
+        CASE e.status
+          WHEN 'ongoing' THEN 1
+          WHEN 'upcoming' THEN 2
+          WHEN 'completed' THEN 3
+          WHEN 'cancelled' THEN 4
+          ELSE 5
+        END ASC,
+        e.event_date ASC
+    `;
+
+    if (limit && Number(limit) > 0) {
+      sql += ' LIMIT ?';
+      params.push(Number(limit));
     }
 
     const [rows] = await db.query(sql, params);
-    console.log('[Events GET Result]:', rows.map(r => ({ id: r.id, title: r.title, interest_count: r.interest_count, is_interested: r.is_interested })));
     res.json({ success: true, data: rows });
   } catch (err) {
+    console.error('Lỗi GET /api/events:', err.message);
     res.status(500).json({ success: false, error: err.message });
   }
 });
@@ -3267,8 +3283,6 @@ app.post('/api/events/:id/interest', memberAuthMiddleware, async (req, res) => {
     const eventId = req.params.id;
     const memberId = req.member.id;
 
-    console.log(`[Interest Toggle] Request eventId: ${eventId}, memberId: ${memberId}`);
-
     // Kiểm tra sự kiện
     const [events] = await db.query('SELECT id FROM events WHERE id = ?', [eventId]);
     if (!events.length) {
@@ -3276,15 +3290,18 @@ app.post('/api/events/:id/interest', memberAuthMiddleware, async (req, res) => {
     }
 
     const [existing] = await db.query('SELECT id FROM event_interests WHERE event_id = ? AND member_id = ?', [eventId, memberId]);
-    console.log(`[Interest Toggle] Current existing matching rows: ${existing.length}`);
 
     if (existing.length) {
       await db.query('DELETE FROM event_interests WHERE event_id = ? AND member_id = ?', [eventId, memberId]);
-      console.log(`[Interest Toggle] Deleted interest record`);
       res.json({ success: true, is_interested: false, message: 'Đã hủy quan tâm sự kiện.' });
     } else {
-      await db.query('INSERT INTO event_interests (event_id, member_id) VALUES (?, ?)', [eventId, memberId]);
-      console.log(`[Interest Toggle] Inserted new interest record`);
+      await db.query('INSERT INTO event_interests (event_id, member_id, name, phone, email) VALUES (?, ?, ?, ?, ?)', [
+        eventId, 
+        memberId, 
+        req.member.name || 'Hội viên', 
+        req.member.phone || '', 
+        req.member.email || ''
+      ]);
       res.json({ success: true, is_interested: true, message: 'Đã đăng ký quan tâm sự kiện.' });
     }
   } catch (err) {
@@ -3295,15 +3312,15 @@ app.post('/api/events/:id/interest', memberAuthMiddleware, async (req, res) => {
 
 // Admin: Thêm sự kiện
 app.post('/api/admin/events', authMiddleware, async (req, res) => {
-  const { title, description, event_date, location, organizer, capacity, status } = req.body;
+  const { title, description, event_date, location, organizer, capacity, status, image_url } = req.body;
   if (!title || !event_date) {
     return res.status(400).json({ success: false, error: 'Thiếu tiêu đề hoặc ngày tổ chức.' });
   }
   try {
     const [result] = await db.query(
-      `INSERT INTO events (title, description, event_date, location, organizer, capacity, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [title, description || null, event_date, location || null, organizer || null, capacity || null, status || 'upcoming']
+      `INSERT INTO events (title, description, event_date, location, organizer, capacity, status, image_url)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [title, description || null, event_date, location || null, organizer || null, capacity || null, status || 'upcoming', image_url || null]
     );
     res.json({ success: true, id: result.insertId, message: 'Thêm sự kiện thành công.' });
   } catch (err) {
@@ -3313,18 +3330,28 @@ app.post('/api/admin/events', authMiddleware, async (req, res) => {
 
 // Admin: Sửa sự kiện
 app.put('/api/admin/events/:id', authMiddleware, async (req, res) => {
-  const { title, description, event_date, location, organizer, capacity, status } = req.body;
+  const { title, description, event_date, location, organizer, capacity, status, image_url } = req.body;
   if (!title || !event_date) {
     return res.status(400).json({ success: false, error: 'Thiếu tiêu đề hoặc ngày tổ chức.' });
   }
   try {
     const eventId = req.params.id;
     await db.query(
-      `UPDATE events SET title = ?, description = ?, event_date = ?, location = ?, organizer = ?, capacity = ?, status = ?
+      `UPDATE events SET title = ?, description = ?, event_date = ?, location = ?, organizer = ?, capacity = ?, status = ?, image_url = ?
        WHERE id = ?`,
-      [title, description || null, event_date, location || null, organizer || null, capacity || null, status || 'upcoming', eventId]
+      [title, description || null, event_date, location || null, organizer || null, capacity || null, status || 'upcoming', image_url || null, eventId]
     );
     res.json({ success: true, message: 'Cập nhật sự kiện thành công.' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Xóa sự kiện
+app.delete('/api/admin/events/:id', authMiddleware, async (req, res) => {
+  try {
+    await db.query('DELETE FROM events WHERE id = ?', [req.params.id]);
+    res.json({ success: true, message: 'Đã xóa sự kiện thành công.' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

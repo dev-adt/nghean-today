@@ -34,21 +34,38 @@ export const Home = () => {
   const [latestPosts, setLatestPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
 
+  // Dynamic Live Events (up to 3 upcoming/featured events)
+  const [eventsList, setEventsList] = useState([]);
+  const [loadingEvents, setLoadingEvents] = useState(true);
+
   useEffect(() => {
     let isMounted = true;
     const fetchHomeData = async () => {
       try {
-        const res = await fetch('/api/posts?limit=9');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && Array.isArray(data.data) && isMounted) {
-            setLatestPosts(data.data);
+        // 1. Fetch posts
+        const resPosts = await fetch('/api/posts?limit=9');
+        if (resPosts.ok) {
+          const dataPosts = await resPosts.json();
+          if (dataPosts.success && Array.isArray(dataPosts.data) && isMounted) {
+            setLatestPosts(dataPosts.data);
+          }
+        }
+
+        // 2. Fetch events
+        const resEvents = await fetch('/api/events?limit=3');
+        if (resEvents.ok) {
+          const dataEvents = await resEvents.json();
+          if (dataEvents.success && Array.isArray(dataEvents.data) && isMounted) {
+            setEventsList(dataEvents.data);
           }
         }
       } catch (e) {
-        console.warn('Could not fetch latest posts:', e);
+        console.warn('Could not fetch homepage data:', e);
       } finally {
-        if (isMounted) setLoadingPosts(false);
+        if (isMounted) {
+          setLoadingPosts(false);
+          setLoadingEvents(false);
+        }
       }
     };
     fetchHomeData();
@@ -975,6 +992,193 @@ export const Home = () => {
           >
             <i className="ti ti-layout-grid"></i>
             <span>{currentLang === 'en' ? 'View All Articles' : 'Xem toàn bộ bài viết'}</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* 5.5 BLOCK SỰ KIỆN & LỄ HỘI NỔI BẬT */}
+      <section id="su-kien-le-hoi" style={{ padding: '5.5rem 1.5rem', backgroundColor: '#fcfbfa', borderTop: '1px solid #f1f5f9' }}>
+        <div style={{ maxWidth: '1240px', margin: '0 auto', textAlign: 'center' }}>
+          <div style={{
+            fontSize: '12px',
+            fontWeight: '800',
+            letterSpacing: '1.5px',
+            color: '#0284c7',
+            textTransform: 'uppercase',
+            marginBottom: '0.6rem'
+          }}>
+            {currentLang === 'en' ? 'FEATURED EVENTS & FESTIVALS' : 'SỰ KIỆN & LỄ HỘI NỔI BẬT'}
+          </div>
+          <h2 style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: 'clamp(1.8rem, 3.2vw, 2.5rem)',
+            fontWeight: '800',
+            color: '#0f172a',
+            marginBottom: '1rem'
+          }}>
+            {currentLang === 'en' ? 'Events & Cultural Festivals Calendar' : 'Lịch trình Sự kiện & Lễ hội Văn hóa'}
+          </h2>
+          <p style={{
+            color: '#475569',
+            fontSize: '15px',
+            maxWidth: '780px',
+            margin: '0 auto 3.5rem',
+            lineHeight: '1.7'
+          }}>
+            {currentLang === 'en'
+              ? 'Immerse into distinctive festive traditions, investment promotion symposiums, and vibrant tourism activities across Vietnam.'
+              : 'Không gian kết nối giao lưu văn hóa, xúc tiến du lịch và hội thảo đầu tư tiêu biểu tại các địa phương.'}
+          </p>
+
+          {loadingEvents ? (
+            <div style={{ padding: '3rem', color: '#64748b' }}>
+              <i className="ti ti-loader-2 animate-spin" style={{ fontSize: '28px', marginRight: '8px' }}></i>
+              <span>{currentLang === 'en' ? 'Loading events calendar...' : 'Đang tải lịch sự kiện...'}</span>
+            </div>
+          ) : eventsList.length === 0 ? (
+            <div style={{ padding: '3rem', backgroundColor: '#ffffff', borderRadius: '12px', color: '#64748b', border: '1px solid #e2e8f0' }}>
+              <i className="ti ti-calendar" style={{ fontSize: '36px', marginBottom: '8px', display: 'block', color: '#cbd5e1' }}></i>
+              <span>{currentLang === 'en' ? 'No upcoming events scheduled.' : 'Chưa có sự kiện nào sắp diễn ra.'}</span>
+            </div>
+          ) : (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+              gap: '2rem',
+              textAlign: 'left',
+              marginBottom: '3.5rem'
+            }}>
+              {eventsList.map((event) => (
+                <div
+                  key={event.id}
+                  className="vtv8-dest-card"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => navigate('/events')}
+                >
+                  <div className="img-wrap" style={{ height: '190px' }}>
+                    <img 
+                      src={event.image_url || 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=600&q=80'} 
+                      alt={event.title} 
+                    />
+                    
+                    {/* Status Badge */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '12px',
+                      left: '12px',
+                      backgroundColor: event.status === 'ongoing' ? '#10b981' : '#f59e0b',
+                      color: '#ffffff',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                    }}>
+                      {event.status === 'ongoing' 
+                        ? (currentLang === 'en' ? '● Ongoing' : '● Đang diễn ra') 
+                        : (currentLang === 'en' ? '⏳ Upcoming' : '⏳ Sắp diễn ra')}
+                    </div>
+
+                    {/* Interest Count Badge */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '12px',
+                      right: '12px',
+                      backgroundColor: 'rgba(15, 23, 42, 0.85)',
+                      backdropFilter: 'blur(8px)',
+                      color: '#ffffff',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      border: '1px solid rgba(255, 255, 255, 0.2)'
+                    }}>
+                      <i className="ti ti-star-filled" style={{ color: '#f59e0b', fontSize: '11px' }}></i>
+                      <span>{event.interest_count || 0} {currentLang === 'en' ? 'interested' : 'quan tâm'}</span>
+                    </div>
+                  </div>
+
+                  <div style={{ padding: '1.4rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    {/* Date */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#0284c7', fontSize: '12px', fontWeight: '700', marginBottom: '0.4rem' }}>
+                      <i className="ti ti-calendar-event"></i>
+                      <span>{event.event_date ? new Date(event.event_date).toLocaleDateString('vi-VN') : 'Sắp công bố'}</span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 style={{
+                      fontSize: '16.5px',
+                      fontWeight: '800',
+                      color: '#0f172a',
+                      marginBottom: '0.6rem',
+                      lineHeight: '1.4',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      height: '46px'
+                    }}>
+                      {event.title}
+                    </h3>
+
+                    {/* Location */}
+                    {event.location && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#dc2626', fontSize: '12px', fontWeight: '600', marginBottom: '0.6rem' }}>
+                        <i className="ti ti-map-pin"></i>
+                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{event.location}</span>
+                      </div>
+                    )}
+
+                    {/* Description */}
+                    <p style={{
+                      fontSize: '13px',
+                      color: '#64748b',
+                      lineHeight: '1.6',
+                      flex: 1,
+                      marginBottom: '1.2rem',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      height: '42px'
+                    }}>
+                      {event.description || 'Sự kiện văn hóa du lịch tiêu biểu do VTV8.today đồng hành tổ chức...'}
+                    </p>
+
+                    {/* Bottom Organizer & CTA */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      borderTop: '1px solid #f1f5f9',
+                      paddingTop: '0.8rem',
+                      marginTop: 'auto'
+                    }}>
+                      <span style={{ fontSize: '11.5px', color: '#64748b', fontWeight: '500', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        🏛️ {event.organizer || 'VTV8.today'}
+                      </span>
+                      <span style={{ fontSize: '12px', fontWeight: '700', color: '#0284c7', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                        <span>{currentLang === 'en' ? 'Details' : 'Xem chi tiết'}</span>
+                        <i className="ti ti-arrow-right"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* View All Events Button */}
+          <Link
+            to="/events"
+            className="btn-vtv8-gold"
+            style={{ fontSize: '14.5px', padding: '0.9rem 2.4rem' }}
+          >
+            <i className="ti ti-calendar"></i>
+            <span>{currentLang === 'en' ? 'View All Events' : 'Xem toàn bộ lịch sự kiện'}</span>
           </Link>
         </div>
       </section>

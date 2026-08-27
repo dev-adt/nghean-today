@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS events (
   end_date      DATETIME,
   location      VARCHAR(255),
   organizer     VARCHAR(100),
+  capacity      INT          DEFAULT NULL,
   image_url     VARCHAR(500),
   status        ENUM('upcoming','ongoing','completed','cancelled') DEFAULT 'upcoming',
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -81,12 +82,14 @@ CREATE TABLE IF NOT EXISTS events (
 CREATE TABLE IF NOT EXISTS event_interests (
   id            INT AUTO_INCREMENT PRIMARY KEY,
   event_id      INT NOT NULL,
+  member_id     INT DEFAULT NULL,
   name          VARCHAR(100) NOT NULL,
   phone         VARCHAR(20)  NOT NULL,
   email         VARCHAR(255),
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
-  INDEX idx_event (event_id)
+  INDEX idx_event (event_id),
+  INDEX idx_member (member_id)
 ) ENGINE=InnoDB COMMENT='Đăng ký quan tâm sự kiện';
 
 -- ── Bảng quản trị viên & tài khoản hệ thống ───────────────────
