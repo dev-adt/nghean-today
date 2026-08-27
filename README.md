@@ -1,145 +1,210 @@
-﻿# BizHub AI — Hệ thống Kết nối Doanh nghiệp & Trợ lý AI
+# VTV8.today — Hệ sinh thái số Du lịch, Văn hóa & Di sản Việt Nam
 
-BizHub Đồ Sơn là nền tảng kết nối giao thương B2B số hóa, chia sẻ cơ hội hợp tác đầu tư và tích hợp Trợ lý AI nghiệp vụ thông minh 24/7. Dự án hỗ trợ phân hạng thành viên (Silver, Gold, Platinum) linh hoạt và đa ngôn ngữ tự động (Tiếng Việt, Tiếng Anh, Tiếng Trung, Tiếng Nhật).
-
-Dưới đây là tài liệu chi tiết giúp bạn cài đặt, phát triển và sao chép (clone) dự án này một cách nhanh chóng nhất.
+Nền tảng số **VTV8.today** quảng bá du lịch, văn hóa, di sản và lịch sử Việt Nam; kết nối điểm đến, doanh nghiệp, cộng đồng hội viên và du khách trong nước, quốc tế cùng Trợ lý AI đa ngôn ngữ 24/7.
 
 ---
 
-## 🛠️ Yêu cầu Hệ thống
-- **Hệ điều hành**: Ubuntu 20.04+ (hoặc Windows Server/Debian)
-- **Node.js**: Phiên bản `>= 18`
-- **Database**: MySQL `>= 5.7`
-- **Quản lý quy trình**: PM2
-- **Web Server**: Nginx
+## 📋 Thông số Cấu hình Mặc định (Production / Staging)
+
+- **Domain**: `dev.vtv8.today`
+- **Backend Node.js Port**: `3023`
+- **Database Engine**: MySQL 5.7+ / MariaDB 10.x
+- **Database Name**: `vtv8`
+- **Database Username**: `vtv8`
+- **Quản lý tiến trình**: PM2 (`vtv8-today`)
+- **Web Server / Reverse Proxy**: Nginx (aaPanel)
+- **CI/CD Workflow**: GitHub Actions tự động build sang branch `deploy`
 
 ---
 
-## 📁 Cấu trúc Thư mục Dự án
+## 📁 Cấu trúc Thư mục
 
 ```text
-bizhub-complete/
-├── server.js               # Express Backend API, xử lý Database & AI Proxy chính
-├── schema.sql              # Cấu trúc bảng MySQL của toàn bộ hệ thống
-├── .env.example            # Bản mẫu cấu hình biến môi trường
-├── .env                    # Biến môi trường thực tế (Bị ignore, không commit lên git)
-├── .gitignore              # Danh sách các tệp tin được Git bỏ qua
-├── ecosystem.config.js     # Cấu hình khởi chạy và quản lý bằng PM2
-├── nginx.conf              # Cấu hình reverse proxy mẫu cho Nginx
-├── package.json            # Cấu hình dependencies của Backend
+vtv8-today/
+├── .github/workflows/deploy.yml # Workflow tự động build frontend & push sang branch deploy
+├── server.js                    # Express Backend API, xác thực, proxy AI & phục vụ SPA
+├── schema.sql                   # Cấu trúc CSDL MySQL đầy đủ cho hệ thống VTV8
+├── .env.example                 # Bản mẫu biến môi trường (port 3023, db vtv8)
+├── ecosystem.config.js          # Cấu hình khởi chạy PM2 (app name: vtv8-today, port: 3023)
+├── nginx.conf                   # Cấu hình Nginx reverse proxy mẫu chống dính cache cho aaPanel
+├── package.json                 # Dependencies cho Node.js Backend
 │
-├── frontend/               # Mã nguồn ứng dụng Client (React Single Page App)
-│   ├── src/                # Toàn bộ components, pages và contexts của React
-│   ├── public/             # Tài nguyên tĩnh của React (Icon, Ảnh chụp màn hình Guide)
-│   ├── vite.config.js      # Cấu hình trình biên dịch Vite
-│   └── package.json        # Dependencies của React Frontend
+├── frontend/                    # Mã nguồn React Frontend (Vite + React 18/Router 7)
+│   ├── src/                     # Toàn bộ Components, Pages, Contexts của VTV8.today
+│   ├── index.html               # Trang HTML gốc tích hợp meta anti-cache
+│   ├── vite.config.js           # Cấu hình Vite xuất bundle sang ../public
+│   └── package.json             # Dependencies cho Frontend
 │
-├── public/                 # Thư mục đích nhận bundle biên dịch của React (Vite build)
-│                           # Thư mục này được server.js phục vụ tĩnh trực tiếp.
-└── img_guide/              # Thư mục chứa ảnh chụp màn hình cục bộ của trang Hướng dẫn
+└── public/                      # Thư mục chứa bundle tĩnh đã biên dịch (index.html, JS/CSS hash)
 ```
 
 ---
 
-## 🚀 Quy trình Triển khai & Cài đặt (Deploy)
+## 🚀 HƯỚNG DẪN DEPLOY TRÊN AAPANEL VPS (TỪNG BƯỚC CHI TIẾT)
 
-### Bước 1: Clone mã nguồn từ GitHub
+### Bước 1: Tạo Database MySQL trên aaPanel
+1. Đăng nhập vào bảng điều khiển **aaPanel** của bạn.
+2. Chọn menu **Databases** > Nhấn **Add Database**:
+   - **DBName**: `vtv8`
+   - **Username**: `vtv8`
+   - **Password**: *(Đặt mật khẩu mạnh của bạn và lưu lại để điền vào .env)*
+   - **Character Set**: `utf8mb4`
+3. Sau khi tạo xong, nhấn **Import** bên cạnh database `vtv8` > Upload và Import tệp `schema.sql` (nằm trong thư mục nguồn của dự án) để tạo đầy đủ các bảng dữ liệu.
+
+---
+
+### Bước 2: Clone Mã nguồn về VPS (Sử dụng nhánh `deploy`)
+Mở **Terminal** trên aaPanel (hoặc SSH vào VPS) và chạy các lệnh sau:
+
 ```bash
-git clone <url-repository-cua-ban> /var/www/bizhub
-cd /var/www/bizhub
+# 1. Di chuyển vào thư mục web của aaPanel
+cd /www/wwwroot
+
+# 2. Clone mã nguồn từ branch 'deploy' (nhánh đã được GitHub Actions tự động build sẵn thư mục public)
+git clone -b deploy https://github.com/dev-adt/vtv8-today.git dev.vtv8.today
+
+# 3. Đi vào thư mục dự án
+cd /www/wwwroot/dev.vtv8.today
+
+# 4. Cài đặt các thư viện backend
+npm install --production
 ```
 
-### Bước 2: Thiết lập Cơ sở dữ liệu MySQL
-1. Đăng nhập vào trình quản lý MySQL của bạn (hoặc thông qua aaPanel / phpMyAdmin).
-2. Tạo một cơ sở dữ liệu mới (ví dụ tên là: `bizhub`).
-3. Import cấu trúc bảng từ tệp [schema.sql](file:///e:/ADT/bizhub-complete/schema.sql) để khởi tạo các bảng: `members`, `member_sessions`, `posts`, `events`, `event_interests`, v.v.
+---
 
-### Bước 3: Cấu hình Biến môi trường (.env)
-Sao chép tệp cấu hình mẫu:
+### Bước 3: Tạo và Cấu hình file `.env`
+Tạo file `.env` từ file mẫu:
+
 ```bash
 cp .env.example .env
 nano .env
 ```
-Điền đầy đủ thông tin kết nối MySQL và các API key cho AI:
-- `PORT`: Cổng chạy backend server (mặc định: `3000`).
-- `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`: Thông tin kết nối MySQL database của bạn.
-- `OPENAI_API_KEY`, `OPENROUTER_API_KEY`...: Điền API key dịch vụ AI bạn muốn cung cấp.
 
-### Bước 4: Cài đặt Dependencies & Biên dịch Frontend
-Chạy lệnh cài đặt thư viện cho Backend và sau đó biên dịch mã nguồn Frontend:
+Điền các thông tin của bạn vào `.env`:
 
-```bash
-# 1. Cài đặt thư viện của Backend tại thư mục gốc
-npm install
+```env
+PORT=3023
+SITE_URL=https://dev.vtv8.today
+ALLOWED_ORIGIN=https://dev.vtv8.today
 
-# 2. Di chuyển vào thư mục frontend, cài đặt và build React thành tệp tĩnh
-cd frontend
-npm install
-npm run build
-cd ..
+# Cấu hình MySQL đã tạo ở Bước 1
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=vtv8
+DB_USER=vtv8
+DB_PASSWORD=MẬT_KHẨU_DATABASE_CỦA_BẠN
+
+# Cấu hình API Key AI (Tùy chọn: OpenAI, Gemini, DeepSeek, OpenRouter...)
+GEMINI_API_KEY=
+OPENAI_API_KEY=
+OPENROUTER_API_KEY=
 ```
-*Lưu ý*: Lệnh `npm run build` của Vite sẽ tự động xuất ra thư mục tĩnh `/public` ở thư mục gốc để `server.js` phục vụ trực tiếp cho Client.
 
-### Bước 5: Khởi chạy ứng dụng với PM2
+*(Nhấn `Ctrl + O` rồi `Enter` để lưu, sau đó `Ctrl + X` để thoát nano).*
+
+---
+
+### Bước 4: Khởi chạy Backend với PM2
+Khởi chạy ứng dụng và thiết lập tự khởi động khi VPS reboot:
+
 ```bash
-# Khởi chạy dịch vụ Node.js backend
+# Khởi chạy ứng dụng qua file cấu hình ecosystem
 pm2 start ecosystem.config.js
 
-# Lưu trạng thái và cấu hình tự khởi động khi reboot VPS
+# Lưu trạng thái PM2
 pm2 save
 pm2 startup
 ```
-Kiểm tra trạng thái chạy:
+
+Kiểm tra trạng thái hoạt động:
 ```bash
 pm2 status
-pm2 logs bizhub-ai
+pm2 logs vtv8-today
 ```
 
-### Bước 6: Cấu hình Nginx và SSL (HTTPS)
-Sử dụng file mẫu [nginx.conf](file:///e:/ADT/bizhub-complete/nginx.conf) để cấu hình reverse proxy chuyển tiếp yêu cầu từ cổng `80` / `443` về cổng chạy nội bộ của Node.js (ví dụ: `3000`).
-Cài đặt SSL miễn phí thông qua Let's Encrypt / Certbot:
-```bash
-sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d ten-mien-cua-ban.com
-```
+*(Bạn sẽ thấy dòng log: `VTV8.today server đang chạy tại http://localhost:3023`)*
 
 ---
 
-## 📌 Các Tính năng Độc đáo Hỗ trợ Sao chép nhanh
+### Bước 5: Tạo Website & Cấu hình Nginx Reverse Proxy trên aaPanel
+1. Vào aaPanel > **Website** > Nhấn **Add site**:
+   - **Domain**: `dev.vtv8.today`
+   - **Root directory**: `/www/wwwroot/dev.vtv8.today/public`
+   - **Database**: *No* (vì đã tạo ở Bước 1)
+   - **PHP version**: *Pure / Static* (hoặc bất kỳ vì ta dùng Node.js)
+2. Cấu hình **SSL (HTTPS)**:
+   - Trong danh sách Website, click vào tên miền `dev.vtv8.today` > chọn tab **SSL** > chọn **Let's Encrypt** > tích chọn domain và bấm **Apply** để cấp chứng chỉ SSL miễn phí tự động gia hạn.
+   - Bật công tắc **Force HTTPS**.
+3. Cấu hình **Nginx Config (Chống dính cache & Proxy port 3023)**:
+   - Cũng trong bảng cài đặt website đó, chuyển sang tab **Config File**.
+   - Dán cấu hình Nginx sau vào giữa block `server { ... }` (hoặc thay thế nội dung file config):
 
-### 1. Đa ngôn ngữ và Quy đổi ngoại tệ linh hoạt (`LanguageContext.jsx`)
-Dự án tích hợp cơ chế đổi ngôn ngữ cục bộ bằng React context, không tốn token AI khi đổi ngôn ngữ.
-- Khi chuyển đổi ngôn ngữ (VI, EN, ZH, JA), toàn bộ giao diện từ menu, chân trang, mô tả tính năng cho tới **giá tiền đăng ký các gói** đều được quy đổi sang đơn vị tiền tệ tương ứng theo tỷ giá thực tế (VND, USD, CNY, JPY) giúp hỗ trợ giao thương đa quốc gia.
+```nginx
+server {
+    listen 80;
+    listen 443 ssl http2;
+    server_name dev.vtv8.today;
 
-### 2. Trang Hướng dẫn sử dụng Bản địa hóa (`Guide.jsx`)
-- Trang hướng dẫn dạng tab chuyên nghiệp không dùng iframe Notion, giúp load trang siêu nhanh.
-- Tích hợp hiệu ứng phóng to hình ảnh lightbox mượt mà khi click vào bất kỳ ảnh minh họa nào. Các ảnh được lấy trực tiếp tại thư mục tĩnh `/img_guide/`.
+    # Root trỏ vào thư mục public chứa file tĩnh
+    root /www/wwwroot/dev.vtv8.today/public;
+    index index.html;
 
-### 3. Tự động kiểm tra đồng bộ Cơ sở dữ liệu
-- File `server.js` tích hợp các khối lệnh tự động kiểm tra xem các cột dữ liệu quan trọng như `city` (thành phố), `is_featured` (ghim nổi bật), `tier_expires_at` (thời hạn gói) đã tồn tại trong các bảng MySQL chưa. Nếu chưa có, server sẽ tự động chạy truy vấn `ALTER TABLE` để thêm cột mà không cần sếp phải chạy tay.
+    # SSL Cert do aaPanel tự tạo
+    # ssl_certificate ...
+    # ssl_certificate_key ...
+
+    # Gzip nén trang
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript;
+
+    # ── Proxy toàn bộ API về Node.js (Port 3023) ──
+    location /api/ {
+        proxy_pass         http://127.0.0.1:3023;
+        proxy_http_version 1.1;
+        proxy_set_header   Upgrade $http_upgrade;
+        proxy_set_header   Connection 'upgrade';
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_read_timeout 120s;
+    }
+
+    # ── Upload media ──
+    location /uploads/ {
+        proxy_pass         http://127.0.0.1:3023;
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+    }
+
+    # ── Assets có hash: Cache dài hạn 1 năm ──
+    location /assets/ {
+        expires 1y;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+
+    # ── SPA Routing & CHỐNG DÍNH CACHE index.html ──
+    location / {
+        try_files $uri $uri/ /index.html;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate";
+        add_header Pragma "no-cache";
+        add_header Expires "0";
+    }
+}
+```
+4. Bấm **Save** để lưu cấu hình Nginx.
 
 ---
 
-## 💡 Mẹo quản lý mã nguồn Git hữu ích khi phát triển
+## 🔄 QUY TRÌNH CẬP NHẬT CODE SAU NÀY (CI/CD SIÊU NHANH)
 
-### Cách gỡ bỏ các file cấu hình hoặc hướng dẫn cục bộ khỏi Git (Không bị đẩy lên Github)
-Nếu sếp có các tệp tin lưu ghi chú cá nhân (như file `.env`, file hướng dẫn deploy VPS, file test API) và đã lỡ commit lên GitHub, sếp hãy thực hiện:
+Nhờ có quy trình CI/CD tự động bằng GitHub Actions:
+1. Mỗi khi bạn chỉnh sửa mã nguồn ở máy cá nhân và chạy `git push origin main`, **GitHub Actions sẽ tự động biên dịch frontend và xuất bản sang branch `deploy`**.
+2. Khi muốn cập nhật phiên bản mới nhất lên VPS, bạn chỉ cần mở Terminal trên VPS và chạy 2 lệnh:
 
-1. Thêm tên file vào [.gitignore](file:///e:/ADT/bizhub-complete/.gitignore).
-2. Chạy lệnh gỡ chỉ mục theo dõi của Git (không làm mất file vật lý trên máy):
-   ```bash
-   git rm --cached TÊN_FILE_CỦA_BẠN.md
-   ```
-3. Commit và push lại lên GitHub:
-   ```bash
-   git commit -m "Stop tracking ignored files"
-   git push origin version3
-   ```
-
-### Khôi phục lại file cục bộ bị xóa nhầm do checkout nhánh
-Nếu sau khi chuyển đổi nhánh, các file cục bộ đã bị bỏ qua (untracked) bị xóa mất, sếp chỉ cần chạy lệnh sau để kéo chúng lại từ lịch sử commit cũ:
 ```bash
-git checkout <MÃ_COMMIT_TRƯỚC_ĐÓ> -- TÊN_FILE_1.md TÊN_FILE_2.js
-git reset HEAD TÊN_FILE_1.md TÊN_FILE_2.js
+cd /www/wwwroot/dev.vtv8.today
+git pull origin deploy
+pm2 restart vtv8-today
 ```
-Lúc này file sẽ xuất hiện trở lại trên máy tính của sếp và vẫn được bỏ qua hoàn toàn đối với Git!
+
+⚡ **Website sẽ lập tức cập nhật phiên bản mới nhất mà không bao giờ bị lỗi dính cache trình duyệt!**
