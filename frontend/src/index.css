@@ -2875,6 +2875,50 @@ select option {
   color: #0f172a;
 }
 
+/* ══════════════════════════════════════════════════════════
+   VTV8.TODAY HEADER NAVBAR (HIGH CONTRAST, SLEEK & BEAUTIFUL)
+   ══════════════════════════════════════════════════════════ */
+.vtv8-navbar-header {
+  background-color: #061527 !important;
+  background-image: linear-gradient(to right, #061527 0%, #0b233e 50%, #061527 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+}
+
+.vtv8-navbar-header nav,
+.vtv8-nav-center {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.vtv8-nav-link {
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+  font-size: 13.5px !important;
+  padding: 6px 9px !important;
+  border-radius: 7px !important;
+  text-decoration: none !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  transition: all 0.18s ease !important;
+  background-color: transparent !important;
+  white-space: nowrap !important;
+}
+
+.vtv8-nav-link:hover {
+  color: #38bdf8 !important;
+  background-color: rgba(56, 189, 248, 0.15) !important;
+}
+
+.vtv8-nav-link.active {
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+  background-color: rgba(56, 189, 248, 0.18) !important;
+}
+
 /* Navbar responsive adjustments */
 @media (max-width: 1024px) {
   .vtv8-nav-center {

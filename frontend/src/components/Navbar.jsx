@@ -109,10 +109,10 @@ export const Navbar = () => {
       position: 'sticky',
       top: 0,
       zIndex: 1000,
-      backgroundColor: '#071628',
-      backgroundImage: 'linear-gradient(to right, #071628 0%, #0b1f36 50%, #071628 100%)',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
-      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.35)',
+      backgroundColor: '#061527',
+      backgroundImage: 'linear-gradient(to right, #061527 0%, #0b233e 50%, #061527 100%)',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.45)',
       width: '100%',
       overflow: 'visible'
     }}>
@@ -123,7 +123,7 @@ export const Navbar = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: 'clamp(0.5rem, 1.5vw, 1.25rem)',
+        gap: 'clamp(0.5rem, 1.2vw, 1.25rem)',
         flexWrap: 'nowrap',
         overflow: 'visible'
       }}>
@@ -166,13 +166,15 @@ export const Navbar = () => {
           </span>
         </Link>
 
-        {/* 2. CENTER NAVIGATION: COMPACT, SINGLE-LINE & ZERO OVERFLOW */}
+        {/* 2. CENTER NAVIGATION: PURE TRANSPARENT BACKGROUND WITH CRISP WHITE/CYAN TEXT */}
         <nav className="vtv8-nav-center" style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 'clamp(0.2rem, 0.5vw, 0.6rem)',
+          gap: 'clamp(0.2rem, 0.4vw, 0.5rem)',
           flexWrap: 'nowrap',
           flexShrink: 1,
+          backgroundColor: 'transparent',
+          border: 'none',
           overflow: 'visible'
         }}>
           {/* Dynamic Categories (Top 6) */}
@@ -191,26 +193,27 @@ export const Navbar = () => {
               >
                 <Link
                   to={`/posts?category=${encodeURIComponent(cat.name)}`}
+                  className={`vtv8-nav-link ${isCatActive ? 'active' : ''}`}
                   style={{
-                    color: isCatActive ? '#38bdf8' : '#e2e8f0',
-                    backgroundColor: isOpen || isCatActive ? 'rgba(56, 189, 248, 0.15)' : 'transparent',
+                    color: isCatActive ? '#38bdf8' : '#ffffff',
+                    backgroundColor: isOpen || isCatActive ? 'rgba(56, 189, 248, 0.18)' : 'transparent',
                     fontWeight: isCatActive ? '700' : '600',
-                    fontSize: '13px',
+                    fontSize: '13.5px',
                     textDecoration: 'none',
-                    padding: '5px 8px',
+                    padding: '6px 9px',
                     borderRadius: '7px',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '3px',
+                    gap: '4px',
                     transition: 'all 0.18s ease',
                     whiteSpace: 'nowrap'
                   }}
                   onMouseEnter={(e) => {
                     if (!isCatActive) e.currentTarget.style.color = '#38bdf8';
-                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+                    e.currentTarget.style.backgroundColor = 'rgba(56, 189, 248, 0.15)';
                   }}
                   onMouseLeave={(e) => {
-                    if (!isCatActive) e.currentTarget.style.color = '#e2e8f0';
+                    if (!isCatActive) e.currentTarget.style.color = '#ffffff';
                     if (!isOpen && !isCatActive) e.currentTarget.style.backgroundColor = 'transparent';
                   }}
                   title={getFullDisplayName(cat)}
@@ -218,8 +221,8 @@ export const Navbar = () => {
                   <span>{getShortNavLabel(cat)}</span>
                   {hasSubs && (
                     <i className="ti ti-chevron-down" style={{
-                      fontSize: '10px',
-                      opacity: 0.75,
+                      fontSize: '11px',
+                      color: '#93c5fd',
                       transform: isOpen ? 'rotate(180deg)' : 'none',
                       transition: 'transform 0.18s ease'
                     }}></i>
@@ -234,11 +237,11 @@ export const Navbar = () => {
                     left: 0,
                     minWidth: '240px',
                     backgroundColor: '#091c30',
-                    backgroundImage: 'linear-gradient(180deg, #0b223a 0%, #081726 100%)',
-                    border: '1px solid rgba(56, 189, 248, 0.3)',
+                    backgroundImage: 'linear-gradient(180deg, #0b223a 0%, #071726 100%)',
+                    border: '1px solid rgba(56, 189, 248, 0.35)',
                     borderRadius: '10px',
                     padding: '6px 0',
-                    boxShadow: '0 16px 36px rgba(0, 0, 0, 0.65)',
+                    boxShadow: '0 16px 36px rgba(0, 0, 0, 0.75)',
                     zIndex: 2000,
                     animation: 'fadeInDown 0.15s ease-out'
                   }}>
@@ -255,10 +258,10 @@ export const Navbar = () => {
                         fontWeight: '700',
                         fontSize: '12.5px',
                         textDecoration: 'none',
-                        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
                         marginBottom: '4px'
                       }}
-                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(245, 158, 11, 0.12)'; }}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(245, 158, 11, 0.15)'; }}
                       onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
                     >
                       <span>{getFullDisplayName(cat)}</span>
@@ -276,21 +279,21 @@ export const Navbar = () => {
                           onClick={() => setActiveDropdownId(null)}
                           style={{
                             display: 'block',
-                            padding: '6px 14px',
-                            color: '#cbd5e1',
+                            padding: '7px 14px',
+                            color: '#e2e8f0',
                             textDecoration: 'none',
                             fontSize: '12.5px',
                             fontWeight: '500',
                             transition: 'all 0.15s ease'
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = 'rgba(56, 189, 248, 0.15)';
+                            e.currentTarget.style.backgroundColor = 'rgba(56, 189, 248, 0.18)';
                             e.currentTarget.style.color = '#ffffff';
                             e.currentTarget.style.paddingLeft = '18px';
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.backgroundColor = 'transparent';
-                            e.currentTarget.style.color = '#cbd5e1';
+                            e.currentTarget.style.color = '#e2e8f0';
                             e.currentTarget.style.paddingLeft = '14px';
                           }}
                         >
@@ -307,13 +310,14 @@ export const Navbar = () => {
           {/* Members Link */}
           <Link
             to="/members"
+            className={`vtv8-nav-link ${location.pathname === '/members' ? 'active' : ''}`}
             style={{
-              color: location.pathname === '/members' ? '#38bdf8' : '#e2e8f0',
-              backgroundColor: location.pathname === '/members' ? 'rgba(56, 189, 248, 0.15)' : 'transparent',
+              color: location.pathname === '/members' ? '#38bdf8' : '#ffffff',
+              backgroundColor: location.pathname === '/members' ? 'rgba(56, 189, 248, 0.18)' : 'transparent',
               fontWeight: location.pathname === '/members' ? '700' : '600',
-              fontSize: '13px',
+              fontSize: '13.5px',
               textDecoration: 'none',
-              padding: '5px 8px',
+              padding: '6px 9px',
               borderRadius: '7px',
               transition: 'all 0.18s ease',
               whiteSpace: 'nowrap',
@@ -321,10 +325,10 @@ export const Navbar = () => {
             }}
             onMouseEnter={(e) => {
               if (location.pathname !== '/members') e.currentTarget.style.color = '#38bdf8';
-              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+              e.currentTarget.style.backgroundColor = 'rgba(56, 189, 248, 0.15)';
             }}
             onMouseLeave={(e) => {
-              if (location.pathname !== '/members') e.currentTarget.style.color = '#e2e8f0';
+              if (location.pathname !== '/members') e.currentTarget.style.color = '#ffffff';
               if (location.pathname !== '/members') e.currentTarget.style.backgroundColor = 'transparent';
             }}
           >
@@ -339,9 +343,9 @@ export const Navbar = () => {
               fontWeight: '700',
               fontSize: '12px',
               textDecoration: 'none',
-              backgroundColor: 'rgba(56, 189, 248, 0.12)',
-              border: '1px solid rgba(56, 189, 248, 0.35)',
-              padding: '4px 10px',
+              backgroundColor: 'rgba(56, 189, 248, 0.15)',
+              border: '1px solid rgba(56, 189, 248, 0.4)',
+              padding: '5px 11px',
               borderRadius: '16px',
               display: 'flex',
               alignItems: 'center',
@@ -351,15 +355,15 @@ export const Navbar = () => {
               flexShrink: 0
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(56, 189, 248, 0.25)';
+              e.currentTarget.style.backgroundColor = 'rgba(56, 189, 248, 0.3)';
               e.currentTarget.style.transform = 'translateY(-1px)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(56, 189, 248, 0.12)';
+              e.currentTarget.style.backgroundColor = 'rgba(56, 189, 248, 0.15)';
               e.currentTarget.style.transform = 'none';
             }}
           >
-            <i className="ti ti-sparkles" style={{ fontSize: '12px', color: '#f59e0b' }}></i>
+            <i className="ti ti-sparkles" style={{ fontSize: '13px', color: '#f59e0b' }}></i>
             <span>AI Bot</span>
           </Link>
         </nav>
@@ -375,10 +379,10 @@ export const Navbar = () => {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
             borderRadius: '16px',
             padding: '2px',
-            border: '1px solid rgba(255, 255, 255, 0.15)'
+            border: '1px solid rgba(255, 255, 255, 0.2)'
           }}>
             <button
               onClick={() => changeLang('vi')}
@@ -387,7 +391,7 @@ export const Navbar = () => {
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '14px',
-                padding: '2px 7px',
+                padding: '2px 8px',
                 fontSize: '11px',
                 fontWeight: currentLang === 'vi' ? '700' : '500',
                 cursor: 'pointer',
@@ -403,7 +407,7 @@ export const Navbar = () => {
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '14px',
-                padding: '2px 7px',
+                padding: '2px 8px',
                 fontSize: '11px',
                 fontWeight: currentLang === 'en' ? '700' : '500',
                 cursor: 'pointer',
@@ -423,10 +427,10 @@ export const Navbar = () => {
               color: '#ffffff',
               fontSize: '12px',
               fontWeight: '700',
-              padding: '6px 12px',
+              padding: '6px 13px',
               borderRadius: '6px',
               textDecoration: 'none',
-              boxShadow: '0 3px 10px rgba(220, 38, 38, 0.35)',
+              boxShadow: '0 3px 10px rgba(220, 38, 38, 0.4)',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
@@ -435,11 +439,11 @@ export const Navbar = () => {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.boxShadow = '0 5px 14px rgba(220, 38, 38, 0.5)';
+              e.currentTarget.style.boxShadow = '0 5px 14px rgba(220, 38, 38, 0.55)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'none';
-              e.currentTarget.style.boxShadow = '0 3px 10px rgba(220, 38, 38, 0.35)';
+              e.currentTarget.style.boxShadow = '0 3px 10px rgba(220, 38, 38, 0.4)';
             }}
           >
             <i className="ti ti-user-plus" style={{ fontSize: '13px' }}></i>
@@ -451,7 +455,7 @@ export const Navbar = () => {
             <Link
               to="/login"
               style={{
-                color: '#cbd5e1',
+                color: '#ffffff',
                 fontSize: '12.5px',
                 textDecoration: 'none',
                 fontWeight: '600',
@@ -460,8 +464,8 @@ export const Navbar = () => {
                 whiteSpace: 'nowrap',
                 transition: 'color 0.2s'
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = '#ffffff'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = '#cbd5e1'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#38bdf8'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = '#ffffff'; }}
             >
               {currentLang === 'en' ? 'Login' : 'Đăng nhập'}
             </Link>
@@ -583,11 +587,11 @@ export const Navbar = () => {
             );
           })}
 
-          <Link to="/members" onClick={() => setMobileMenuOpen(false)} style={{ color: '#cbd5e1', textDecoration: 'none', fontWeight: '600', padding: '6px 0', fontSize: '13.5px' }}>
+          <Link to="/members" onClick={() => setMobileMenuOpen(false)} style={{ color: '#ffffff', textDecoration: 'none', fontWeight: '600', padding: '6px 0', fontSize: '13.5px' }}>
             {currentLang === 'en' ? 'Ecosystem Members' : 'Cộng đồng Hội viên'}
           </Link>
 
-          <Link to="/events" onClick={() => setMobileMenuOpen(false)} style={{ color: '#cbd5e1', textDecoration: 'none', fontWeight: '600', padding: '6px 0', fontSize: '13.5px' }}>
+          <Link to="/events" onClick={() => setMobileMenuOpen(false)} style={{ color: '#ffffff', textDecoration: 'none', fontWeight: '600', padding: '6px 0', fontSize: '13.5px' }}>
             {currentLang === 'en' ? 'Events & Festivals' : 'Sự kiện & Lễ hội'}
           </Link>
 
