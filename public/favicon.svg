@@ -1,42 +1,60 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
   <defs>
+    <!-- Background Gradient -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#071728"/>
-      <stop offset="100%" stop-color="#020912"/>
+      <stop offset="100%" stop-color="#020a14"/>
     </linearGradient>
+
+    <!-- Blue Gradient -->
     <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#38bdf8"/>
-      <stop offset="50%" stop-color="#0284c7"/>
-      <stop offset="100%" stop-color="#0369a1"/>
+      <stop offset="100%" stop-color="#0284c7"/>
     </linearGradient>
+
+    <!-- Red Gradient -->
     <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#ef4444"/>
-      <stop offset="100%" stop-color="#991b1b"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
     </linearGradient>
+
+    <!-- Metallic Border Gradient -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#94a3b8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#ef4444" stop-opacity="0.8"/>
+    </linearGradient>
+
+    <!-- Glow Filter -->
     <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feGaussianBlur stdDeviation="3" result="blur" />
       <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
   </defs>
 
-  <!-- Background Pill -->
-  <rect width="128" height="128" rx="28" fill="url(#bgGrad)" stroke="rgba(56, 189, 248, 0.3)" stroke-width="2"/>
+  <!-- Background Rounded Shield -->
+  <rect width="124" height="124" x="2" y="2" rx="26" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="3"/>
 
-  <!-- Lotus & Wave Arc (Cyan / Blue) -->
-  <path d="M 64 16 C 90 16 112 38 112 64 C 112 78 106 90 96 99 C 102 88 104 76 100 64 C 95 48 81 36 64 36 C 54 36 45 40 38 48 C 44 38 53 30 64 26 C 60 20 62 16 64 16 Z" fill="url(#blueGrad)" opacity="0.95"/>
-  
-  <!-- Red Dynamic Swirl Accent -->
-  <path d="M 96 99 C 85 110 68 114 52 108 C 65 106 76 98 82 88 C 88 78 88 66 84 56 C 88 68 94 86 96 99 Z" fill="url(#redGrad)"/>
+  <!-- Top Lotus Arc Accent -->
+  <path d="M 38 20 C 50 14 78 14 90 20 C 82 24 74 26 64 26 C 54 26 46 24 38 20 Z" fill="url(#blueGrad)" opacity="0.9"/>
+  <circle cx="64" cy="18" r="3.5" fill="#ef4444"/>
 
-  <!-- V8 Monogram Typography -->
+  <!-- VTV8 Letters (Crisp, High-Contrast, Balanced) -->
   <!-- 'V' -->
-  <path d="M 32 54 L 46 54 L 54 84 L 62 54 L 74 54 L 59 96 L 47 96 Z" fill="url(#blueGrad)" filter="url(#glow)"/>
-  <path d="M 32 54 L 46 54 L 54 84 L 62 54 L 74 54 L 59 96 L 47 96 Z" fill="#ffffff"/>
+  <path d="M 12 40 L 22 40 L 29 74 L 36 40 L 46 40 L 35 90 L 23 90 Z" fill="url(#blueGrad)"/>
 
-  <!-- '8' -->
-  <path d="M 85 52 C 92 52 97 56 97 62 C 97 67 94 70 89 72 C 95 74 99 78 99 85 C 99 93 92 98 83 98 C 74 98 68 93 68 85 C 68 78 72 74 77 72 C 73 70 70 67 70 62 C 70 56 75 52 83 52 Z M 83 60 C 79 60 76 62 76 65 C 76 68 79 70 83 70 C 87 70 90 68 90 65 C 90 62 87 60 83 60 Z M 83 77 C 78 77 74 80 74 85 C 74 89 78 92 83 92 C 88 92 92 89 92 85 C 92 80 88 77 83 77 Z" fill="url(#blueGrad)" filter="url(#glow)"/>
-  <path d="M 85 52 C 92 52 97 56 97 62 C 97 67 94 70 89 72 C 95 74 99 78 99 85 C 99 93 92 98 83 98 C 74 98 68 93 68 85 C 68 78 72 74 77 72 C 73 70 70 67 70 62 C 70 56 75 52 83 52 Z M 83 60 C 79 60 76 62 76 65 C 76 68 79 70 83 70 C 87 70 90 68 90 65 C 90 62 87 60 83 60 Z M 83 77 C 78 77 74 80 74 85 C 74 89 78 92 83 92 C 88 92 92 89 92 85 C 92 80 88 77 83 77 Z" fill="#ffffff"/>
-  
-  <!-- Red Dot Accent on VTV8 -->
-  <circle cx="102" cy="94" r="4.5" fill="#ef4444" filter="url(#glow)"/>
+  <!-- 'T' -->
+  <path d="M 43 40 L 67 40 L 67 50 L 58 50 L 58 90 L 48 90 L 48 50 L 43 50 Z" fill="#ffffff"/>
+
+  <!-- 'V' -->
+  <path d="M 64 40 L 74 40 L 81 74 L 88 40 L 98 40 L 87 90 L 75 90 Z" fill="url(#blueGrad)"/>
+
+  <!-- '8' (Red Gradient with Glow) -->
+  <g filter="url(#glow)">
+    <path d="M 109 40 C 117 40 123 44 123 52 C 123 58 119 63 113 65 C 120 67 125 73 125 81 C 125 90 117 96 107 96 C 97 96 90 90 90 81 C 90 73 95 67 101 65 C 96 63 92 58 92 52 C 92 44 98 40 107 40 Z M 107 49 C 103 49 100 51 100 54 C 100 58 103 60 107 60 C 111 60 114 58 114 54 C 114 51 111 49 107 49 Z M 107 72 C 102 72 98 75 98 80 C 98 84 102 87 107 87 C 113 87 117 84 117 80 C 117 75 113 72 107 72 Z" fill="url(#redGrad)"/>
+  </g>
+
+  <!-- Bottom '.today' Badge -->
+  <rect x="26" y="100" width="76" height="16" rx="8" fill="rgba(56, 189, 248, 0.15)" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1"/>
+  <text x="64" y="112" font-family="'Outfit', 'Plus Jakarta Sans', Arial, sans-serif" font-size="10" font-weight="800" fill="#38bdf8" text-anchor="middle" letter-spacing="1.5">.TODAY</text>
 </svg>
