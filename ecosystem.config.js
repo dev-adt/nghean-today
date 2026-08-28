@@ -7,7 +7,7 @@
 module.exports = {
   apps: [
     {
-      name        : 'vtv8-today',
+      name        : 'vtv8-today-prod',
       script      : 'server.js',
       instances   : 1,           // tăng lên 'max' nếu muốn cluster
       exec_mode   : 'fork',
@@ -16,7 +16,7 @@ module.exports = {
 
       env: {
         NODE_ENV : 'production',
-        PORT     : 3023,
+        PORT     : 3024,
       },
 
       // Log
