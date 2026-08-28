@@ -1668,9 +1668,6 @@ export const Home = () => {
             <div className="vtv8-stat-label">{currentLang === 'en' ? 'Bilingual Support (VI/EN)' : 'Ngôn ngữ hỗ trợ (VI/EN)'}</div>
           </div>
         </div>
-        <div style={{ textAlign: 'center', marginTop: '1.2rem', fontSize: '11px', color: '#64748b' }}>
-          * {currentLang === 'en' ? 'METRICS IN DEVELOPMENT STAGE OF VTV8.TODAY' : 'DỮ LIỆU MINH HỌA TRONG GIAI ĐOẠN PHÁT TRIỂN NỀN TẢNG VTV8.TODAY'}
-        </div>
       </section>
 
       {/* 10. THAM GIA HỆ SINH THÁI */}
