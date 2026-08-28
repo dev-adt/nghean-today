@@ -82,12 +82,12 @@ export const Login = () => {
       <div style={{ width: '100%', maxWidth: '420px', padding: '1.5rem', zIndex: 10 }}>
         <div className="glass-card" style={{ padding: '2.5rem 2.25rem', borderRadius: '16px', position: 'relative', overflow: 'hidden' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', marginBottom: '2rem', textAlign: 'center' }}>
-            <div className="logo-icon" style={{ width: '50px', height: '50px', borderRadius: '12px', background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', boxShadow: '0 8px 20px var(--primary-glow)' }}>
-              <img src="/doson_logo.png" alt="Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
+            <div className="logo-icon" style={{ width: '56px', height: '56px', borderRadius: '16px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(2, 132, 199, 0.35)', border: '1px solid rgba(56, 189, 248, 0.3)' }}>
+              <img src="/vtv8_logo.png" alt="VTV8.today Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <div>
               <div className="logo-name" style={{ fontFamily: 'var(--font-title)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>VTV8.today</div>
-              <div className="logo-sub" style={{ fontSize: '11px', color: '#64748B', marginTop: '2px', transform: 'uppercase', letterSpacing: '0.08em' }}>Cổng Đăng Nhập Hợp Nhất</div>
+              <div className="logo-sub" style={{ fontSize: '11px', color: '#64748B', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Cổng Đăng Nhập Hợp Nhất</div>
             </div>
           </div>
 

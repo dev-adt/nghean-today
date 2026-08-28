@@ -138,32 +138,40 @@ export const Navbar = () => {
           }}
           style={{ 
             display: 'flex', 
-            flexDirection: 'column', 
+            alignItems: 'center',
+            gap: '8px',
             textDecoration: 'none', 
             flexShrink: 0 
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}>
+          <img 
+            src="/vtv8_logo.png" 
+            alt="VTV8 Logo" 
+            style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover', border: '1px solid rgba(56, 189, 248, 0.35)', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }} 
+          />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '2px' }}>
+              <span style={{
+                fontFamily: "'Outfit', 'Plus Jakarta Sans', sans-serif",
+                fontSize: '21px',
+                fontWeight: '900',
+                color: '#ffffff',
+                letterSpacing: '-0.5px'
+              }}>
+                VTV8<span style={{ color: '#ef4444' }}>.today</span>
+              </span>
+            </div>
             <span style={{
-              fontFamily: "'Outfit', 'Plus Jakarta Sans', sans-serif",
-              fontSize: '22px',
-              fontWeight: '900',
-              color: '#ffffff',
-              letterSpacing: '-0.5px'
+              fontSize: '8px',
+              letterSpacing: '0.8px',
+              color: '#93c5fd',
+              fontWeight: '600',
+              textTransform: 'uppercase',
+              marginTop: '-3px'
             }}>
-              VTV8<span style={{ color: '#ef4444' }}>.today</span>
+              {currentLang === 'en' ? 'Culture • Heritage • Tourism' : 'VĂN HÓA - DI SẢN - DU LỊCH'}
             </span>
           </div>
-          <span style={{
-            fontSize: '8.5px',
-            letterSpacing: '0.8px',
-            color: '#93c5fd',
-            fontWeight: '600',
-            textTransform: 'uppercase',
-            marginTop: '-3px'
-          }}>
-            {currentLang === 'en' ? 'Culture • Heritage • Tourism' : 'VĂN HÓA - DI SẢN - DU LỊCH'}
-          </span>
         </Link>
 
         {/* 2. CENTER NAVIGATION: BALANCED & CENTER-FOCUSED */}
