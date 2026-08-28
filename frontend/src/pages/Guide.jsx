@@ -121,7 +121,8 @@ export const Guide = () => {
     { id: 'sec-admin-login', title: isEn ? "2. Admin Login & Overview" : "2. Đăng Nhập & Admin Overview", icon: "ti-login" },
     { id: 'sec-admin-members', title: isEn ? "3. Member Management & Tiers" : "3. Quản Lý Hồ Sơ Hội Viên", icon: "ti-users" },
     { id: 'sec-admin-posts', title: isEn ? "4. Moderation & Homepage Pinning" : "4. Quản Lý Bài Viết & Ghim Top", icon: "ti-news" },
-    { id: 'sec-admin-events-cats', title: isEn ? "5. Events, Categories & Creators" : "5. Sự Kiện, Chuyên Mục & Creators", icon: "ti-settings" }
+    { id: 'sec-admin-events-cats', title: isEn ? "5. Events, Categories & Creators" : "5. Sự Kiện, Chuyên Mục & Creators", icon: "ti-settings" },
+    { id: 'sec-admin-contacts', title: isEn ? "6. Leads & Homepage Contacts" : "6. Quản Lý Liên Hệ & Đăng Ký", icon: "ti-address-book" }
   ];
 
   const currentNavItems = activeRoleTab === 'member' ? memberNavItems : activeRoleTab === 'creator' ? creatorNavItems : adminNavItems;
@@ -989,6 +990,50 @@ export const Guide = () => {
                         <img src="/img_guide/Admin/admin manage creator.png" alt="Quản lý Biên tập viên" style={{ width: '100%', height: 'auto', display: 'block' }} />
                       </div>
                     </div>
+                  </div>
+                </div>
+
+                {/* Admin Manage Leads & Homepage Contacts (NEW FUNCTION) */}
+                <div 
+                  id="sec-admin-contacts" 
+                  className="glass-card guide-section" 
+                  style={{ 
+                    padding: '2rem', 
+                    borderRadius: '16px',
+                    transition: 'all 0.3s ease',
+                    position: 'relative',
+                    border: activeSectionId === 'sec-admin-contacts' ? '2px solid #f59e0b' : '1px solid var(--border-strong)',
+                    boxShadow: activeSectionId === 'sec-admin-contacts' ? '0 0 25px rgba(245, 158, 11, 0.25)' : 'none'
+                  }}
+                >
+                  <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1.25rem' }}>
+                    {isEn ? "6. Leads & Homepage Registration Management" : "6. Quản Lý Tiếp Nhận Liên Hệ / Đăng Ký Từ Trang Chủ"}
+                  </h3>
+                  <p style={{ fontSize: '13.5px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.25rem' }}>
+                    {isEn ? (
+                      <>Every time a prospective enterprise or traveler submits the "Join the Ecosystem" form on the Homepage, their data is instantly logged into {renderLinkPill("Leads & Contacts", "/admin-dashboard")}. Admin can track status, update contact logs, and add internal notes.</>
+                    ) : (
+                      <>Khi khách truy cập hoặc doanh nghiệp gửi form "Tham gia Hệ sinh thái VTV8.today" ở trang chủ, toàn bộ thông tin sẽ được tiếp nhận tức thời vào trang {renderLinkPill("Liên hệ / Đăng ký", "/admin-dashboard")}. Ban quản trị có thể dễ dàng quản lý tiến độ liên hệ:</>
+                    )}
+                  </p>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', marginBottom: '1.5rem' }}>
+                    <div style={{ padding: '12px', background: 'rgba(245, 158, 11, 0.08)', borderRadius: '8px', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
+                      <div style={{ fontWeight: 700, color: 'var(--amber)', fontSize: '13px', marginBottom: '4px' }}>⏳ Đang chờ (Pending)</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Các yêu cầu mới gửi đến chưa được xử lý liên hệ.</div>
+                    </div>
+                    <div style={{ padding: '12px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                      <div style={{ fontWeight: 700, color: 'var(--emerald)', fontSize: '13px', marginBottom: '4px' }}>✅ Đã liên hệ (Contacted)</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Đã gọi điện / gửi email tư vấn và hỗ trợ khách hàng.</div>
+                    </div>
+                    <div style={{ padding: '12px', background: 'rgba(148, 163, 184, 0.08)', borderRadius: '8px', border: '1px solid rgba(148, 163, 184, 0.2)' }}>
+                      <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '13px', marginBottom: '4px' }}>📝 Khác (Other)</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Các trường hợp đặc thù, hợp tác truyền thông riêng có ghi chú chi tiết.</div>
+                    </div>
+                  </div>
+
+                  <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-strong)' }}>
+                    <img src="/img_guide/Admin/admin manage contact.png" alt="Quản lý Liên hệ và Đăng ký" style={{ width: '100%', height: 'auto', display: 'block' }} />
                   </div>
                 </div>
               </>

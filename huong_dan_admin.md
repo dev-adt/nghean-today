@@ -1,15 +1,20 @@
-﻿# Hướng dẫn Quản trị viên: Quản lý & Vận hành Hệ thống BizHub AI
+# Hướng dẫn Quản trị viên: Quản lý & Vận hành Hệ sinh thái VTV8.today
 
-Tài liệu này hướng dẫn Admin cách sử dụng các công cụ quản trị để kiểm duyệt tài khoản, bài đăng, sự kiện, ghim nổi bật và nâng cấp gói thành viên trên hệ thống BizHub.
+Tài liệu này hướng dẫn Admin cách sử dụng các công cụ quản trị để kiểm duyệt tài khoản, bài đăng, sự kiện, danh mục, biên tập viên và tiếp nhận thông tin liên hệ / đăng ký trên hệ thống VTV8.today.
 
 ---
 
 ## 1. Truy cập trang quản trị
-- Đăng nhập tài khoản Admin thông qua cổng đăng nhập quản trị dành riêng.
-- Truy cập Dashboard Admin để quản lý 3 phân mục chính:
-  1. **Quản lý Hội viên** (`/admin/members`)
-  2. **Quản lý Bài đăng** (`/admin/posts`)
-  3. **Quản lý Sự kiện** (`/admin/events`)
+- Đăng nhập tài khoản Admin thông qua cổng đăng nhập hợp nhất (`/login`).
+- Truy cập Dashboard Admin để quản lý các phân mục:
+  1. **Dashboard tổng quan** (`/admin-dashboard`)
+  2. **Quản lý Hội viên** (`/admin-members`)
+  3. **Quản lý Bài đăng** (`/admin-posts`)
+  4. **Quản lý Sự kiện** (`/admin-events`)
+  5. **Quản lý Chuyên mục & Lĩnh vực** (`/admin-categories`)
+  6. **Quản lý Biên tập viên** (`/admin-creators`)
+  7. **Tiếp nhận Liên hệ / Đăng ký** (`/admin-leads`)
+  8. **Cài đặt AI đa mô hình** (`/admin-ai`)
 
 ---
 
