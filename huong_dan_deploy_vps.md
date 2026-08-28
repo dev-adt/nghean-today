@@ -1,208 +1,182 @@
-# Hướng Dẫn Triển Khai (Deploy) Lên VPS Lần Đầu
+# Hướng Dẫn Deploy Hệ Thống VTV8.today Trên Domain Chính: vtv8.today
 
-Tài liệu này hướng dẫn chi tiết cách triển khai hệ thống **VTV8.today** lên Linux VPS của bạn chạy tại cổng **3023** dưới tên miền **dev.vtv8.today**.
-
----
-
-## 1. Chuẩn bị trên VPS (Yêu cầu hệ thống)
-Kết nối SSH vào VPS của bạn dưới quyền `root` hoặc tài khoản có quyền `sudo`, sau đó cài đặt các gói cần thiết:
-
-### Cập nhật hệ thống:
-```bash
-sudo apt update && sudo apt upgrade -y
-```
-
-### Cài đặt Node.js (Version >= 18):
-```bash
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt-get install -y nodejs
-# Kiểm tra phiên bản
-node -v
-npm -v
-```
-
-### Cài đặt MySQL Server:
-```bash
-sudo apt install mysql-server -y
-# Bật và khởi động MySQL
-sudo systemctl start mysql
-sudo systemctl enable mysql
-```
-
-### Cài đặt Nginx & Certbot (SSL):
-```bash
-sudo apt install nginx certbot python3-certbot-nginx -y
-```
-
-### Cài đặt PM2 (Quản lý tiến trình Node.js chạy ngầm):
-```bash
-sudo npm install -y pm2 -g
-```
+Tài liệu này hướng dẫn từng bước chi tiết cách triển khai nền tảng **VTV8.today** lên **aaPanel Linux VPS** cho tên miền chính thức: **`vtv8.today`** (kèm `www.vtv8.today`).
 
 ---
 
-## 2. Cài đặt Cơ sở dữ liệu (MySQL)
-Truy cập vào MySQL CLI trên VPS:
-```bash
-sudo mysql
-```
+## 📋 THÔNG SỐ HỆ THỐNG MẪU
 
-Chạy các câu lệnh sau để tạo Cơ sở dữ liệu và tài khoản truy cập:
-```sql
-CREATE DATABASE IF NOT EXISTS doson_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'doson_user'@'localhost' IDENTIFIED BY 'MatKhauBaoMatCuaBan123!';
-GRANT ALL PRIVILEGES ON doson_db.* TO 'doson_user'@'localhost';
-FLUSH PRIVILEGES;
-EXIT;
-```
-
-*Lưu ý: Nhớ thay đổi mật khẩu `'MatKhauBaoMatCuaBan123!'` bằng mật khẩu an toàn của riêng bạn.*
+- **Domain chính**: `vtv8.today` và `www.vtv8.today`
+- **Thư mục dự án**: `/www/wwwroot/vtv8.today`
+- **Node.js Backend Port**: `3023`
+- **Database Engine**: MySQL 5.7+ / MariaDB 10.x
+- **Database Name**: `vtv8`
+- **Database User**: `vtv8`
+- **Tiến trình chạy ngầm**: PM2 (`vtv8-today`)
 
 ---
 
-## 3. Sao chép Mã nguồn lên VPS & Cấu hình môi trường
+## 🚀 CÁC BƯỚC TRIỂN KHAI CHI TIẾT
 
-1. Đưa mã nguồn lên thư mục `/var/www/doson-today` trên VPS (sử dụng Git Clone hoặc công cụ SFTP/MobaXterm).
+### BƯỚC 1: Trỏ DNS Tên Miền về IP VPS
+Truy cập trang quản lý DNS (Cloudflare, Namecheap, PA Việt Nam, MatBao...):
+1. **Record A**: `@` ➔ `IP_VPS_CỦA_BẠN`
+2. **Record A / CNAME**: `www` ➔ `vtv8.today` (hoặc `IP_VPS_CỦA_BẠN`)
+
+---
+
+### BƯỚC 2: Tạo Database MySQL trên aaPanel
+*(Nếu bạn đã tạo database `vtv8` trước đó ở bản dev thì có thể bỏ qua bước tạo mới và dùng chung database này)*
+
+1. Đăng nhập vào **aaPanel** ➔ Chọn menu **Databases** ➔ Nhấn **Add Database**:
+   - **DBName**: `vtv8`
+   - **Username**: `vtv8`
+   - **Password**: *(Tự đặt mật khẩu an toàn và lưu lại)*
+   - **Character Set**: `utf8mb4`
+2. Bấm **Submit**.
+
+---
+
+### BƯỚC 3: Tạo Website trên aaPanel
+1. Vào mục **Website** ➔ Bấm **Add site**:
+   - **Domain name**: 
+     ```text
+     vtv8.today
+     www.vtv8.today
+     ```
+   - **Root directory**: `/www/wwwroot/vtv8.today`
+   - **PHP Version**: Static hoặc PHP bất kỳ (vì chúng ta sẽ dùng Reverse Proxy sang Node.js)
+2. Bấm **Submit**.
+
+---
+
+### BƯỚC 4: Kéo Mã Nguồn từ GitHub về VPS
+Mở **Terminal** trên aaPanel (hoặc kết nối SSH qua PuTTY/MobaXterm) và chạy các lệnh:
+
+```bash
+# 1. Đi đến thư mục wwwroot
+cd /www/wwwroot
+
+# 2. Xóa các file mặc định vừa tạo
+rm -rf /www/wwwroot/vtv8.today
+
+# 3. Clone nhánh deploy trực tiếp về thư mục vtv8.today
+git clone -b deploy https://github.com/dev-adt/vtv8-today.git vtv8.today
+
+# 4. Truy cập vào thư mục
+cd /www/wwwroot/vtv8.today
+
+# 5. Cài đặt các thư viện cần thiết
+npm install --production
+```
+
+---
+
+### BƯỚC 5: Cấu hình Biến Môi Trường `.env` & Import Database
+
+1. Tạo file `.env`:
    ```bash
-   sudo mkdir -p /var/www/doson-today
-   sudo chown -R $USER:$USER /var/www/doson-today
-   # Clone hoặc tải code vào đây
-   ```
-
-2. Tạo file môi trường `.env`:
-   ```bash
-   cd /var/www/doson-today
    cp .env.example .env
    nano .env
    ```
-
-3. Điền thông tin cấu hình vào `.env`:
+2. Cấu hình nội dung file `.env` cho domain chính:
    ```env
-   PORT=3013
-   SITE_URL=https://doson.today
-   ALLOWED_ORIGIN=https://doson.today
+   NODE_ENV=production
+   PORT=3023
+   SITE_URL=https://vtv8.today
+   ALLOWED_ORIGIN=https://vtv8.today,https://www.vtv8.today
 
-   DB_HOST=localhost
+   DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_NAME=doson_db
-   DB_USER=doson_user
-   DB_PASSWORD=MatKhauBaoMatCuaBan123! # Mật khẩu bạn đã tạo ở Bước 2
+   DB_NAME=vtv8
+   DB_USER=vtv8
+   DB_PASSWORD=DienMatKhauDatabaseCuaBanO_Day
 
-   # Cấu hình API Key AI (Điền key nếu sử dụng AI Chatbot)
-   GEMINI_API_KEY=your_gemini_api_key
+   # Cấu hình API Key AI (Tùy chọn)
+   GEMINI_API_KEY=
    OPENAI_API_KEY=
    ```
-   *Nhấn `Ctrl + O` -> `Enter` để lưu, `Ctrl + X` để thoát Nano.*
+   *(Nhấn `Ctrl + O` ➔ `Enter` để lưu, `Ctrl + X` để thoát Nano)*
 
-4. Import cấu trúc DB vào database:
+3. Import cấu trúc bảng (nếu dùng database mới):
    ```bash
-   mysql -u doson_user -p doson_db < schema.sql
-   # Nhập mật khẩu database của bạn
+   mysql -u vtv8 -p vtv8 < schema.sql
    ```
+   *(Nhập mật khẩu database khi được hỏi)*
 
 ---
 
-## 4. Cài đặt Thư viện & Build Frontend
+### BƯỚC 6: Khởi chạy Ứng dụng với PM2
 
-1. Cài đặt thư viện cho Backend:
-   ```bash
-   cd /var/www/doson-today
-   npm install --production
-   ```
-
-2. Cài đặt thư viện & Build Frontend sang thư mục tĩnh `public`:
-   ```bash
-   cd /var/www/doson-today/frontend
-   npm install
-   npm run build
-   ```
-   *Lệnh `npm run build` sẽ tự động biên dịch toàn bộ mã nguồn Frontend React/Vite và xuất bản sang thư mục `/var/www/doson-today/public` để Backend phục vụ trực tiếp.*
-
----
-
-## 5. Khởi chạy Hệ thống bằng PM2 (Chạy ngầm)
-Chúng ta sẽ sử dụng file cấu hình `ecosystem.config.js` đã được thiết lập sẵn chạy trên cổng **3013**:
+Khởi chạy server chạy ngầm liên tục và tự khởi động lại khi VPS reboot:
 
 ```bash
-cd /var/www/doson-today
+cd /www/wwwroot/vtv8.today
 pm2 start ecosystem.config.js
-```
-
-Để đảm bảo hệ thống tự động khởi chạy lại khi VPS bị khởi động lại (Reboot):
-```bash
-pm2 startup
-# Hãy copy câu lệnh sudo mà PM2 in ra màn hình và chạy nó.
 pm2 save
+pm2 startup
 ```
 
-### Các lệnh quản trị PM2 hữu ích:
-- Xem log hoạt động: `pm2 logs doson-today`
-- Xem trạng thái: `pm2 status`
-- Khởi động lại: `pm2 restart doson-today`
+Kiểm tra trạng thái tiến trình:
+```bash
+pm2 status
+```
+*(Nếu thấy `vtv8-today` ở trạng thái `online` màu xanh lá là thành công)*
 
 ---
 
-## 6. Cấu hình Nginx Proxy & Cấp chứng chỉ SSL miễn phí
+### BƯỚC 7: Cài đặt SSL (HTTPS) & Reverse Proxy trên aaPanel
 
-1. Tạo file cấu hình Nginx cho tên miền `doson.today`:
-   ```bash
-   sudo nano /etc/nginx/sites-available/doson
-   ```
+1. **Cài đặt chứng chỉ SSL miễn phí**:
+   - Trong aaPanel, vào **Website** ➔ Bấm vào tên miền **`vtv8.today`**.
+   - Chọn mục **SSL** ➔ Chọn tab **Let's Encrypt**.
+   - Tích chọn cả `vtv8.today` và `www.vtv8.today`.
+   - Bấm **Apply**. Sau khi cấp chứng chỉ xong, gạt bật công tắc **Force HTTPS**.
 
-2. Copy nội dung cấu hình từ file `nginx.conf` đã được thiết lập trong mã nguồn (hoặc dán đoạn dưới đây vào):
-   ```nginx
-   server {
-       listen 80;
-       server_name doson.today www.doson.today;
+2. **Cấu hình Reverse Proxy**:
+   - Cũng trong cửa sổ cấu hình website đó, chọn mục **Reverse Proxy** ➔ Bấm **Add reverse proxy**:
+     - **Proxy Name**: `vtv8-proxy`
+     - **Target URL**: `http://127.0.0.1:3023`
+     - **Sent Domain**: `$host`
+   - Bấm **Save**.
 
-       # Nginx Gzip nén dữ liệu
-       gzip on;
-       gzip_types text/plain text/css application/json application/javascript;
-       gzip_min_length 1000;
+---
 
-       # Proxy ngược về Port 3013 của Backend Node.js
-       location /api/ {
-           proxy_pass         http://localhost:3013;
-           proxy_http_version 1.1;
-           proxy_set_header   Upgrade $http_upgrade;
-           proxy_set_header   Connection 'upgrade';
-           proxy_set_header   Host $host;
-           proxy_set_header   X-Real-IP $remote_addr;
-           proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-           proxy_cache_bypass $http_upgrade;
-           proxy_read_timeout 120s;
-       }
+### BƯỚC 8: Cấu hình chống dính Cache Nginx (Khuyên dùng)
+Để trình duyệt của người dùng luôn tự động tải bản cập nhật mới nhất, vào mục **Config** của website `vtv8.today` trên aaPanel và thêm đoạn sau vào trong block `server { ... }`:
 
-       # Phục vụ thư mục tĩnh public của Frontend SPA
-       location / {
-           root  /var/www/doson-today/public;
-           index index.html;
-           try_files $uri $uri/ /index.html;
-       }
+```nginx
+# Tắt cache cho file HTML gốc
+location ~* \.html$ {
+    expires -1;
+    add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+    proxy_pass http://127.0.0.1:3023;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
 
-       # Cache file tĩnh
-       location ~* \.(jpg|jpeg|png|gif|ico|css|js|woff2)$ {
-           root    /var/www/doson-today/public;
-           expires 30d;
-           add_header Cache-Control "public, immutable";
-       }
-   }
-   ```
+# Cache lâu cho tài sản tĩnh có mã hash
+location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
+    expires 30d;
+    add_header Cache-Control "public, no-transform";
+    proxy_pass http://127.0.0.1:3023;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+}
+```
 
-3. Kích hoạt cấu hình Nginx & khởi động lại:
-   ```bash
-   sudo ln -s /etc/nginx/sites-available/doson /etc/nginx/sites-enabled/
-   # Kiểm tra cú pháp xem có bị lỗi không
-   sudo nginx -t
-   # Nếu báo Successful, tải lại Nginx
-   sudo systemctl reload nginx
-   ```
+Bấm **Save**.
 
-4. Cấp chứng chỉ SSL HTTPS tự động miễn phí bằng Let's Encrypt:
-   *Đảm bảo bạn đã trỏ địa chỉ IP của VPS về tên miền `doson.today` và `www.doson.today` trên trang quản lý DNS tên miền.*
-   ```bash
-   sudo certbot --nginx -d doson.today -d www.doson.today
-   ```
-   *Làm theo hướng dẫn trên màn hình (chọn tự động redirect từ HTTP sang HTTPS). Khi hoàn tất, trang web của bạn sẽ tự động bảo mật HTTPS và truy cập mượt mà tại địa chỉ [https://doson.today](https://doson.today).*
+---
 
-Chúc bạn triển khai dự án thành công!
+## 🔄 LỆNH CẬP NHẬT CODE NHANH SAU NÀY
+
+Mỗi khi có tính năng hoặc code mới được đẩy lên GitHub, bạn chỉ cần mở Terminal VPS và chạy:
+
+```bash
+cd /www/wwwroot/vtv8.today
+git fetch origin deploy && git reset --hard origin/deploy
+pm2 restart vtv8-today
+```
