@@ -38,6 +38,10 @@ export const Home = () => {
   const [eventsList, setEventsList] = useState([]);
   const [loadingEvents, setLoadingEvents] = useState(true);
 
+  // Dynamic Live Members (up to 3 featured & high-tier members)
+  const [featuredMembers, setFeaturedMembers] = useState([]);
+  const [loadingMembers, setLoadingMembers] = useState(true);
+
   useEffect(() => {
     let isMounted = true;
     const fetchHomeData = async () => {
@@ -59,12 +63,22 @@ export const Home = () => {
             setEventsList(dataEvents.data);
           }
         }
+
+        // 3. Fetch top 3 featured / high-tier members
+        const resMembers = await fetch('/api/members?limit=3');
+        if (resMembers.ok) {
+          const dataMembers = await resMembers.json();
+          if (dataMembers.success && Array.isArray(dataMembers.data) && isMounted) {
+            setFeaturedMembers(dataMembers.data);
+          }
+        }
       } catch (e) {
         console.warn('Could not fetch homepage data:', e);
       } finally {
         if (isMounted) {
           setLoadingPosts(false);
           setLoadingEvents(false);
+          setLoadingMembers(false);
         }
       }
     };
@@ -1217,6 +1231,220 @@ export const Home = () => {
           >
             <i className="ti ti-calendar"></i>
             <span>{currentLang === 'en' ? 'View All Events' : 'Xem toàn bộ lịch sự kiện'}</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* 5.6 BLOCK DOANH NGHIỆP HỘI VIÊN TIÊU BIỂU (TỐI ĐA 3 HỘI VIÊN GHIM NỔI BẬT & GÓI CAO) */}
+      <section id="hoi-vien-tieu-bieu" style={{ padding: '5.5rem 1.5rem', backgroundColor: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
+        <div style={{ maxWidth: '1240px', margin: '0 auto', textAlign: 'center' }}>
+          <div style={{
+            fontSize: '12px',
+            fontWeight: '800',
+            letterSpacing: '1.5px',
+            color: '#dc2626',
+            textTransform: 'uppercase',
+            marginBottom: '0.6rem'
+          }}>
+            {currentLang === 'en' ? 'FEATURED MEMBER ENTERPRISES' : 'DOANH NGHIỆP HỘI VIÊN TIÊU BIỂU'}
+          </div>
+          <h2 style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: 'clamp(1.8rem, 3.2vw, 2.5rem)',
+            fontWeight: '800',
+            color: '#0f172a',
+            marginBottom: '1rem'
+          }}>
+            {currentLang === 'en' ? 'Verified Member Network & Tourism Partners' : 'Mạng lưới Doanh nghiệp & Đối tác Tiêu biểu'}
+          </h2>
+          <p style={{
+            color: '#475569',
+            fontSize: '15px',
+            maxWidth: '780px',
+            margin: '0 auto 3.5rem',
+            lineHeight: '1.7'
+          }}>
+            {currentLang === 'en'
+              ? 'Connect directly with premium hospitality, tour operators, resorts, and cultural culinary brands in the VTV8.today ecosystem.'
+              : 'Không gian giới thiệu các thương hiệu lưu trú, lữ hành, nghỉ dưỡng và ẩm thực du lịch uy tín trong hệ sinh thái VTV8.today.'}
+          </p>
+
+          {loadingMembers ? (
+            <div style={{ padding: '3rem', color: '#64748b' }}>
+              <i className="ti ti-loader-2 animate-spin" style={{ fontSize: '28px', marginRight: '8px' }}></i>
+              <span>{currentLang === 'en' ? 'Loading verified members...' : 'Đang tải danh bạ hội viên tiêu biểu...'}</span>
+            </div>
+          ) : featuredMembers.length === 0 ? (
+            <div style={{ padding: '3rem', backgroundColor: '#f8fafc', borderRadius: '12px', color: '#64748b', border: '1px solid #e2e8f0' }}>
+              <i className="ti ti-building-community" style={{ fontSize: '36px', marginBottom: '8px', display: 'block', color: '#cbd5e1' }}></i>
+              <span>{currentLang === 'en' ? 'No member profiles available.' : 'Chưa có thông tin hội viên doanh nghiệp.'}</span>
+            </div>
+          ) : (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+              gap: '2rem',
+              textAlign: 'left',
+              marginBottom: '3.5rem'
+            }}>
+              {featuredMembers.map((member) => {
+                const isPlat = member.tier === 'Platinum';
+                const isGold = member.tier === 'Gold';
+                const initials = member.name ? member.name.substring(0, 2).toUpperCase() : 'DN';
+
+                return (
+                  <div
+                    key={member.id}
+                    className="vtv8-dest-card"
+                    style={{
+                      cursor: 'pointer',
+                      border: isPlat ? '2px solid rgba(245, 158, 11, 0.4)' : '1px solid #e2e8f0',
+                      boxShadow: isPlat ? '0 10px 30px rgba(245, 158, 11, 0.12)' : '0 4px 20px rgba(0,0,0,0.04)'
+                    }}
+                    onClick={() => navigate(`/members?search=${encodeURIComponent(member.name)}`)}
+                  >
+                    <div style={{ padding: '1.8rem', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                      {/* Top Row: Avatar & Badges */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.2rem', gap: '12px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                          <div style={{
+                            width: '54px',
+                            height: '54px',
+                            borderRadius: '14px',
+                            background: isPlat 
+                              ? 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)' 
+                              : isGold 
+                              ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' 
+                              : 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
+                            color: '#ffffff',
+                            fontWeight: '800',
+                            fontSize: '18px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: isPlat ? '0 6px 16px rgba(255, 165, 0, 0.4)' : '0 4px 12px rgba(2, 132, 199, 0.3)',
+                            flexShrink: 0
+                          }}>
+                            {initials}
+                          </div>
+
+                          <div>
+                            <span style={{
+                              display: 'inline-block',
+                              fontSize: '10.5px',
+                              fontWeight: '800',
+                              padding: '2px 8px',
+                              borderRadius: '4px',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.5px',
+                              background: isPlat ? 'rgba(245, 158, 11, 0.15)' : isGold ? 'rgba(245, 158, 11, 0.1)' : 'rgba(2, 132, 199, 0.1)',
+                              color: isPlat || isGold ? '#d97706' : '#0284c7',
+                              border: `1px solid ${isPlat || isGold ? 'rgba(245, 158, 11, 0.3)' : 'rgba(2, 132, 199, 0.2)'}`
+                            }}>
+                              {isPlat ? '👑 Platinum' : isGold ? '⭐ Gold' : 'Silver'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Featured Star Pill if is_featured */}
+                        {member.is_featured === 1 && (
+                          <div style={{
+                            backgroundColor: '#f59e0b',
+                            color: '#ffffff',
+                            fontSize: '10.5px',
+                            fontWeight: '800',
+                            padding: '3px 8px',
+                            borderRadius: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            boxShadow: '0 2px 8px rgba(245, 158, 11, 0.4)'
+                          }}>
+                            <i className="ti ti-star-filled" style={{ fontSize: '11px' }}></i>
+                            <span>{currentLang === 'en' ? 'Featured' : 'Tiêu biểu'}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Company Name */}
+                      <h3 style={{
+                        fontSize: '17px',
+                        fontWeight: '800',
+                        color: '#0f172a',
+                        marginBottom: '0.6rem',
+                        lineHeight: '1.4',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        height: '46px'
+                      }}>
+                        {member.name}
+                      </h3>
+
+                      {/* Industry & City */}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '0.8rem', fontSize: '12px', color: '#64748b' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px', background: '#f8fafc', padding: '3px 8px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+                          <i className="ti ti-briefcase" style={{ color: '#0284c7' }}></i>
+                          <span style={{ maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{member.industry || 'Du lịch & Dịch vụ'}</span>
+                        </span>
+
+                        {member.city && (
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', background: '#f8fafc', padding: '3px 8px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+                            <i className="ti ti-map-pin" style={{ color: '#dc2626' }}></i>
+                            <span>{member.city}</span>
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Description */}
+                      <p style={{
+                        fontSize: '13px',
+                        color: '#64748b',
+                        lineHeight: '1.6',
+                        flex: 1,
+                        marginBottom: '1.4rem',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        height: '42px'
+                      }}>
+                        {member.description || 'Doanh nghiệp hội viên uy tín thuộc hệ sinh thái số du lịch, văn hóa VTV8.today.'}
+                      </p>
+
+                      {/* Bottom Button */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        borderTop: '1px solid #f1f5f9',
+                        paddingTop: '0.9rem',
+                        marginTop: 'auto'
+                      }}>
+                        <span style={{ fontSize: '11.5px', color: '#94a3b8', fontWeight: '500' }}>
+                          {currentLang === 'en' ? 'Verified Member' : 'Đã xác thực pháp nhân'}
+                        </span>
+                        <span style={{ fontSize: '12.5px', fontWeight: '700', color: '#0284c7', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span>{currentLang === 'en' ? 'View Showroom' : 'Xem Showroom'}</span>
+                          <i className="ti ti-arrow-right"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* View All Members Button */}
+          <Link
+            to="/members"
+            className="btn-vtv8-red"
+            style={{ fontSize: '14.5px', padding: '0.9rem 2.4rem' }}
+          >
+            <i className="ti ti-building"></i>
+            <span>{currentLang === 'en' ? 'View All Member Enterprises' : 'Xem tất cả doanh nghiệp hội viên'}</span>
           </Link>
         </div>
       </section>

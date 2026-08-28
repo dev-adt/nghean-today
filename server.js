@@ -1470,7 +1470,7 @@ app.get('/api/health', async (req, res) => {
 app.get('/api/members', async (req, res) => {
   try {
     await cleanupExpiredTiers();
-    const { status, tier, industry, search } = req.query;
+    const { status, tier, industry, search, limit } = req.query;
 
     // Kiểm tra quyền truy cập nâng cao
     let isAuthenticated = false;
@@ -1488,14 +1488,21 @@ app.get('/api/members', async (req, res) => {
     }
 
     // Nếu muốn xem danh sách chưa duyệt/tất cả -> Chỉ cho phép admin đã xác thực
-    if (status !== 'approved' && !isAuthenticated) {
+    if (status && status !== 'approved' && !isAuthenticated) {
       return res.status(401).json({ success: false, error: 'Cần quyền Admin để xem danh sách này.' });
     }
 
     let sql = 'SELECT * FROM members WHERE 1=1';
     const params = [];
 
-    if (status)   { sql += ' AND status = ?';   params.push(status); }
+    if (status) {
+      sql += ' AND status = ?';
+      params.push(status);
+    } else if (!isAuthenticated) {
+      // Mặc định công khai chỉ lấy các hội viên đã được duyệt
+      sql += " AND status = 'approved'";
+    }
+
     if (tier)     { sql += ' AND tier = ?';     params.push(tier); }
     if (industry) { sql += ' AND industry = ?'; params.push(industry); }
     if (search)   {
@@ -1503,7 +1510,24 @@ app.get('/api/members', async (req, res) => {
       const q = `%${search}%`;
       params.push(q, q, q);
     }
-    sql += ' ORDER BY created_at DESC';
+
+    // Ưu tiên: 1. Hội viên ghim nổi bật (is_featured = 1) -> 2. Hạng gói cao (Platinum > Gold > Silver) -> 3. Mới nhất
+    sql += `
+      ORDER BY 
+        is_featured DESC,
+        CASE tier
+          WHEN 'Platinum' THEN 1
+          WHEN 'Gold' THEN 2
+          WHEN 'Silver' THEN 3
+          ELSE 4
+        END ASC,
+        created_at DESC
+    `;
+
+    if (limit && Number(limit) > 0) {
+      sql += ' LIMIT ?';
+      params.push(Number(limit));
+    }
 
     const [rows] = await db.query(sql, params);
 
