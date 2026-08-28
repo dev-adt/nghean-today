@@ -299,69 +299,78 @@ export const Home = () => {
       {/* 1. HERO SECTION */}
       <section style={{
         position: 'relative',
-        background: 'radial-gradient(ellipse at 50% 30%, #0d2847 0%, #061626 70%, #030b14 100%)',
-        padding: '5.5rem 1.5rem 6.5rem',
+        background: `linear-gradient(180deg, rgba(6, 21, 39, 0.72) 0%, rgba(6, 21, 39, 0.82) 65%, rgba(3, 11, 20, 0.96) 100%), url('https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=2000&q=85') center/cover no-repeat`,
+        padding: '6.5rem 1.5rem 7.5rem',
         color: '#ffffff',
         textAlign: 'center',
         overflow: 'hidden',
         borderBottom: '1px solid rgba(255, 255, 255, 0.08)'
       }}>
+        {/* Ambient glow accent */}
         <div style={{
           position: 'absolute',
-          top: '-10%',
+          top: '-15%',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '700px',
-          height: '400px',
-          background: 'radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(2, 132, 199, 0) 70%)',
+          width: '800px',
+          height: '500px',
+          background: 'radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(2, 132, 199, 0) 70%)',
           pointerEvents: 'none'
         }} />
 
-        <div style={{ maxWidth: '960px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
+        <div style={{ maxWidth: '980px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: '8px',
-            padding: '5px 16px',
+            padding: '6px 18px',
             borderRadius: '20px',
-            backgroundColor: 'rgba(255, 255, 255, 0.08)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
+            backgroundColor: 'rgba(15, 23, 42, 0.65)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255, 255, 255, 0.18)',
             fontSize: '11.5px',
-            fontWeight: '700',
-            letterSpacing: '1.5px',
-            color: '#93c5fd',
+            fontWeight: '800',
+            letterSpacing: '2px',
+            color: '#38bdf8',
             textTransform: 'uppercase',
-            marginBottom: '1.5rem'
+            marginBottom: '1.8rem',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.3)'
           }}>
             <span>{currentLang === 'en' ? 'VTV8.TODAY • DIGITAL TOURISM & CULTURE ECOSYSTEM' : 'VTV8.TODAY • HỆ SINH THÁI SỐ DU LỊCH & VĂN HÓA'}</span>
           </div>
 
           <h1 style={{
-            fontFamily: "'Outfit', 'Plus Jakarta Sans', sans-serif",
-            fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
+            fontFamily: "'Outfit', 'Cinzel', serif",
+            fontSize: 'clamp(2.5rem, 6vw, 4.4rem)',
             fontWeight: '900',
-            lineHeight: '1.12',
-            letterSpacing: '-0.5px',
-            marginBottom: '1.5rem'
+            lineHeight: '1.15',
+            letterSpacing: '1px',
+            marginBottom: '1.6rem',
+            textTransform: 'uppercase',
+            textShadow: '0 4px 24px rgba(0,0,0,0.6)'
           }}>
             {currentLang === 'en' ? (
               <>
-                HONORING THE ROOTS<br />
+                <span style={{ color: '#ffffff', display: 'block', marginBottom: '4px' }}>HONORING THE ROOTS</span>
                 <span style={{
-                  background: 'linear-gradient(135deg, #ffffff 30%, #38bdf8 100%)',
+                  background: 'linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #d97706 100%)',
                   WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
+                  WebkitTextFillColor: 'transparent',
+                  display: 'inline-block',
+                  textShadow: 'none'
                 }}>
                   CONNECTING THE ERA
                 </span>
               </>
             ) : (
               <>
-                TÔN VINH CỘI NGUỒN<br />
+                <span style={{ color: '#ffffff', display: 'block', marginBottom: '4px' }}>TÔN VINH CỘI NGUỒN</span>
                 <span style={{
-                  background: 'linear-gradient(135deg, #ffffff 30%, #38bdf8 100%)',
+                  background: 'linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #d97706 100%)',
                   WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
+                  WebkitTextFillColor: 'transparent',
+                  display: 'inline-block',
+                  textShadow: 'none'
                 }}>
                   KẾT NỐI THỜI ĐẠI
                 </span>
@@ -370,12 +379,13 @@ export const Home = () => {
           </h1>
 
           <p style={{
-            fontSize: 'clamp(1rem, 1.8vw, 1.15rem)',
-            color: '#cbd5e1',
-            lineHeight: '1.65',
-            maxWidth: '780px',
-            margin: '0 auto 2.4rem',
-            fontWeight: '400'
+            fontSize: 'clamp(1.05rem, 2vw, 1.2rem)',
+            color: '#e2e8f0',
+            lineHeight: '1.7',
+            maxWidth: '820px',
+            margin: '0 auto 2.8rem',
+            fontWeight: '400',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)'
           }}>
             {currentLang === 'en'
               ? 'A platform promoting Vietnamese tourism, culture, heritage, and history; connecting destinations, businesses, members, and travelers worldwide.'
@@ -386,17 +396,31 @@ export const Home = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '14px',
+            gap: '16px',
             flexWrap: 'wrap',
-            marginBottom: '3rem'
+            marginBottom: '3.5rem'
           }}>
             <button
               onClick={() => {
                 const el = document.getElementById('danh-muc-noi-dung');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="btn-vtv8-red"
-              style={{ fontSize: '14.5px', padding: '0.85rem 1.8rem' }}
+              style={{
+                backgroundColor: '#dc2626',
+                backgroundImage: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '30px',
+                padding: '0.95rem 2.2rem',
+                fontSize: '15px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 16px rgba(220, 38, 38, 0.4)',
+                transition: 'all 0.2s ease'
+              }}
             >
               <i className="ti ti-compass"></i>
               <span>{currentLang === 'en' ? 'Explore Vietnam' : 'Khám phá Việt Nam'}</span>
@@ -404,8 +428,22 @@ export const Home = () => {
 
             <Link
               to="/register"
-              className="btn-vtv8-gold"
-              style={{ fontSize: '14.5px', padding: '0.85rem 1.8rem' }}
+              style={{
+                backgroundColor: '#d97706',
+                backgroundImage: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '30px',
+                padding: '0.95rem 2.2rem',
+                fontSize: '15px',
+                fontWeight: '700',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 16px rgba(217, 119, 6, 0.4)',
+                transition: 'all 0.2s ease'
+              }}
             >
               <i className="ti ti-user-plus"></i>
               <span>{currentLang === 'en' ? 'Become a Member' : 'Trở thành hội viên'}</span>
@@ -413,19 +451,19 @@ export const Home = () => {
           </div>
 
           <div style={{
-            maxWidth: '720px',
+            maxWidth: '750px',
             margin: '0 auto',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(16px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
+            backgroundColor: 'rgba(15, 23, 42, 0.75)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
             borderRadius: '50px',
-            padding: '6px 8px 6px 20px',
+            padding: '6px 8px 6px 22px',
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
-            boxShadow: '0 12px 32px rgba(0, 0, 0, 0.35)'
+            gap: '12px',
+            boxShadow: '0 16px 40px rgba(0, 0, 0, 0.45)'
           }}>
-            <i className="ti ti-search" style={{ color: '#93c5fd', fontSize: '18px', flexShrink: 0 }}></i>
+            <i className="ti ti-search" style={{ color: '#93c5fd', fontSize: '19px', flexShrink: 0 }}></i>
             <form onSubmit={handleSearchSubmit} style={{ flex: 1 }}>
               <input
                 type="text"
@@ -438,7 +476,7 @@ export const Home = () => {
                   border: 'none',
                   outline: 'none',
                   color: '#ffffff',
-                  fontSize: '14px',
+                  fontSize: '14.5px',
                   fontFamily: 'inherit'
                 }}
               />
@@ -451,18 +489,18 @@ export const Home = () => {
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '40px',
-                padding: '9px 18px',
-                fontSize: '13px',
+                padding: '10px 20px',
+                fontSize: '13.5px',
                 fontWeight: '700',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
                 flexShrink: 0,
-                boxShadow: '0 4px 12px rgba(220, 38, 38, 0.4)'
+                boxShadow: '0 4px 14px rgba(220, 38, 38, 0.4)'
               }}
             >
-              <i className="ti ti-sparkles" style={{ fontSize: '14px' }}></i>
+              <i className="ti ti-sparkles" style={{ fontSize: '15px' }}></i>
               <span>{currentLang === 'en' ? 'Ask AI Assistant' : 'Hỏi trợ lý AI'}</span>
             </button>
           </div>
