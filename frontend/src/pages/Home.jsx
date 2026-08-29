@@ -78,23 +78,39 @@ export const Home = () => {
         }
 
         // 4. Fetch posts for special AI topic category ("Làm chủ AI bứt phá tương lai")
-        const resAi = await fetch('/api/posts?category=' + encodeURIComponent('Làm chủ AI bứt phá tương lai'));
+        const resAi = await fetch('/api/posts?category=' + encodeURIComponent('Làm chủ AI bứt phá tương lai') + '&status=all');
         if (resAi.ok) {
           const dataAi = await resAi.json();
-          if (dataAi.success && Array.isArray(dataAi.data) && isMounted) {
-            const map = {
-              'AI phường xã': dataAi.data.find(p => (p.sub_category || '').toLowerCase().includes('phường xã')) || null,
-              'Orion': dataAi.data.find(p => (p.sub_category || '').toLowerCase().includes('orion')) || null,
-              'Edunow.today': dataAi.data.find(p => (p.sub_category || '').toLowerCase().includes('edunow')) || null,
-            };
-            // Fallback: nếu chưa khớp chính xác tên lĩnh vực con, gán lần lượt theo thứ tự bài viết
-            const assigned = Object.values(map).filter(Boolean);
-            const remaining = dataAi.data.filter(p => !assigned.includes(p));
-            if (!map['AI phường xã'] && remaining.length > 0) map['AI phường xã'] = remaining.shift();
-            if (!map['Orion'] && remaining.length > 0) map['Orion'] = remaining.shift();
-            if (!map['Edunow.today'] && remaining.length > 0) map['Edunow.today'] = remaining.shift();
-            setAiTopicPosts(map);
-          }
+          const allAiList = (dataAi.success && Array.isArray(dataAi.data)) ? dataAi.data : [];
+
+          // Tìm bài viết tương ứng với từng lĩnh vực con theo sub_category hoặc tiêu đề/nội dung
+          let pPhuongXa = allAiList.find(p => 
+            (p.sub_category || '').toLowerCase().includes('phường xã') || 
+            (p.title || '').toLowerCase().includes('phường xã') ||
+            (p.title || '').toLowerCase().includes('xã')
+          );
+          let pOrion = allAiList.find(p => 
+            (p.sub_category || '').toLowerCase().includes('orion') || 
+            (p.title || '').toLowerCase().includes('orion')
+          );
+          let pEdunow = allAiList.find(p => 
+            (p.sub_category || '').toLowerCase().includes('edunow') || 
+            (p.title || '').toLowerCase().includes('edunow') ||
+            (p.title || '').toLowerCase().includes('đào tạo')
+          );
+
+          // Nếu chưa gán hết 3 vị trí, lấp đầy bằng các bài viết khác trong chuyên mục AI
+          const usedIds = [pPhuongXa?.id, pOrion?.id, pEdunow?.id].filter(Boolean);
+          const remaining = allAiList.filter(p => !usedIds.includes(p.id));
+          if (!pPhuongXa && remaining.length > 0) pPhuongXa = remaining.shift();
+          if (!pOrion && remaining.length > 0) pOrion = remaining.shift();
+          if (!pEdunow && remaining.length > 0) pEdunow = remaining.shift();
+
+          setAiTopicPosts({
+            'AI phường xã': pPhuongXa || null,
+            'Orion': pOrion || null,
+            'Edunow.today': pEdunow || null,
+          });
         }
       } catch (e) {
         console.warn('Could not fetch homepage data:', e);

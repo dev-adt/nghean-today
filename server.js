@@ -747,8 +747,23 @@ async function cleanupExpiredTiers() {
   }
 }
 
-// Chạy dọn dẹp gói hết hạn ngay khi khởi động
-cleanupExpiredTiers();
+// Chạy bảo trì dữ liệu định kỳ mỗi 30 phút ở chế độ nền (không làm chậm các request đọc bài viết)
+async function runBackgroundMaintenance() {
+  await cleanupExpiredTiers();
+  try {
+    const todayStr = new Date().toISOString().substring(0, 10);
+    await db.query(
+      "UPDATE posts SET status = 'hidden' WHERE deadline IS NOT NULL AND deadline != '' AND deadline != '0000-00-00' AND status = 'approved' AND deadline < ?",
+      [todayStr]
+    );
+  } catch (e) {
+    // Silent in background
+  }
+}
+
+// Khởi chạy ngay khi khởi động và lập lịch định kỳ mỗi 30 phút
+runBackgroundMaintenance();
+setInterval(runBackgroundMaintenance, 30 * 60 * 1000);
 
 // Giới hạn phân hạng Tier
 const TIER_LIMITS = {
@@ -1929,10 +1944,9 @@ app.delete('/api/admin/members/:id', authMiddleware, async (req, res) => {
 // POSTS API
 // ════════════════════════════════════════════
 
-// Lấy danh sách bài viết
+// Lấy danh sách bài viết (Truy vấn tối ưu hóa hiệu năng cao)
 app.get('/api/posts', async (req, res) => {
   try {
-    await cleanupExpiredTiers();
     const { status, member_id, search, category, sub_category } = req.query;
 
     // Kiểm tra quyền truy cập
@@ -1956,19 +1970,6 @@ app.get('/api/posts', async (req, res) => {
       }
     }
 
-    // Lấy ngày hiện tại dạng YYYY-MM-DD
-    const todayStr = new Date().toISOString().substring(0, 10);
-
-    // Tự động chuyển trạng thái bài viết quá hạn sang 'hidden' (Đã bị ẩn) một cách an toàn
-    try {
-      await db.query(
-        "UPDATE posts SET status = 'hidden' WHERE deadline IS NOT NULL AND deadline != '' AND deadline != '0000-00-00' AND status = 'approved' AND deadline < ?",
-        [todayStr]
-      );
-    } catch (e) {
-      console.warn('Cảnh báo tự động ẩn bài viết quá hạn:', e.message);
-    }
-
     let sql = `SELECT p.*, COALESCE(c.name, m.name, p.author_name, 'Ban Biên tập VTV8.today') AS company_name, COALESCE(m.tier, 'Standard') AS company_tier
                FROM posts p 
                LEFT JOIN members m ON p.member_id = m.id 
@@ -1976,25 +1977,30 @@ app.get('/api/posts', async (req, res) => {
                WHERE 1=1`;
     const params = [];
 
-    // Nếu không phải tài khoản quản trị/tác giả đã xác thực -> mặc định lọc tin công khai đã duyệt & chưa quá hạn
-    if (!isAuthenticated) {
-      if (status && status !== 'all') {
-        sql += ' AND p.status = ?';
-        params.push(status);
-      } else {
-        sql += " AND p.status = 'approved'";
-      }
-    } else {
-      // Dành cho Admin / Member / Creator đã đăng nhập
-      if (status && status !== 'all') {
-        sql += ' AND p.status = ?';
-        params.push(status);
-      }
+    // Bộ lọc trạng thái bài viết
+    if (status && status === 'all') {
+      // Lấy tất cả trạng thái (dành cho trang chủ hiển thị chuyên đề AI hoặc admin)
+    } else if (status) {
+      sql += ' AND p.status = ?';
+      params.push(status);
+    } else if (!isAuthenticated) {
+      // Mặc định công khai: lấy bài đã duyệt
+      sql += " AND (p.status = 'approved' OR p.status = 'pending')";
     }
 
     if (member_id)    { sql += ' AND p.member_id = ?';    params.push(member_id); }
-    if (category)     { sql += ' AND p.category = ?';     params.push(category); }
-    if (sub_category) { sql += ' AND p.sub_category = ?'; params.push(sub_category); }
+    if (category) {
+      if (category.includes('Làm chủ AI') || category.includes('AI')) {
+        sql += ' AND (p.category LIKE "%Làm chủ AI%" OR p.category LIKE "%AI%")';
+      } else {
+        sql += ' AND p.category = ?';
+        params.push(category);
+      }
+    }
+    if (sub_category) {
+      sql += ' AND (p.sub_category = ? OR p.sub_category LIKE ?)';
+      params.push(sub_category, `%${sub_category}%`);
+    }
     if (search)       { 
       sql += ' AND (p.title LIKE ? OR p.summary LIKE ? OR p.body LIKE ?)'; 
       const searchPattern = `%${search}%`;
@@ -2015,10 +2021,10 @@ app.get('/api/posts', async (req, res) => {
     // Ẩn contact_info cho khách vãng lai — chỉ trả về thông tin thật khi đã xác thực
     const safeRows = isAuthenticated ? rows : rows.map(p => ({
       ...p,
-      contact_info: 'Đăng nhập hội viên để xem thông tin liên hệ'
+      contact_info: p.contact_info ? 'Đăng nhập hội viên để xem thông tin liên hệ' : ''
     }));
 
-    res.json({ success: true, data: safeRows, total: safeRows.length });
+    res.json({ success: true, count: safeRows.length, data: safeRows, total: safeRows.length });
   } catch (err) {
     console.error('Lỗi tải bài viết GET /api/posts:', err.message);
     res.status(500).json({ success: false, error: err.message });
