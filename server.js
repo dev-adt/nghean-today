@@ -76,6 +76,46 @@ async function generateUniquePostSlug(title, postId = null) {
   return slug;
 }
 
+// Helper sinh URL slug duy nhất cho chuyên mục
+async function generateUniqueCategorySlug(name, catId = null) {
+  let baseSlug = slugify(name) || 'chuyen-muc';
+  let slug = baseSlug;
+  let count = 1;
+  while (true) {
+    let query = 'SELECT id FROM categories WHERE slug = ?';
+    let params = [slug];
+    if (catId) {
+      query += ' AND id != ?';
+      params.push(catId);
+    }
+    const [rows] = await db.query(query, params);
+    if (!rows.length) break;
+    count++;
+    slug = `${baseSlug}-${count}`;
+  }
+  return slug;
+}
+
+// Helper sinh URL slug duy nhất cho lĩnh vực con
+async function generateUniqueSubCategorySlug(name, subId = null) {
+  let baseSlug = slugify(name) || 'linh-vuc';
+  let slug = baseSlug;
+  let count = 1;
+  while (true) {
+    let query = 'SELECT id FROM sub_categories WHERE slug = ?';
+    let params = [slug];
+    if (subId) {
+      query += ' AND id != ?';
+      params.push(subId);
+    }
+    const [rows] = await db.query(query, params);
+    if (!rows.length) break;
+    count++;
+    slug = `${baseSlug}-${count}`;
+  }
+  return slug;
+}
+
 // Helper đọc API key động từ config.json hoặc file .env
 function getAPIKey(provider) {
   const configPath = path.join(__dirname, 'config.json');
@@ -2509,13 +2549,20 @@ app.get('/api/categories', async (req, res) => {
       "SELECT * FROM sub_categories WHERE status = 'active' ORDER BY order_index ASC, id ASC"
     );
 
-    const data = categories.map(cat => ({
-      ...cat,
-      subcategories: subCategories
-        .filter(sub => sub.category_id === cat.id)
-        .map(sub => sub.name),
-      sub_objects: subCategories.filter(sub => sub.category_id === cat.id)
-    }));
+    const data = categories.map(cat => {
+      const subs = subCategories.filter(sub => sub.category_id === cat.id);
+      return {
+        id: cat.id,
+        name: cat.name,
+        name_en: cat.name_en,
+        slug: cat.slug,
+        order_index: cat.order_index,
+        status: cat.status,
+        subcategories: subs.map(sub => sub.name),
+        sub_categories: subs,
+        sub_objects: subs
+      };
+    });
 
     res.json({ success: true, data });
   } catch (err) {
@@ -2553,9 +2600,10 @@ app.post('/api/admin/categories', authMiddleware, async (req, res) => {
       return res.status(400).json({ success: false, error: 'Tên chuyên mục không được trống.' });
     }
 
+    const slug = await generateUniqueCategorySlug(name.trim());
     const [result] = await db.query(
-      'INSERT INTO categories (name, name_en, order_index, status) VALUES (?, ?, ?, ?)',
-      [name.trim(), name_en ? name_en.trim() : null, parseInt(order_index) || 0, status === 'inactive' ? 'inactive' : 'active']
+      'INSERT INTO categories (name, name_en, slug, order_index, status) VALUES (?, ?, ?, ?, ?)',
+      [name.trim(), name_en ? name_en.trim() : null, slug, parseInt(order_index) || 0, status === 'inactive' ? 'inactive' : 'active']
     );
 
     res.json({ success: true, id: result.insertId, message: 'Thêm Chuyên mục thành công.' });
@@ -2575,9 +2623,10 @@ app.put('/api/admin/categories/:id', authMiddleware, async (req, res) => {
       return res.status(400).json({ success: false, error: 'Tên chuyên mục không được trống.' });
     }
 
+    const slug = await generateUniqueCategorySlug(name.trim(), req.params.id);
     await db.query(
-      'UPDATE categories SET name = ?, name_en = ?, order_index = ?, status = ? WHERE id = ?',
-      [name.trim(), name_en ? name_en.trim() : null, parseInt(order_index) || 0, status === 'inactive' ? 'inactive' : 'active', req.params.id]
+      'UPDATE categories SET name = ?, name_en = ?, slug = ?, order_index = ?, status = ? WHERE id = ?',
+      [name.trim(), name_en ? name_en.trim() : null, slug, parseInt(order_index) || 0, status === 'inactive' ? 'inactive' : 'active', req.params.id]
     );
 
     res.json({ success: true, message: 'Cập nhật Chuyên mục thành công.' });
@@ -2622,9 +2671,10 @@ app.post('/api/admin/sub-categories', authMiddleware, async (req, res) => {
       return res.status(400).json({ success: false, error: 'Tên lĩnh vực con không được trống.' });
     }
 
+    const slug = await generateUniqueSubCategorySlug(name.trim());
     const [result] = await db.query(
-      'INSERT INTO sub_categories (category_id, name, name_en, order_index, status) VALUES (?, ?, ?, ?, ?)',
-      [category_id, name.trim(), name_en ? name_en.trim() : null, parseInt(order_index) || 0, status === 'inactive' ? 'inactive' : 'active']
+      'INSERT INTO sub_categories (category_id, name, name_en, slug, order_index, status) VALUES (?, ?, ?, ?, ?, ?)',
+      [category_id, name.trim(), name_en ? name_en.trim() : null, slug, parseInt(order_index) || 0, status === 'inactive' ? 'inactive' : 'active']
     );
 
     res.json({ success: true, id: result.insertId, message: 'Thêm Lĩnh vực con thành công.' });
@@ -2641,9 +2691,10 @@ app.put('/api/admin/sub-categories/:id', authMiddleware, async (req, res) => {
       return res.status(400).json({ success: false, error: 'Tên lĩnh vực con không được trống.' });
     }
 
+    const slug = await generateUniqueSubCategorySlug(name.trim(), req.params.id);
     await db.query(
-      'UPDATE sub_categories SET name = ?, name_en = ?, order_index = ?, status = ? WHERE id = ?',
-      [name.trim(), name_en ? name_en.trim() : null, parseInt(order_index) || 0, status === 'inactive' ? 'inactive' : 'active', req.params.id]
+      'UPDATE sub_categories SET name = ?, name_en = ?, slug = ?, order_index = ?, status = ? WHERE id = ?',
+      [name.trim(), name_en ? name_en.trim() : null, slug, parseInt(order_index) || 0, status === 'inactive' ? 'inactive' : 'active', req.params.id]
     );
 
     res.json({ success: true, message: 'Cập nhật Lĩnh vực con thành công.' });
@@ -3376,139 +3427,6 @@ app.delete('/api/admin/events/:id', authMiddleware, async (req, res) => {
   try {
     await db.query('DELETE FROM events WHERE id = ?', [req.params.id]);
     res.json({ success: true, message: 'Đã xóa sự kiện thành công.' });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// ════════════════════════════════════════════
-// CATEGORIES & SUB-CATEGORIES API
-// ════════════════════════════════════════════
-
-// Public categories tree with active subcategories
-app.get('/api/categories', async (req, res) => {
-  try {
-    const [categories] = await db.query(
-      'SELECT * FROM categories WHERE status = "active" ORDER BY order_index ASC, id ASC'
-    );
-    const [subCategories] = await db.query(
-      'SELECT * FROM sub_categories WHERE status = "active" ORDER BY order_index ASC, id ASC'
-    );
-
-    const data = categories.map(cat => {
-      const subs = subCategories.filter(s => s.category_id === cat.id);
-      return {
-        id: cat.id,
-        name: cat.name,
-        name_en: cat.name_en,
-        slug: cat.slug,
-        order_index: cat.order_index,
-        status: cat.status,
-        subcategories: subs.map(s => s.name),
-        sub_categories: subs
-      };
-    });
-
-    res.json({ success: true, data });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// Admin: Get all categories with subcategories
-app.get('/api/admin/categories', authMiddleware, async (req, res) => {
-  try {
-    const [categories] = await db.query(
-      'SELECT * FROM categories ORDER BY order_index ASC, id ASC'
-    );
-    const [subCategories] = await db.query(
-      'SELECT * FROM sub_categories ORDER BY order_index ASC, id ASC'
-    );
-
-    const data = categories.map(cat => {
-      const subs = subCategories.filter(s => s.category_id === cat.id);
-      return {
-        ...cat,
-        subcategories: subs.map(s => s.name),
-        sub_categories: subs
-      };
-    });
-
-    res.json({ success: true, data });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// Admin: Create category
-app.post('/api/admin/categories', authMiddleware, async (req, res) => {
-  const { name, name_en, order_index, status } = req.body;
-  if (!name) return res.status(400).json({ success: false, error: 'Thiếu tên chuyên mục.' });
-  try {
-    const slug = slugify(name);
-    const [result] = await db.query(
-      'INSERT INTO categories (name, name_en, slug, order_index, status) VALUES (?, ?, ?, ?, ?)',
-      [name, name_en || null, slug, order_index || 0, status || 'active']
-    );
-    res.json({ success: true, id: result.insertId, message: 'Thêm chuyên mục thành công.' });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// Admin: Update category
-app.put('/api/admin/categories/:id', authMiddleware, async (req, res) => {
-  const { name, name_en, order_index, status } = req.body;
-  if (!name) return res.status(400).json({ success: false, error: 'Thiếu tên chuyên mục.' });
-  try {
-    const slug = slugify(name);
-    await db.query(
-      'UPDATE categories SET name = ?, name_en = ?, slug = ?, order_index = ?, status = ? WHERE id = ?',
-      [name, name_en || null, slug, order_index || 0, status || 'active', req.params.id]
-    );
-    res.json({ success: true, message: 'Cập nhật chuyên mục thành công.' });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// Admin: Delete category
-app.delete('/api/admin/categories/:id', authMiddleware, async (req, res) => {
-  try {
-    await db.query('DELETE FROM categories WHERE id = ?', [req.params.id]);
-    res.json({ success: true, message: 'Đã xóa chuyên mục.' });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// Admin: Create subcategory
-app.post('/api/admin/sub-categories', authMiddleware, async (req, res) => {
-  const { category_id, name, name_en, order_index, status } = req.body;
-  if (!category_id || !name) return res.status(400).json({ success: false, error: 'Thiếu chuyên mục cha hoặc tên lĩnh vực con.' });
-  try {
-    const slug = slugify(name);
-    const [result] = await db.query(
-      'INSERT INTO sub_categories (category_id, name, name_en, slug, order_index, status) VALUES (?, ?, ?, ?, ?, ?)',
-      [category_id, name, name_en || null, slug, order_index || 0, status || 'active']
-    );
-    res.json({ success: true, id: result.insertId, message: 'Thêm lĩnh vực con thành công.' });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// Admin: Update subcategory
-app.put('/api/admin/sub-categories/:id', authMiddleware, async (req, res) => {
-  const { name, name_en, order_index, status } = req.body;
-  if (!name) return res.status(400).json({ success: false, error: 'Thiếu tên lĩnh vực con.' });
-  try {
-    const slug = slugify(name);
-    await db.query(
-      'UPDATE sub_categories SET name = ?, name_en = ?, slug = ?, order_index = ?, status = ? WHERE id = ?',
-      [name, name_en || null, slug, order_index || 0, status || 'active', req.params.id]
-    );
-    res.json({ success: true, message: 'Cập nhật lĩnh vực con thành công.' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
