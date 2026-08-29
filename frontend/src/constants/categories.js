@@ -91,6 +91,16 @@ export const CATEGORIES_DATA = [
       'Showroom số doanh nghiệp',
       'Nhu cầu hợp tác & Cung ứng'
     ]
+  },
+  {
+    id: 'lam-chu-ai-but-pha-tuong-lai',
+    name: 'Làm chủ AI bứt phá tương lai',
+    name_en: 'Master AI to Break Through into the Future',
+    subcategories: [
+      'AI phường xã',
+      'Orion',
+      'Edunow.today'
+    ]
   }
 ];
 
@@ -107,8 +117,12 @@ export const CATEGORY_TRANSLATIONS = {
   'Con người và làng nghề': { vi: 'Con người và làng nghề', en: 'People & Craft Villages' },
   'Du lịch bền vững': { vi: 'Du lịch bền vững', en: 'Sustainable Tourism' },
   'Doanh nghiệp & Dịch vụ': { vi: 'Doanh nghiệp & Dịch vụ', en: 'Enterprises & Services' },
+  'Làm chủ AI bứt phá tương lai': { vi: 'Làm chủ AI bứt phá tương lai', en: 'Master AI to Break Through into the Future' },
 
   // Sub Categories
+  'AI phường xã': { vi: 'AI phường xã', en: 'Commune & Ward AI' },
+  'Orion': { vi: 'Orion', en: 'Orion AI System' },
+  'Edunow.today': { vi: 'Edunow.today', en: 'Edunow.today Digital Skills' },
   'Bản sắc văn hóa vùng miền': { vi: 'Bản sắc văn hóa vùng miền', en: 'Regional Cultural Identity' },
   'Lễ hội & Tín ngưỡng': { vi: 'Lễ hội & Tín ngưỡng', en: 'Festivals & Beliefs' },
   'Tour văn hóa trải nghiệm': { vi: 'Tour văn hóa trải nghiệm', en: 'Experiential Cultural Tours' },

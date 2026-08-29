@@ -42,6 +42,10 @@ export const Home = () => {
   const [featuredMembers, setFeaturedMembers] = useState([]);
   const [loadingMembers, setLoadingMembers] = useState(true);
 
+  // Dynamic AI Topic Posts ('Làm chủ AI bứt phá tương lai': AI phường xã, Orion, Edunow.today)
+  const [aiTopicPosts, setAiTopicPosts] = useState({ 'AI phường xã': null, 'Orion': null, 'Edunow.today': null });
+  const [loadingAiPosts, setLoadingAiPosts] = useState(true);
+
   useEffect(() => {
     let isMounted = true;
     const fetchHomeData = async () => {
@@ -72,6 +76,26 @@ export const Home = () => {
             setFeaturedMembers(dataMembers.data);
           }
         }
+
+        // 4. Fetch posts for special AI topic category ("Làm chủ AI bứt phá tương lai")
+        const resAi = await fetch('/api/posts?category=' + encodeURIComponent('Làm chủ AI bứt phá tương lai'));
+        if (resAi.ok) {
+          const dataAi = await resAi.json();
+          if (dataAi.success && Array.isArray(dataAi.data) && isMounted) {
+            const map = {
+              'AI phường xã': dataAi.data.find(p => (p.sub_category || '').toLowerCase().includes('phường xã')) || null,
+              'Orion': dataAi.data.find(p => (p.sub_category || '').toLowerCase().includes('orion')) || null,
+              'Edunow.today': dataAi.data.find(p => (p.sub_category || '').toLowerCase().includes('edunow')) || null,
+            };
+            // Fallback: nếu chưa khớp chính xác tên lĩnh vực con, gán lần lượt theo thứ tự bài viết
+            const assigned = Object.values(map).filter(Boolean);
+            const remaining = dataAi.data.filter(p => !assigned.includes(p));
+            if (!map['AI phường xã'] && remaining.length > 0) map['AI phường xã'] = remaining.shift();
+            if (!map['Orion'] && remaining.length > 0) map['Orion'] = remaining.shift();
+            if (!map['Edunow.today'] && remaining.length > 0) map['Edunow.today'] = remaining.shift();
+            setAiTopicPosts(map);
+          }
+        }
       } catch (e) {
         console.warn('Could not fetch homepage data:', e);
       } finally {
@@ -79,6 +103,7 @@ export const Home = () => {
           setLoadingPosts(false);
           setLoadingEvents(false);
           setLoadingMembers(false);
+          setLoadingAiPosts(false);
         }
       }
     };
@@ -196,6 +221,15 @@ export const Home = () => {
         : 'Tôn vinh những nghệ nhân tâm huyết giữ lửa truyền thống và trải nghiệm các làng nghề thủ công mỹ nghệ.',
       img: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
       category: 'Con người và làng nghề'
+    },
+    {
+      id: 'lam-chu-ai-but-pha-tuong-lai',
+      title: currentLang === 'en' ? 'Master AI to Break Through into the Future' : 'Làm chủ AI bứt phá tương lai',
+      desc: currentLang === 'en'
+        ? 'Empowering digital transformation across wards, intelligent Orion ecosystems, and Edunow.today digital training.'
+        : 'Khám phá giải pháp chuyển đổi số cơ sở AI phường xã, nền tảng Orion thông minh và đào tạo kỹ năng số Edunow.today.',
+      img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+      category: 'Làm chủ AI bứt phá tương lai'
     }
   ];
 
@@ -749,6 +783,509 @@ export const Home = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3.5 CHUYÊN ĐỀ ĐẶC BIỆT: LÀM CHỦ AI BỨT PHÁ TƯƠNG LAI */}
+      <section id="chuyen-de-ai-tuong-lai" style={{
+        position: 'relative',
+        padding: '6rem 1.5rem',
+        background: 'linear-gradient(140deg, #030c1b 0%, #071930 45%, #0b2545 100%)',
+        color: '#ffffff',
+        overflow: 'hidden',
+        borderTop: '1px solid rgba(56, 189, 248, 0.15)',
+        borderBottom: '1px solid rgba(56, 189, 248, 0.15)'
+      }}>
+        {/* Background glow effects */}
+        <div style={{
+          position: 'absolute',
+          top: '-20%',
+          left: '20%',
+          width: '600px',
+          height: '600px',
+          background: 'radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, rgba(2, 132, 199, 0) 70%)',
+          pointerEvents: 'none'
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '-10%',
+          right: '15%',
+          width: '500px',
+          height: '500px',
+          background: 'radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0) 70%)',
+          pointerEvents: 'none'
+        }} />
+
+        <div style={{ maxWidth: '1240px', margin: '0 auto', position: 'relative', zIndex: 2, textAlign: 'center' }}>
+          {/* Header Badge */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '6px 18px',
+            borderRadius: '30px',
+            backgroundColor: 'rgba(14, 165, 233, 0.12)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(56, 189, 248, 0.4)',
+            fontSize: '11.5px',
+            fontWeight: '800',
+            letterSpacing: '1.5px',
+            color: '#38bdf8',
+            textTransform: 'uppercase',
+            marginBottom: '1rem',
+            boxShadow: '0 0 20px rgba(14, 165, 233, 0.25)'
+          }}>
+            <i className="ti ti-sparkles" style={{ fontSize: '14px', color: '#f59e0b' }}></i>
+            <span>{currentLang === 'en' ? 'SPECIAL TOPIC • MASTERING AI FOR THE FUTURE' : 'CHUYÊN ĐỀ ĐẶC BIỆT • LÀM CHỦ AI BỨT PHÁ TƯƠNG LAI'}</span>
+          </div>
+
+          <h2 style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: 'clamp(2rem, 3.6vw, 2.8rem)',
+            fontWeight: '900',
+            color: '#ffffff',
+            marginBottom: '1rem',
+            letterSpacing: '0.5px'
+          }}>
+            {currentLang === 'en' ? (
+              <>
+                <span>Master AI – </span>
+                <span style={{
+                  background: 'linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #f59e0b 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}>
+                  Break Through into the Future
+                </span>
+              </>
+            ) : (
+              <>
+                <span>Làm Chủ AI – </span>
+                <span style={{
+                  background: 'linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #f59e0b 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}>
+                  Bứt Phá Tương Lai
+                </span>
+              </>
+            )}
+          </h2>
+
+          <p style={{
+            color: '#94a3b8',
+            fontSize: '15px',
+            maxWidth: '820px',
+            margin: '0 auto 3.5rem',
+            lineHeight: '1.7'
+          }}>
+            {currentLang === 'en'
+              ? 'Pioneering knowledge space and digital transformation solutions across 3 pillars: Grassroots Commune & Ward AI, Intelligent Orion Platform, and Edunow.today Practical AI Training.'
+              : 'Không gian tri thức, giải pháp chuyển đổi số và công nghệ trí tuệ nhân tạo đột phá dẫn dắt kỷ nguyên số với 3 trụ cột: AI phường xã, Hệ sinh thái Orion và Đào tạo số Edunow.today.'}
+          </p>
+
+          {/* 3 Pillar Cards Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            gap: '2rem',
+            textAlign: 'left',
+            marginBottom: '3.5rem'
+          }}>
+            {/* PILLAR 1: AI phường xã */}
+            {(() => {
+              const subName = 'AI phường xã';
+              const post = aiTopicPosts[subName];
+              const title = post?.title || (currentLang === 'en' ? 'Commune & Ward AI: Comprehensive Grassroots Digital Transformation' : 'Ứng dụng AI cấp cơ sở: Chuyển đổi số toàn diện tại phường xã');
+              const summary = post?.summary || (currentLang === 'en'
+                ? 'Smart AI assistant solution for handling administrative procedures, looking up public policies, and supporting 24/7 public services for local citizens.'
+                : 'Mô hình trợ lý AI thông minh giải quyết thủ tục hành chính, tra cứu chính sách và hỗ trợ dịch vụ công trực tuyến 24/7 cho người dân.');
+              const img = post?.image_url || 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80';
+              const author = post?.company_name || 'Ban Biên tập VTV8.today';
+              const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
+              const targetUrl = post ? `/posts/${post.slug || post.id}` : `/posts?category=${encodeURIComponent('Làm chủ AI bứt phá tương lai')}&sub_category=${encodeURIComponent(subName)}`;
+
+              return (
+                <div
+                  className="vtv8-dest-card card-hover-effect"
+                  style={{
+                    backgroundColor: 'rgba(11, 37, 69, 0.75)',
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(56, 189, 248, 0.25)',
+                    borderRadius: '16px',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflow: 'hidden'
+                  }}
+                  onClick={() => navigate(targetUrl)}
+                >
+                  <div className="img-wrap" style={{ height: '210px', position: 'relative', overflow: 'hidden' }}>
+                    <img src={img} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{
+                      position: 'absolute',
+                      top: '12px',
+                      left: '12px',
+                      backgroundColor: 'rgba(2, 132, 199, 0.9)',
+                      backdropFilter: 'blur(8px)',
+                      color: '#ffffff',
+                      fontSize: '11px',
+                      fontWeight: '800',
+                      padding: '5px 12px',
+                      borderRadius: '20px',
+                      boxShadow: '0 4px 12px rgba(2, 132, 199, 0.4)',
+                      letterSpacing: '0.5px'
+                    }}>
+                      🏛️ {subName}
+                    </div>
+
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '0',
+                      left: '0',
+                      right: '0',
+                      height: '60px',
+                      background: 'linear-gradient(to top, rgba(11, 37, 69, 1), transparent)'
+                    }} />
+                  </div>
+
+                  <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#38bdf8', fontSize: '12px', fontWeight: '700', marginBottom: '0.5rem' }}>
+                      <i className="ti ti-cpu"></i>
+                      <span>{currentLang === 'en' ? 'Grassroots AI Technology' : 'Công nghệ AI Cơ sở'}</span>
+                    </div>
+
+                    <h3 style={{
+                      fontSize: '17px',
+                      fontWeight: '800',
+                      color: '#ffffff',
+                      marginBottom: '0.6rem',
+                      lineHeight: '1.4',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      height: '48px'
+                    }}>
+                      {title}
+                    </h3>
+
+                    <p style={{
+                      fontSize: '13px',
+                      color: '#94a3b8',
+                      lineHeight: '1.6',
+                      flex: 1,
+                      marginBottom: '1.4rem',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      height: '62px'
+                    }}>
+                      {summary}
+                    </p>
+
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                      paddingTop: '0.9rem',
+                      marginTop: 'auto'
+                    }}>
+                      <span style={{ fontSize: '11.5px', color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '160px' }}>
+                        ✍️ {author}
+                      </span>
+                      <span style={{ fontSize: '12.5px', fontWeight: '700', color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span>{currentLang === 'en' ? 'Read article' : 'Đọc bài viết'}</span>
+                        <i className="ti ti-arrow-right"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* PILLAR 2: Orion */}
+            {(() => {
+              const subName = 'Orion';
+              const post = aiTopicPosts[subName];
+              const title = post?.title || (currentLang === 'en' ? 'Orion Platform: Operational Optimization & Productivity Breakthrough' : 'Hệ sinh thái Orion: Tối ưu hóa vận hành & bứt phá hiệu suất với AI');
+              const summary = post?.summary || (currentLang === 'en'
+                ? 'A comprehensive artificial intelligence ecosystem for business automation, advanced deep data analysis, and modern digital connectivity.'
+                : 'Nền tảng trí tuệ nhân tạo toàn diện giúp tự động hóa quy trình nghiệp vụ, phân tích dữ liệu chuyên sâu và kết nối chuỗi giá trị số hiện đại.');
+              const img = post?.image_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';
+              const author = post?.company_name || 'Ban Biên tập VTV8.today';
+              const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
+              const targetUrl = post ? `/posts/${post.slug || post.id}` : `/posts?category=${encodeURIComponent('Làm chủ AI bứt phá tương lai')}&sub_category=${encodeURIComponent(subName)}`;
+
+              return (
+                <div
+                  className="vtv8-dest-card card-hover-effect"
+                  style={{
+                    backgroundColor: 'rgba(11, 37, 69, 0.75)',
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(245, 158, 11, 0.35)',
+                    borderRadius: '16px',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflow: 'hidden'
+                  }}
+                  onClick={() => navigate(targetUrl)}
+                >
+                  <div className="img-wrap" style={{ height: '210px', position: 'relative', overflow: 'hidden' }}>
+                    <img src={img} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{
+                      position: 'absolute',
+                      top: '12px',
+                      left: '12px',
+                      backgroundColor: 'rgba(217, 119, 6, 0.9)',
+                      backdropFilter: 'blur(8px)',
+                      color: '#ffffff',
+                      fontSize: '11px',
+                      fontWeight: '800',
+                      padding: '5px 12px',
+                      borderRadius: '20px',
+                      boxShadow: '0 4px 12px rgba(245, 158, 11, 0.4)',
+                      letterSpacing: '0.5px'
+                    }}>
+                      ⚡ {subName}
+                    </div>
+
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '0',
+                      left: '0',
+                      right: '0',
+                      height: '60px',
+                      background: 'linear-gradient(to top, rgba(11, 37, 69, 1), transparent)'
+                    }} />
+                  </div>
+
+                  <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#f59e0b', fontSize: '12px', fontWeight: '700', marginBottom: '0.5rem' }}>
+                      <i className="ti ti-robot"></i>
+                      <span>{currentLang === 'en' ? 'Intelligent AI Architecture' : 'Nền tảng AI Thông minh'}</span>
+                    </div>
+
+                    <h3 style={{
+                      fontSize: '17px',
+                      fontWeight: '800',
+                      color: '#ffffff',
+                      marginBottom: '0.6rem',
+                      lineHeight: '1.4',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      height: '48px'
+                    }}>
+                      {title}
+                    </h3>
+
+                    <p style={{
+                      fontSize: '13px',
+                      color: '#94a3b8',
+                      lineHeight: '1.6',
+                      flex: 1,
+                      marginBottom: '1.4rem',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      height: '62px'
+                    }}>
+                      {summary}
+                    </p>
+
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                      paddingTop: '0.9rem',
+                      marginTop: 'auto'
+                    }}>
+                      <span style={{ fontSize: '11.5px', color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '160px' }}>
+                        ✍️ {author}
+                      </span>
+                      <span style={{ fontSize: '12.5px', fontWeight: '700', color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span>{currentLang === 'en' ? 'Read article' : 'Đọc bài viết'}</span>
+                        <i className="ti ti-arrow-right"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* PILLAR 3: Edunow.today */}
+            {(() => {
+              const subName = 'Edunow.today';
+              const post = aiTopicPosts[subName];
+              const title = post?.title || (currentLang === 'en' ? 'Edunow.today: Hands-on AI Skills Training for the Next Generation' : 'Edunow.today: Phổ cập kỹ năng thực chiến AI cho tương lai');
+              const summary = post?.summary || (currentLang === 'en'
+                ? 'Educational programs and practical toolkits for mastering Generative AI and unlocking peak productivity for tomorrow’s leaders.'
+                : 'Chương trình đào tạo số hóa, nâng cao năng lực ứng dụng công nghệ AI và trang bị bộ công cụ kiến tạo tương lai số.');
+              const img = post?.image_url || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80';
+              const author = post?.company_name || 'Ban Biên tập VTV8.today';
+              const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
+              const targetUrl = post ? `/posts/${post.slug || post.id}` : `/posts?category=${encodeURIComponent('Làm chủ AI bứt phá tương lai')}&sub_category=${encodeURIComponent(subName)}`;
+
+              return (
+                <div
+                  className="vtv8-dest-card card-hover-effect"
+                  style={{
+                    backgroundColor: 'rgba(11, 37, 69, 0.75)',
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    borderRadius: '16px',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflow: 'hidden'
+                  }}
+                  onClick={() => navigate(targetUrl)}
+                >
+                  <div className="img-wrap" style={{ height: '210px', position: 'relative', overflow: 'hidden' }}>
+                    <img src={img} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{
+                      position: 'absolute',
+                      top: '12px',
+                      left: '12px',
+                      backgroundColor: 'rgba(16, 185, 129, 0.9)',
+                      backdropFilter: 'blur(8px)',
+                      color: '#ffffff',
+                      fontSize: '11px',
+                      fontWeight: '800',
+                      padding: '5px 12px',
+                      borderRadius: '20px',
+                      boxShadow: '0 4px 12px rgba(16, 185, 129, 0.4)',
+                      letterSpacing: '0.5px'
+                    }}>
+                      🎓 {subName}
+                    </div>
+
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '0',
+                      left: '0',
+                      right: '0',
+                      height: '60px',
+                      background: 'linear-gradient(to top, rgba(11, 37, 69, 1), transparent)'
+                    }} />
+                  </div>
+
+                  <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10b981', fontSize: '12px', fontWeight: '700', marginBottom: '0.5rem' }}>
+                      <i className="ti ti-school"></i>
+                      <span>{currentLang === 'en' ? 'Digital Skills & AI Education' : 'Đào tạo & Kỹ năng Số'}</span>
+                    </div>
+
+                    <h3 style={{
+                      fontSize: '17px',
+                      fontWeight: '800',
+                      color: '#ffffff',
+                      marginBottom: '0.6rem',
+                      lineHeight: '1.4',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      height: '48px'
+                    }}>
+                      {title}
+                    </h3>
+
+                    <p style={{
+                      fontSize: '13px',
+                      color: '#94a3b8',
+                      lineHeight: '1.6',
+                      flex: 1,
+                      marginBottom: '1.4rem',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      height: '62px'
+                    }}>
+                      {summary}
+                    </p>
+
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                      paddingTop: '0.9rem',
+                      marginTop: 'auto'
+                    }}>
+                      <span style={{ fontSize: '11.5px', color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '160px' }}>
+                        ✍️ {author}
+                      </span>
+                      <span style={{ fontSize: '12.5px', fontWeight: '700', color: '#10b981', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span>{currentLang === 'en' ? 'Read article' : 'Đọc bài viết'}</span>
+                        <i className="ti ti-arrow-right"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+
+          {/* Action CTAs */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
+            <Link
+              to={`/posts?category=${encodeURIComponent('Làm chủ AI bứt phá tương lai')}`}
+              style={{
+                backgroundColor: '#0284c7',
+                backgroundImage: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '30px',
+                padding: '0.9rem 2.2rem',
+                fontSize: '14.5px',
+                fontWeight: '700',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 16px rgba(2, 132, 199, 0.4)',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <i className="ti ti-layout-grid"></i>
+              <span>{currentLang === 'en' ? 'View All AI Topic Articles' : 'Xem toàn bộ bài viết chuyên mục AI'}</span>
+            </Link>
+
+            <Link
+              to="/ai-chat"
+              style={{
+                backgroundColor: 'rgba(15, 23, 42, 0.8)',
+                backdropFilter: 'blur(10px)',
+                color: '#38bdf8',
+                border: '1px solid rgba(56, 189, 248, 0.4)',
+                borderRadius: '30px',
+                padding: '0.9rem 2.2rem',
+                fontSize: '14.5px',
+                fontWeight: '700',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <i className="ti ti-sparkles"></i>
+              <span>{currentLang === 'en' ? 'Chat with AI Assistant' : 'Trò chuyện cùng Trợ lý AI'}</span>
+            </Link>
           </div>
         </div>
       </section>
