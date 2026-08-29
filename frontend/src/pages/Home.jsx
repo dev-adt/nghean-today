@@ -77,40 +77,37 @@ export const Home = () => {
           }
         }
 
-        // 4. Fetch posts for special AI topic category ("Làm chủ AI bứt phá tương lai")
-        const resAi = await fetch('/api/posts?category=' + encodeURIComponent('Làm chủ AI bứt phá tương lai') + '&status=all');
-        if (resAi.ok) {
-          const dataAi = await resAi.json();
-          const allAiList = (dataAi.success && Array.isArray(dataAi.data)) ? dataAi.data : [];
+        // 4. Fetch the 3 exact AI topic articles directly by slug
+        try {
+          const [resPhuongXa, resOrion, resEdunow] = await Promise.allSettled([
+            fetch('/api/posts/tro-ly-ai-phuong-xa'),
+            fetch('/api/posts/orion-chat-loc-tinh-hoa-cua-erp-multimodel-ai-va-nen-tang-xay-dung-ai-agent-de-tao-thanh-mot-he-dieu-hanh-quan-tri-thong-minh-danh-cho-doanh-nghiep'),
+            fetch('/api/posts/edunowai-giai-phap-tro-ly-ai-tuyen-sinh-thong-minh-danh-cho-cac-co-so-giao-duc')
+          ]);
 
-          // Tìm bài viết tương ứng với từng lĩnh vực con theo sub_category hoặc tiêu đề/nội dung
-          let pPhuongXa = allAiList.find(p => 
-            (p.sub_category || '').toLowerCase().includes('phường xã') || 
-            (p.title || '').toLowerCase().includes('phường xã') ||
-            (p.title || '').toLowerCase().includes('xã')
-          );
-          let pOrion = allAiList.find(p => 
-            (p.sub_category || '').toLowerCase().includes('orion') || 
-            (p.title || '').toLowerCase().includes('orion')
-          );
-          let pEdunow = allAiList.find(p => 
-            (p.sub_category || '').toLowerCase().includes('edunow') || 
-            (p.title || '').toLowerCase().includes('edunow') ||
-            (p.title || '').toLowerCase().includes('đào tạo')
-          );
+          const getPostData = async (resPromise) => {
+            if (resPromise.status === 'fulfilled' && resPromise.value.ok) {
+              const json = await resPromise.value.json();
+              if (json.success && json.data) return json.data;
+            }
+            return null;
+          };
 
-          // Nếu chưa gán hết 3 vị trí, lấp đầy bằng các bài viết khác trong chuyên mục AI
-          const usedIds = [pPhuongXa?.id, pOrion?.id, pEdunow?.id].filter(Boolean);
-          const remaining = allAiList.filter(p => !usedIds.includes(p.id));
-          if (!pPhuongXa && remaining.length > 0) pPhuongXa = remaining.shift();
-          if (!pOrion && remaining.length > 0) pOrion = remaining.shift();
-          if (!pEdunow && remaining.length > 0) pEdunow = remaining.shift();
+          const [postPhuongXa, postOrion, postEdunow] = await Promise.all([
+            getPostData(resPhuongXa),
+            getPostData(resOrion),
+            getPostData(resEdunow)
+          ]);
 
-          setAiTopicPosts({
-            'AI phường xã': pPhuongXa || null,
-            'Orion': pOrion || null,
-            'Edunow.today': pEdunow || null,
-          });
+          if (isMounted) {
+            setAiTopicPosts({
+              'AI phường xã': postPhuongXa,
+              'Orion': postOrion,
+              'Edunow.today': postEdunow,
+            });
+          }
+        } catch (e) {
+          console.warn('Could not fetch exact AI topic posts:', e);
         }
       } catch (e) {
         console.warn('Could not fetch homepage data:', e);
@@ -913,14 +910,14 @@ export const Home = () => {
             {(() => {
               const subName = 'AI phường xã';
               const post = aiTopicPosts[subName];
-              const title = post?.title || (currentLang === 'en' ? 'Commune & Ward AI: Comprehensive Grassroots Digital Transformation' : 'Ứng dụng AI cấp cơ sở: Chuyển đổi số toàn diện tại phường xã');
+              const title = post?.title || (currentLang === 'en' ? 'Commune & Ward AI: Comprehensive Grassroots Digital Transformation' : 'Trợ lý AI phường xã');
               const summary = post?.summary || (currentLang === 'en'
                 ? 'Smart AI assistant solution for handling administrative procedures, looking up public policies, and supporting 24/7 public services for local citizens.'
                 : 'Mô hình trợ lý AI thông minh giải quyết thủ tục hành chính, tra cứu chính sách và hỗ trợ dịch vụ công trực tuyến 24/7 cho người dân.');
               const img = post?.image_url || 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80';
               const author = post?.company_name || 'Ban Biên tập VTV8.today';
               const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
-              const targetUrl = post ? `/posts/${post.slug || post.id}` : `/posts?category=${encodeURIComponent('Làm chủ AI bứt phá tương lai')}&sub_category=${encodeURIComponent(subName)}`;
+              const targetUrl = '/posts/tro-ly-ai-phuong-xa';
 
               return (
                 <div
@@ -1028,14 +1025,14 @@ export const Home = () => {
             {(() => {
               const subName = 'Orion';
               const post = aiTopicPosts[subName];
-              const title = post?.title || (currentLang === 'en' ? 'Orion Platform: Operational Optimization & Productivity Breakthrough' : 'Hệ sinh thái Orion: Tối ưu hóa vận hành & bứt phá hiệu suất với AI');
+              const title = post?.title || (currentLang === 'en' ? 'Orion Platform: Operational Optimization & Productivity Breakthrough' : 'Orion: Chắt lọc tinh hoa của ERP, Multi-Model AI và nền tảng AI Agent');
               const summary = post?.summary || (currentLang === 'en'
                 ? 'A comprehensive artificial intelligence ecosystem for business automation, advanced deep data analysis, and modern digital connectivity.'
                 : 'Nền tảng trí tuệ nhân tạo toàn diện giúp tự động hóa quy trình nghiệp vụ, phân tích dữ liệu chuyên sâu và kết nối chuỗi giá trị số hiện đại.');
               const img = post?.image_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';
               const author = post?.company_name || 'Ban Biên tập VTV8.today';
               const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
-              const targetUrl = post ? `/posts/${post.slug || post.id}` : `/posts?category=${encodeURIComponent('Làm chủ AI bứt phá tương lai')}&sub_category=${encodeURIComponent(subName)}`;
+              const targetUrl = '/posts/orion-chat-loc-tinh-hoa-cua-erp-multimodel-ai-va-nen-tang-xay-dung-ai-agent-de-tao-thanh-mot-he-dieu-hanh-quan-tri-thong-minh-danh-cho-doanh-nghiep';
 
               return (
                 <div
@@ -1143,14 +1140,14 @@ export const Home = () => {
             {(() => {
               const subName = 'Edunow.today';
               const post = aiTopicPosts[subName];
-              const title = post?.title || (currentLang === 'en' ? 'Edunow.today: Hands-on AI Skills Training for the Next Generation' : 'Edunow.today: Phổ cập kỹ năng thực chiến AI cho tương lai');
+              const title = post?.title || (currentLang === 'en' ? 'EDUNOW.AI: Smart Admissions AI Assistant Solution for Education' : 'EDUNOW.AI Giải pháp Trợ lý AI tuyển sinh thông minh dành cho các cơ sở giáo dục');
               const summary = post?.summary || (currentLang === 'en'
                 ? 'Educational programs and practical toolkits for mastering Generative AI and unlocking peak productivity for tomorrow’s leaders.'
                 : 'Chương trình đào tạo số hóa, nâng cao năng lực ứng dụng công nghệ AI và trang bị bộ công cụ kiến tạo tương lai số.');
               const img = post?.image_url || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80';
               const author = post?.company_name || 'Ban Biên tập VTV8.today';
               const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
-              const targetUrl = post ? `/posts/${post.slug || post.id}` : `/posts?category=${encodeURIComponent('Làm chủ AI bứt phá tương lai')}&sub_category=${encodeURIComponent(subName)}`;
+              const targetUrl = '/posts/edunowai-giai-phap-tro-ly-ai-tuyen-sinh-thong-minh-danh-cho-cac-co-so-giao-duc';
 
               return (
                 <div

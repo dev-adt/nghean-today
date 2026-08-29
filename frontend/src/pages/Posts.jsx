@@ -65,21 +65,30 @@ export const Posts = () => {
   ];
 
   useEffect(() => {
+    let isMounted = true;
     const loadPosts = async () => {
       try {
-        const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
-        const res = await fetch('/api/posts?status=approved', { headers });
+        const activeToken = token || localStorage.getItem('doson_creator_token') || localStorage.getItem('doson_member_token') || localStorage.getItem('doson_admin_token');
+        const headers = activeToken ? { 'Authorization': 'Bearer ' + activeToken } : {};
+        const res = await fetch('/api/posts?status=all', { headers });
         if (!res.ok) throw new Error('Không thể tải danh sách bài viết');
         const data = await res.json();
-        setPosts(data.data || []);
+        if (isMounted) {
+          setPosts(data.data || []);
+        }
       } catch (err) {
         console.error(err);
-        setError(err.message);
+        if (isMounted) {
+          setError(err.message);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
     loadPosts();
+    return () => { isMounted = false; };
   }, [token]);
 
   // Platinum slider posts (latest 5)
