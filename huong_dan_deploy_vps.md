@@ -178,5 +178,5 @@ Mỗi khi có tính năng hoặc code mới được đẩy lên GitHub, bạn c
 ```bash
 cd /www/wwwroot/vtv8.today
 git fetch origin deploy && git reset --hard origin/deploy
-pm2 restart vtv8-today
+pm2 restart all
 ```
