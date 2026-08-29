@@ -439,12 +439,47 @@ db.query(`
     `);
     console.log('✅ Bảng content_creators và creator_sessions đã sẵn sàng');
 
-    // Thêm cột creator_id vào bảng posts & đảm bảo member_id cho phép NULL
-    const [creatorIdCols] = await db.query("SHOW COLUMNS FROM posts LIKE 'creator_id'");
-    if (!creatorIdCols.length) {
+    // Đảm bảo bảng posts có đầy đủ các cột mới
+    const [existingPostCols] = await db.query("SHOW COLUMNS FROM posts");
+    const postColNames = existingPostCols.map(c => c.Field);
+
+    if (!postColNames.includes('creator_id')) {
       await db.query("ALTER TABLE posts ADD COLUMN creator_id INT DEFAULT NULL AFTER member_id, ADD INDEX idx_creator (creator_id)");
       console.log('✅ Đã thêm cột creator_id vào bảng posts');
     }
+    if (!postColNames.includes('slug')) {
+      await db.query("ALTER TABLE posts ADD COLUMN slug VARCHAR(255) DEFAULT NULL AFTER title");
+      console.log('✅ Đã thêm cột slug vào bảng posts');
+    }
+    if (!postColNames.includes('sub_category')) {
+      await db.query("ALTER TABLE posts ADD COLUMN sub_category VARCHAR(100) DEFAULT NULL AFTER category");
+      console.log('✅ Đã thêm cột sub_category vào bảng posts');
+    }
+    if (!postColNames.includes('source_url')) {
+      await db.query("ALTER TABLE posts ADD COLUMN source_url VARCHAR(500) DEFAULT NULL AFTER body");
+      console.log('✅ Đã thêm cột source_url vào bảng posts');
+    }
+    if (!postColNames.includes('tags')) {
+      await db.query("ALTER TABLE posts ADD COLUMN tags JSON DEFAULT NULL AFTER source_url");
+      console.log('✅ Đã thêm cột tags vào bảng posts');
+    }
+    if (!postColNames.includes('deadline')) {
+      await db.query("ALTER TABLE posts ADD COLUMN deadline DATE DEFAULT NULL AFTER contact_info");
+      console.log('✅ Đã thêm cột deadline vào bảng posts');
+    }
+    if (!postColNames.includes('featured_requested')) {
+      await db.query("ALTER TABLE posts ADD COLUMN featured_requested TINYINT(1) DEFAULT 0 AFTER is_featured");
+      console.log('✅ Đã thêm cột featured_requested vào bảng posts');
+    }
+    if (!postColNames.includes('reject_reason')) {
+      await db.query("ALTER TABLE posts ADD COLUMN reject_reason TEXT DEFAULT NULL AFTER featured_requested");
+      console.log('✅ Đã thêm cột reject_reason vào bảng posts');
+    }
+    if (!postColNames.includes('published_at')) {
+      await db.query("ALTER TABLE posts ADD COLUMN published_at TIMESTAMP NULL DEFAULT NULL AFTER reject_reason");
+      console.log('✅ Đã thêm cột published_at vào bảng posts');
+    }
+
     try {
       await db.query("ALTER TABLE posts MODIFY COLUMN member_id INT DEFAULT NULL");
     } catch (e) {
