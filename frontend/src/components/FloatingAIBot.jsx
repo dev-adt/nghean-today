@@ -9,7 +9,7 @@ export const FloatingAIBot = () => {
     <Link
       to="/ai-chat"
       className="floating-ai-bot"
-      title={t('floating_ai_tooltip') || "Trợ lý AI VTV8.today"}
+      title={t('floating_ai_tooltip') || "Trợ lý AI VTV8.vn"}
       style={{
         position: 'fixed',
         right: '20px',

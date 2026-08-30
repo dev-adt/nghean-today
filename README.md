@@ -1,12 +1,12 @@
-# VTV8.today — Hệ sinh thái số Du lịch, Văn hóa & Di sản Việt Nam
+# VTV8.vn — Hệ sinh thái số Du lịch, Văn hóa & Di sản Việt Nam
 
-Nền tảng số **VTV8.today** quảng bá du lịch, văn hóa, di sản và lịch sử Việt Nam; kết nối điểm đến, doanh nghiệp, cộng đồng hội viên và du khách trong nước, quốc tế cùng Trợ lý AI đa ngôn ngữ 24/7.
+Nền tảng số **VTV8.vn** quảng bá du lịch, văn hóa, di sản và lịch sử Việt Nam; kết nối điểm đến, doanh nghiệp, cộng đồng hội viên và du khách trong nước, quốc tế cùng Trợ lý AI đa ngôn ngữ 24/7.
 
 ---
 
 ## 📋 Thông số Cấu hình Mặc định (Production / Staging)
 
-- **Domain**: `dev.vtv8.today`
+- **Domain**: `dev.vtv8.vn`
 - **Backend Node.js Port**: `3023`
 - **Database Engine**: MySQL 5.7+ / MariaDB 10.x
 - **Database Name**: `vtv8`
@@ -30,7 +30,7 @@ vtv8-today/
 ├── package.json                 # Dependencies cho Node.js Backend
 │
 ├── frontend/                    # Mã nguồn React Frontend (Vite + React 18/Router 7)
-│   ├── src/                     # Toàn bộ Components, Pages, Contexts của VTV8.today
+│   ├── src/                     # Toàn bộ Components, Pages, Contexts của VTV8.vn
 │   ├── index.html               # Trang HTML gốc tích hợp meta anti-cache
 │   ├── vite.config.js           # Cấu hình Vite xuất bundle sang ../public
 │   └── package.json             # Dependencies cho Frontend
@@ -60,10 +60,10 @@ Mở **Terminal** trên aaPanel (hoặc SSH vào VPS) và chạy các lệnh sau
 cd /www/wwwroot
 
 # 2. Clone mã nguồn từ branch 'deploy' (đã có sẵn thư mục public và schema.sql)
-git clone -b deploy https://github.com/dev-adt/vtv8-today.git dev.vtv8.today
+git clone -b deploy https://github.com/dev-adt/vtv8-today.git dev.vtv8.vn
 
 # 3. Đi vào thư mục dự án
-cd /www/wwwroot/dev.vtv8.today
+cd /www/wwwroot/dev.vtv8.vn
 
 # 4. Import cấu trúc bảng vào MySQL bằng lệnh Terminal (nhập mật khẩu DB khi được hỏi):
 mysql -u vtv8 -p vtv8 < schema.sql
@@ -91,8 +91,8 @@ nano .env
 
 ```env
 PORT=3023
-SITE_URL=https://dev.vtv8.today
-ALLOWED_ORIGIN=https://dev.vtv8.today
+SITE_URL=https://dev.vtv8.vn
+ALLOWED_ORIGIN=https://dev.vtv8.vn
 
 # Cấu hình MySQL đã tạo ở Bước 1
 DB_HOST=localhost
@@ -129,18 +129,18 @@ pm2 status
 pm2 logs vtv8-today
 ```
 
-*(Bạn sẽ thấy dòng log: `VTV8.today server đang chạy tại http://localhost:3023`)*
+*(Bạn sẽ thấy dòng log: `VTV8.vn server đang chạy tại http://localhost:3023`)*
 
 ---
 
 ### Bước 5: Tạo Website & Cấu hình Nginx Reverse Proxy trên aaPanel
 1. Vào aaPanel > **Website** > Nhấn **Add site**:
-   - **Domain**: `dev.vtv8.today`
-   - **Root directory**: `/www/wwwroot/dev.vtv8.today/public`
+   - **Domain**: `dev.vtv8.vn`
+   - **Root directory**: `/www/wwwroot/dev.vtv8.vn/public`
    - **Database**: *No* (vì đã tạo ở Bước 1)
    - **PHP version**: *Pure / Static* (hoặc bất kỳ vì ta dùng Node.js)
 2. Cấu hình **SSL (HTTPS)**:
-   - Trong danh sách Website, click vào tên miền `dev.vtv8.today` > chọn tab **SSL** > chọn **Let's Encrypt** > tích chọn domain và bấm **Apply** để cấp chứng chỉ SSL miễn phí tự động gia hạn.
+   - Trong danh sách Website, click vào tên miền `dev.vtv8.vn` > chọn tab **SSL** > chọn **Let's Encrypt** > tích chọn domain và bấm **Apply** để cấp chứng chỉ SSL miễn phí tự động gia hạn.
    - Bật công tắc **Force HTTPS**.
 3. Cấu hình **Nginx Config (Chống dính cache & Proxy port 3023)**:
    - Cũng trong bảng cài đặt website đó, chuyển sang tab **Config File**.
@@ -150,10 +150,10 @@ pm2 logs vtv8-today
 server {
     listen 80;
     listen 443 ssl http2;
-    server_name dev.vtv8.today;
+    server_name dev.vtv8.vn;
 
     # Root trỏ vào thư mục public chứa file tĩnh
-    root /www/wwwroot/dev.vtv8.today/public;
+    root /www/wwwroot/dev.vtv8.vn/public;
     index index.html;
 
     # SSL Cert do aaPanel tự tạo
@@ -209,7 +209,7 @@ Nhờ có quy trình CI/CD tự động bằng GitHub Actions:
 2. Khi muốn cập nhật phiên bản mới nhất lên VPS, bạn chỉ cần mở Terminal trên VPS và chạy 2 lệnh:
 
 ```bash
-cd /www/wwwroot/dev.vtv8.today
+cd /www/wwwroot/dev.vtv8.vn
 git pull origin deploy
 pm2 restart vtv8-today
 ```

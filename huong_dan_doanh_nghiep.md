@@ -1,6 +1,6 @@
-# Hướng dẫn Doanh nghiệp: Đăng ký & Sử dụng các tính năng VTV8.today
+# Hướng dẫn Doanh nghiệp: Đăng ký & Sử dụng các tính năng VTV8.vn
 
-Chào mừng doanh nghiệp của bạn tham gia vào hệ sinh thái **VTV8.today** - nền tảng số du lịch, văn hóa & di sản Việt Nam, kết nối giao thương và ứng dụng Trợ lý AI chuyên sâu.
+Chào mừng doanh nghiệp của bạn tham gia vào hệ sinh thái **VTV8.vn** - nền tảng số du lịch, văn hóa & di sản Việt Nam, kết nối giao thương và ứng dụng Trợ lý AI chuyên sâu.
 
 #### Ảnh demo toàn bộ trang chủ web
 

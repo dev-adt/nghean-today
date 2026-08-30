@@ -314,10 +314,10 @@ export const Home = () => {
   // 5 FAQs
   const FAQS = [
     {
-      q: currentLang === 'en' ? 'What content does VTV8.today provide?' : 'VTV8.today cung cấp những nội dung gì?',
+      q: currentLang === 'en' ? 'What content does VTV8.vn provide?' : 'VTV8.vn cung cấp những nội dung gì?',
       a: currentLang === 'en'
-        ? 'VTV8.today is a dedicated digital ecosystem for Vietnamese tourism, culture, heritage, and history (especially Central & Central Highlands, expanding nationwide). It provides specialized articles, interactive digital maps, curated itineraries, travel guides, event/festival updates, and digital showrooms for verified tourism businesses.'
-        : 'VTV8.today là hệ sinh thái số chuyên sâu về du lịch, văn hóa, di sản và lịch sử Việt Nam (đặc biệt là miền Trung - Tây Nguyên và mở rộng toàn quốc). Nền tảng cung cấp các bài viết chuyên đề, bản đồ số, gợi ý hành trình, cẩm nang trải nghiệm, tin tức sự kiện lễ hội và danh bạ showroom số của các doanh nghiệp du lịch uy tín.'
+        ? 'VTV8.vn is a dedicated digital ecosystem for Vietnamese tourism, culture, heritage, and history (especially Central & Central Highlands, expanding nationwide). It provides specialized articles, interactive digital maps, curated itineraries, travel guides, event/festival updates, and digital showrooms for verified tourism businesses.'
+        : 'VTV8.vn là hệ sinh thái số chuyên sâu về du lịch, văn hóa, di sản và lịch sử Việt Nam (đặc biệt là miền Trung - Tây Nguyên và mở rộng toàn quốc). Nền tảng cung cấp các bài viết chuyên đề, bản đồ số, gợi ý hành trình, cẩm nang trải nghiệm, tin tức sự kiện lễ hội và danh bạ showroom số của các doanh nghiệp du lịch uy tín.'
     },
     {
       q: currentLang === 'en' ? 'Who can register as a member?' : 'Ai có thể đăng ký trở thành hội viên?',
@@ -334,8 +334,8 @@ export const Home = () => {
     {
       q: currentLang === 'en' ? 'What knowledge sources power the AI Assistant?' : 'Trợ lý AI sử dụng những nguồn dữ liệu nào?',
       a: currentLang === 'en'
-        ? 'The VTV8.today AI Assistant is trained and cross-referenced with verified cultural and historical knowledge archives from VTV8, combined with real-time destination databases, event calendars, and authenticated member profiles.'
-        : 'Trợ lý AI VTV8.today được huấn luyện và đối chiếu từ nguồn tri thức chuẩn xác về lịch sử, văn hóa, di sản đã được kiểm duyệt của VTV8, kết hợp với dữ liệu thời gian thực từ cơ sở dữ liệu điểm đến, lịch sự kiện và hồ sơ doanh nghiệp đã xác minh.'
+        ? 'The VTV8.vn AI Assistant is trained and cross-referenced with verified cultural and historical knowledge archives from VTV8, combined with real-time destination databases, event calendars, and authenticated member profiles.'
+        : 'Trợ lý AI VTV8.vn được huấn luyện và đối chiếu từ nguồn tri thức chuẩn xác về lịch sử, văn hóa, di sản đã được kiểm duyệt của VTV8, kết hợp với dữ liệu thời gian thực từ cơ sở dữ liệu điểm đến, lịch sự kiện và hồ sơ doanh nghiệp đã xác minh.'
     },
     {
       q: currentLang === 'en' ? 'How to submit media and destination collaboration proposals?' : 'Làm thế nào để đề nghị hợp tác truyền thông?',
@@ -349,11 +349,11 @@ export const Home = () => {
     <div className="vtv8-homepage-wrapper" style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#0f172a' }}>
       <SEOHead
         title={currentLang === 'en' 
-          ? "VTV8.today — Honoring Heritage, Connecting the Era | Tourism, Culture & Heritage Portal"
-          : "VTV8.today — Tôn vinh cội nguồn, kết nối thời đại | Chuyên trang Du lịch, Văn hóa, Di sản"}
+          ? "VTV8.vn — Honoring Heritage, Connecting the Era | Tourism, Culture & Heritage Portal"
+          : "VTV8.vn — Tôn vinh cội nguồn, kết nối thời đại | Chuyên trang Du lịch, Văn hóa, Di sản"}
         description={currentLang === 'en'
-          ? "Digital platform VTV8.today connects Vietnamese culture, heritage, history and tourism with businesses, members and global travelers."
-          : "Nền tảng số VTV8.today kết nối văn hóa, di sản, lịch sử và du lịch Việt Nam với cộng đồng hội viên, doanh nghiệp và du khách."}
+          ? "Digital platform VTV8.vn connects Vietnamese culture, heritage, history and tourism with businesses, members and global travelers."
+          : "Nền tảng số VTV8.vn kết nối văn hóa, di sản, lịch sử và du lịch Việt Nam với cộng đồng hội viên, doanh nghiệp và du khách."}
       />
       <Navbar />
 
@@ -397,7 +397,7 @@ export const Home = () => {
             marginBottom: '1.8rem',
             boxShadow: '0 4px 16px rgba(0,0,0,0.3)'
           }}>
-            <span>{currentLang === 'en' ? 'VTV8.TODAY • DIGITAL TOURISM & CULTURE ECOSYSTEM' : 'VTV8.TODAY • HỆ SINH THÁI SỐ DU LỊCH & VĂN HÓA'}</span>
+            <span>{currentLang === 'en' ? 'VTV8.VN • DIGITAL TOURISM & CULTURE ECOSYSTEM' : 'VTV8.VN • HỆ SINH THÁI SỐ DU LỊCH & VĂN HÓA'}</span>
           </div>
 
           <h1 style={{
@@ -598,8 +598,8 @@ export const Home = () => {
             lineHeight: '1.7'
           }}>
             {currentLang === 'en'
-              ? 'VTV8.today is a dedicated digital ecosystem for culture, heritage, history, and tourism, combining quality journalism, community members, rich destination data, and multilingual AI assistance.'
-              : 'VTV8.today được định hướng trở thành hệ sinh thái số chuyên sâu về văn hóa, di sản, lịch sử và du lịch, kết hợp nội dung chất lượng, cộng đồng hội viên, dữ liệu điểm đến và trợ lý AI đa ngôn ngữ.'}
+              ? 'VTV8.vn is a dedicated digital ecosystem for culture, heritage, history, and tourism, combining quality journalism, community members, rich destination data, and multilingual AI assistance.'
+              : 'VTV8.vn được định hướng trở thành hệ sinh thái số chuyên sâu về văn hóa, di sản, lịch sử và du lịch, kết hợp nội dung chất lượng, cộng đồng hội viên, dữ liệu điểm đến và trợ lý AI đa ngôn ngữ.'}
           </p>
 
           <div style={{
@@ -915,7 +915,7 @@ export const Home = () => {
                 ? 'Smart AI assistant solution for handling administrative procedures, looking up public policies, and supporting 24/7 public services for local citizens.'
                 : 'Mô hình trợ lý AI thông minh giải quyết thủ tục hành chính, tra cứu chính sách và hỗ trợ dịch vụ công trực tuyến 24/7 cho người dân.');
               const img = post?.image_url || 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80';
-              const author = post?.company_name || 'Ban Biên tập VTV8.today';
+              const author = post?.company_name || 'Ban Biên tập VTV8.vn';
               const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
               const targetUrl = '/posts/tro-ly-ai-phuong-xa';
 
@@ -1030,7 +1030,7 @@ export const Home = () => {
                 ? 'A comprehensive artificial intelligence ecosystem for business automation, advanced deep data analysis, and modern digital connectivity.'
                 : 'Nền tảng trí tuệ nhân tạo toàn diện giúp tự động hóa quy trình nghiệp vụ, phân tích dữ liệu chuyên sâu và kết nối chuỗi giá trị số hiện đại.');
               const img = post?.image_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';
-              const author = post?.company_name || 'Ban Biên tập VTV8.today';
+              const author = post?.company_name || 'Ban Biên tập VTV8.vn';
               const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
               const targetUrl = '/posts/orion-chat-loc-tinh-hoa-cua-erp-multimodel-ai-va-nen-tang-xay-dung-ai-agent-de-tao-thanh-mot-he-dieu-hanh-quan-tri-thong-minh-danh-cho-doanh-nghiep';
 
@@ -1145,7 +1145,7 @@ export const Home = () => {
                 ? 'Educational programs and practical toolkits for mastering Generative AI and unlocking peak productivity for tomorrow’s leaders.'
                 : 'Chương trình đào tạo số hóa, nâng cao năng lực ứng dụng công nghệ AI và trang bị bộ công cụ kiến tạo tương lai số.');
               const img = post?.image_url || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80';
-              const author = post?.company_name || 'Ban Biên tập VTV8.today';
+              const author = post?.company_name || 'Ban Biên tập VTV8.vn';
               const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
               const targetUrl = '/posts/edunowai-giai-phap-tro-ly-ai-tuyen-sinh-thong-minh-danh-cho-cac-co-so-giao-duc';
 
@@ -1433,7 +1433,7 @@ export const Home = () => {
             color: '#0f172a',
             marginBottom: '1rem'
           }}>
-            {currentLang === 'en' ? 'Stories from VTV8.today Ecosystem' : 'Khám phá câu chuyện mới nhất từ VTV8.today'}
+            {currentLang === 'en' ? 'Stories from VTV8.vn Ecosystem' : 'Khám phá câu chuyện mới nhất từ VTV8.vn'}
           </h2>
           <p style={{
             color: '#475569',
@@ -1747,7 +1747,7 @@ export const Home = () => {
                       overflow: 'hidden',
                       height: '42px'
                     }}>
-                      {event.description || 'Sự kiện văn hóa du lịch tiêu biểu do VTV8.today đồng hành tổ chức...'}
+                      {event.description || 'Sự kiện văn hóa du lịch tiêu biểu do VTV8.vn đồng hành tổ chức...'}
                     </p>
 
                     {/* Bottom Organizer & CTA */}
@@ -1760,7 +1760,7 @@ export const Home = () => {
                       marginTop: 'auto'
                     }}>
                       <span style={{ fontSize: '11.5px', color: '#64748b', fontWeight: '500', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        🏛️ {event.organizer || 'VTV8.today'}
+                        🏛️ {event.organizer || 'VTV8.vn'}
                       </span>
                       <span style={{ fontSize: '12px', fontWeight: '700', color: '#0284c7', display: 'flex', alignItems: 'center', gap: '3px' }}>
                         <span>{currentLang === 'en' ? 'Details' : 'Xem chi tiết'}</span>
@@ -1815,8 +1815,8 @@ export const Home = () => {
             lineHeight: '1.7'
           }}>
             {currentLang === 'en'
-              ? 'Connect directly with premium hospitality, tour operators, resorts, and cultural culinary brands in the VTV8.today ecosystem.'
-              : 'Không gian giới thiệu các thương hiệu lưu trú, lữ hành, nghỉ dưỡng và ẩm thực du lịch uy tín trong hệ sinh thái VTV8.today.'}
+              ? 'Connect directly with premium hospitality, tour operators, resorts, and cultural culinary brands in the VTV8.vn ecosystem.'
+              : 'Không gian giới thiệu các thương hiệu lưu trú, lữ hành, nghỉ dưỡng và ẩm thực du lịch uy tín trong hệ sinh thái VTV8.vn.'}
           </p>
 
           {loadingMembers ? (
@@ -1960,7 +1960,7 @@ export const Home = () => {
                         overflow: 'hidden',
                         height: '42px'
                       }}>
-                        {member.description || 'Doanh nghiệp hội viên uy tín thuộc hệ sinh thái số du lịch, văn hóa VTV8.today.'}
+                        {member.description || 'Doanh nghiệp hội viên uy tín thuộc hệ sinh thái số du lịch, văn hóa VTV8.vn.'}
                       </p>
 
                       {/* Bottom Button */}
@@ -2129,7 +2129,7 @@ export const Home = () => {
             color: '#ffffff',
             marginBottom: '1rem'
           }}>
-            {currentLang === 'en' ? 'Join the VTV8.today Ecosystem' : 'Gia nhập cộng đồng VTV8.today'}
+            {currentLang === 'en' ? 'Join the VTV8.vn Ecosystem' : 'Gia nhập cộng đồng VTV8.vn'}
           </h2>
           <p style={{
             color: '#94a3b8',
@@ -2307,8 +2307,8 @@ export const Home = () => {
               marginBottom: '2rem'
             }}>
               {currentLang === 'en'
-                ? 'VTV8.today AI Assistant helps travelers explore destinations, understand historical culture, design customized itineraries, and find verified services in multiple languages accurately.'
-                : 'Trợ lý AI VTV8.today giúp du khách khám phá điểm đến, tìm hiểu lịch sử – văn hóa, lập lịch trình, tìm sự kiện và kết nối dịch vụ bằng nhiều ngôn ngữ một cách nhanh chóng, chính xác.'}
+                ? 'VTV8.vn AI Assistant helps travelers explore destinations, understand historical culture, design customized itineraries, and find verified services in multiple languages accurately.'
+                : 'Trợ lý AI VTV8.vn giúp du khách khám phá điểm đến, tìm hiểu lịch sử – văn hóa, lập lịch trình, tìm sự kiện và kết nối dịch vụ bằng nhiều ngôn ngữ một cách nhanh chóng, chính xác.'}
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '2.5rem' }}>
@@ -2360,7 +2360,7 @@ export const Home = () => {
               </div>
               <div>
                 <div style={{ color: '#ffffff', fontWeight: '700', fontSize: '13.5px' }}>
-                  {currentLang === 'en' ? 'VTV8.today Travel Assistant' : 'Trợ lý du lịch VTV8.today'}
+                  {currentLang === 'en' ? 'VTV8.vn Travel Assistant' : 'Trợ lý du lịch VTV8.vn'}
                 </div>
                 <div style={{ color: '#93c5fd', fontSize: '11px' }}>
                   {currentLang === 'en' ? 'Multilingual Support 24/7' : 'Sẵn sàng hỗ trợ đa ngôn ngữ 24/7'}
@@ -2506,7 +2506,7 @@ export const Home = () => {
             color: '#0f172a',
             marginBottom: '1rem'
           }}>
-            {currentLang === 'en' ? 'Be Part of VTV8.today' : 'Trở thành một phần của VTV8.today'}
+            {currentLang === 'en' ? 'Be Part of VTV8.vn' : 'Trở thành một phần của VTV8.vn'}
           </h2>
           <p style={{
             color: '#475569',
@@ -2537,8 +2537,8 @@ export const Home = () => {
                 </h3>
                 <p style={{ color: '#64748b', fontSize: '14px', lineHeight: '1.6' }}>
                   {currentLang === 'en'
-                    ? 'Thank you for joining VTV8.today. Our editorial and development team will contact you shortly.'
-                    : 'Cảm ơn bạn đã tham gia hệ sinh thái VTV8.today. Đội ngũ phát triển sẽ liên hệ với bạn trong thời gian sớm nhất.'}
+                    ? 'Thank you for joining VTV8.vn. Our editorial and development team will contact you shortly.'
+                    : 'Cảm ơn bạn đã tham gia hệ sinh thái VTV8.vn. Đội ngũ phát triển sẽ liên hệ với bạn trong thời gian sớm nhất.'}
                 </p>
                 <button
                   onClick={() => setFormSubmitted(false)}
@@ -2662,7 +2662,7 @@ export const Home = () => {
                     style={{ width: '16px', height: '16px', cursor: 'pointer' }}
                   />
                   <label htmlFor="agreeCheck" style={{ cursor: 'pointer' }}>
-                    {currentLang === 'en' ? 'I agree with VTV8.today data protection policy and terms of service.' : 'Tôi đồng ý với chính sách bảo vệ dữ liệu và điều khoản sử dụng của VTV8.today.'}
+                    {currentLang === 'en' ? 'I agree with VTV8.vn data protection policy and terms of service.' : 'Tôi đồng ý với chính sách bảo vệ dữ liệu và điều khoản sử dụng của VTV8.vn.'}
                   </label>
                 </div>
 
@@ -2711,8 +2711,8 @@ export const Home = () => {
             marginBottom: '3rem'
           }}>
             {currentLang === 'en'
-              ? 'Detailed insights on operations, membership advantages, and strategic vision of VTV8.today.'
-              : 'Tổng hợp thông tin chi tiết về cơ chế hoạt động, quyền lợi hội viên và định hướng phát triển của VTV8.today.'}
+              ? 'Detailed insights on operations, membership advantages, and strategic vision of VTV8.vn.'
+              : 'Tổng hợp thông tin chi tiết về cơ chế hoạt động, quyền lợi hội viên và định hướng phát triển của VTV8.vn.'}
           </p>
 
           <div style={{ textAlign: 'left' }}>
@@ -2761,8 +2761,8 @@ export const Home = () => {
             marginBottom: '2.5rem'
           }}>
             {currentLang === 'en'
-              ? 'Join VTV8.today in honoring Vietnamese heritage, connecting communities, and creating inspirational new journeys.'
-              : 'Hãy cùng VTV8.today tôn vinh những giá trị của Việt Nam, kết nối cộng đồng và kiến tạo những hành trình mới.'}
+              ? 'Join VTV8.vn in honoring Vietnamese heritage, connecting communities, and creating inspirational new journeys.'
+              : 'Hãy cùng VTV8.vn tôn vinh những giá trị của Việt Nam, kết nối cộng đồng và kiến tạo những hành trình mới.'}
           </p>
 
           <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>

@@ -17,11 +17,11 @@ const SEOHead = ({
   schemaData
 }) => {
   useEffect(() => {
-    const defaultSiteName = 'VTV8.today — Tôn vinh cội nguồn, kết nối thời đại | Chuyên trang Du lịch, Văn hóa, Di sản';
-    const siteUrl = 'https://vtv8.today';
+    const defaultSiteName = 'VTV8.vn — Tôn vinh cội nguồn, kết nối thời đại | Chuyên trang Du lịch, Văn hóa, Di sản';
+    const siteUrl = 'https://vtv8.vn';
 
     // 1. Set Document Title
-    const fullTitle = title ? `${title} | VTV8.today` : defaultSiteName;
+    const fullTitle = title ? `${title} | VTV8.vn` : defaultSiteName;
     document.title = fullTitle;
 
     // Helper function to create or update meta tags
@@ -48,7 +48,7 @@ const SEOHead = ({
     };
 
     // 2. Standard Meta Tags
-    const pageDesc = description || 'Hệ sinh thái số VTV8.today kết nối văn hóa, di sản, lịch sử và điểm đến Việt Nam với cộng đồng hội viên doanh nghiệp, chuyên gia, du khách.';
+    const pageDesc = description || 'Hệ sinh thái số VTV8.vn kết nối văn hóa, di sản, lịch sử và điểm đến Việt Nam với cộng đồng hội viên doanh nghiệp, chuyên gia, du khách.';
     const pageKeywords = keywords || 'VTV8, vtv8 today, du lịch Việt Nam, di sản, văn hóa, lịch sử, điểm đến miền Trung, Tây Nguyên, hội viên du lịch, trợ lý AI du lịch';
     const canonicalUrl = url ? (url.startsWith('http') ? url : `${siteUrl}${url}`) : window.location.href;
     const ogImage = image || `${siteUrl}/assets/og-image.jpg`;
@@ -58,7 +58,7 @@ const SEOHead = ({
     setCanonical(canonicalUrl);
 
     // 3. Open Graph Tags (Facebook, Zalo, LinkedIn)
-    setMetaTag('property', 'og:site_name', 'VTV8.today');
+    setMetaTag('property', 'og:site_name', 'VTV8.vn');
     setMetaTag('property', 'og:title', fullTitle);
     setMetaTag('property', 'og:description', pageDesc);
     setMetaTag('property', 'og:image', ogImage);

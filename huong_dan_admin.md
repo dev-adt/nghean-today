@@ -1,6 +1,6 @@
-# Hướng dẫn Quản trị viên: Quản lý & Vận hành Hệ sinh thái VTV8.today
+# Hướng dẫn Quản trị viên: Quản lý & Vận hành Hệ sinh thái VTV8.vn
 
-Tài liệu này hướng dẫn Admin cách sử dụng các công cụ quản trị để kiểm duyệt tài khoản, bài đăng, sự kiện, danh mục, biên tập viên và tiếp nhận thông tin liên hệ / đăng ký trên hệ thống VTV8.today.
+Tài liệu này hướng dẫn Admin cách sử dụng các công cụ quản trị để kiểm duyệt tài khoản, bài đăng, sự kiện, danh mục, biên tập viên và tiếp nhận thông tin liên hệ / đăng ký trên hệ thống VTV8.vn.
 
 ---
 

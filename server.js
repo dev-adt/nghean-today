@@ -147,7 +147,7 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }));
 // Helper sinh tệp sitemap.xml và robots.txt thực tế vào thư mục public/
 async function generateSitemapFiles() {
   try {
-    const baseUrl = process.env.SITE_URL || 'https://vtv8.today';
+    const baseUrl = process.env.SITE_URL || 'https://vtv8.vn';
     const staticPages = ['', '/posts', '/members', '/events', '/guide', '/register'];
 
     const [approvedPosts] = await db.query(
@@ -208,7 +208,7 @@ app.get('/sitemap.xml', async (req, res) => {
 });
 
 app.get('/robots.txt', (req, res) => {
-  const baseUrl = process.env.SITE_URL || 'https://vtv8.today';
+  const baseUrl = process.env.SITE_URL || 'https://vtv8.vn';
   const content = `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /dashboard\nDisallow: /api/\n\nSitemap: ${baseUrl}/sitemap.xml\n`;
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -521,11 +521,11 @@ db.query(`
       if (!existingEvents.length) {
         await db.query(`
           INSERT INTO events (title, description, event_date, end_date, location, organizer, capacity, status, image_url) VALUES
-          ('Festival Văn hóa & Du lịch Miền Trung 2026', 'Sự kiện quảng bá di sản, biểu diễn nghệ thuật truyền thống và kết nối giao thương du lịch các tỉnh miền Trung.', '2026-09-15 08:30:00', '2026-09-18 21:00:00', 'Công viên Biển Đông, TP. Đà Nẵng', 'Ban Quản trị VTV8.today & Sở Du lịch Đà Nẵng', 500, 'upcoming', 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80'),
-          ('Không gian Văn hóa Cồng chiêng Tây Nguyên 2026', 'Ngày hội giao lưu văn hóa nghệ thuật cồng chiêng, ẩm thực rượu cần và trình diễn nghề dệt thổ cẩm truyền thống.', '2026-10-20 09:00:00', '2026-10-22 18:00:00', 'Quảng trường 10/3, TP. Buôn Ma Thuột, Đắk Lắk', 'Hiệp hội Du lịch Tây Nguyên & VTV8.today', 300, 'upcoming', 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80'),
-          ('Diễn đàn Chuyển đổi số & Du lịch Di sản Thông minh 2026', 'Hội thảo chuyên sâu kết nối các doanh nghiệp lữ hành, khách sạn, nhà cung cấp công nghệ VR/AR và trợ lý AI.', '2026-11-05 13:30:00', '2026-11-05 17:30:00', 'Trung tâm Hội nghị Quốc tế, TP. Huế', 'Trung tâm Bảo tồn Di tích Cố đô Huế & VTV8.today', 200, 'upcoming', 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80')
+          ('Festival Văn hóa & Du lịch Miền Trung 2026', 'Sự kiện quảng bá di sản, biểu diễn nghệ thuật truyền thống và kết nối giao thương du lịch các tỉnh miền Trung.', '2026-09-15 08:30:00', '2026-09-18 21:00:00', 'Công viên Biển Đông, TP. Đà Nẵng', 'Ban Quản trị VTV8.vn & Sở Du lịch Đà Nẵng', 500, 'upcoming', 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80'),
+          ('Không gian Văn hóa Cồng chiêng Tây Nguyên 2026', 'Ngày hội giao lưu văn hóa nghệ thuật cồng chiêng, ẩm thực rượu cần và trình diễn nghề dệt thổ cẩm truyền thống.', '2026-10-20 09:00:00', '2026-10-22 18:00:00', 'Quảng trường 10/3, TP. Buôn Ma Thuột, Đắk Lắk', 'Hiệp hội Du lịch Tây Nguyên & VTV8.vn', 300, 'upcoming', 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80'),
+          ('Diễn đàn Chuyển đổi số & Du lịch Di sản Thông minh 2026', 'Hội thảo chuyên sâu kết nối các doanh nghiệp lữ hành, khách sạn, nhà cung cấp công nghệ VR/AR và trợ lý AI.', '2026-11-05 13:30:00', '2026-11-05 17:30:00', 'Trung tâm Hội nghị Quốc tế, TP. Huế', 'Trung tâm Bảo tồn Di tích Cố đô Huế & VTV8.vn', 200, 'upcoming', 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80')
         `);
-        console.log('✅ Đã khởi tạo 3 sự kiện mẫu tiêu biểu cho VTV8.today');
+        console.log('✅ Đã khởi tạo 3 sự kiện mẫu tiêu biểu cho VTV8.vn');
       }
     } catch (e) {
       console.warn('Cảnh báo kiểm tra bảng events:', e.message);
@@ -584,7 +584,7 @@ db.query(`
     const [hasOldCategories] = await db.query("SELECT COUNT(*) as count FROM categories WHERE name LIKE '%Đồ Sơn%'");
 
     if (catCount[0].count === 0 || hasOldCategories[0].count > 0) {
-      console.log('🌱 Đang khởi tạo/đồng bộ dữ liệu 8 Chuyên mục & Lĩnh vực VTV8.today...');
+      console.log('🌱 Đang khởi tạo/đồng bộ dữ liệu 8 Chuyên mục & Lĩnh vực VTV8.vn...');
       if (hasOldCategories[0].count > 0) {
         await db.query('DELETE FROM categories WHERE name LIKE "%Đồ Sơn%"');
       }
@@ -690,7 +690,7 @@ db.query(`
           }
         }
       }
-      console.log('✅ Khởi tạo/đồng bộ 8 Chuyên mục & Lĩnh vực VTV8.today hoàn tất!');
+      console.log('✅ Khởi tạo/đồng bộ 8 Chuyên mục & Lĩnh vực VTV8.vn hoàn tất!');
     }
 
     // Tạo thư mục kiến thức
@@ -1226,22 +1226,22 @@ app.post('/api/forgot-password', async (req, res) => {
     // Gửi mail thông báo mật khẩu mới
     if (transporter) {
       const mailOptions = {
-        from: process.env.SMTP_FROM || `"VTV8.today" <${process.env.SMTP_USER}>`,
+        from: process.env.SMTP_FROM || `"VTV8.vn" <${process.env.SMTP_USER}>`,
         to: email,
         bcc: process.env.SMTP_BCC || undefined,
-        subject: '[VTV8.today] Khôi phục mật khẩu tài khoản',
+        subject: '[VTV8.vn] Khôi phục mật khẩu tài khoản',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
             <h2 style="color: #1E88E5; border-bottom: 2px solid #1E88E5; padding-bottom: 10px;">Cấp lại mật khẩu thành công!</h2>
             <p>Xin chào <strong>${member.name}</strong>,</p>
-            <p>Chúng tôi nhận được yêu cầu khôi phục mật khẩu của bạn cho tài khoản kết nối doanh nghiệp trên <strong>VTV8.today</strong>.</p>
+            <p>Chúng tôi nhận được yêu cầu khôi phục mật khẩu của bạn cho tài khoản kết nối doanh nghiệp trên <strong>VTV8.vn</strong>.</p>
             <p>Mật khẩu mới của bạn đã được khởi tạo ngẫu nhiên như sau:</p>
             <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin: 20px 0; text-align: center;">
               <span style="font-family: monospace; font-size: 20px; font-weight: bold; color: #1E88E5; letter-spacing: 2px;">${newPassword}</span>
             </div>
             <p style="color: #d32f2f;"><strong>Khuyến cáo bảo mật:</strong> Vui lòng đăng nhập ngay bằng mật khẩu tạm thời này và truy cập vào Dashboard thành viên để đổi lại mật khẩu cá nhân của bạn.</p>
-            <p>Trân trọng,<br/>Ban Quản Trị VTV8.today</p>
-            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống VTV8.today. Vui lòng không trả lời thư này.</p>
+            <p>Trân trọng,<br/>Ban Quản Trị VTV8.vn</p>
+            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống VTV8.vn. Vui lòng không trả lời thư này.</p>
           </div>
         `
       };
@@ -1739,15 +1739,15 @@ app.post('/api/members', async (req, res) => {
     // Gửi email thông báo đăng ký (nếu có nhập email)
     if (transporter && cleanEmail) {
       const mailOptions = {
-        from: process.env.SMTP_FROM || `"VTV8.today" <${process.env.SMTP_USER}>`,
+        from: process.env.SMTP_FROM || `"VTV8.vn" <${process.env.SMTP_USER}>`,
         to: cleanEmail,
         bcc: process.env.SMTP_BCC || undefined,
-        subject: '[VTV8.today] Đăng ký tài khoản thành công',
+        subject: '[VTV8.vn] Đăng ký tài khoản thành công',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
-            <h2 style="color: #1E88E5; border-bottom: 2px solid #1E88E5; padding-bottom: 10px;">Gia nhập Hệ sinh thái VTV8.today thành công!</h2>
+            <h2 style="color: #1E88E5; border-bottom: 2px solid #1E88E5; padding-bottom: 10px;">Gia nhập Hệ sinh thái VTV8.vn thành công!</h2>
             <p>Xin chào <strong>${name}</strong>,</p>
-            <p>Cảm ơn doanh nghiệp của bạn đã đăng ký tài khoản hội viên trên nền tảng kết nối <strong>VTV8.today</strong>.</p>
+            <p>Cảm ơn doanh nghiệp của bạn đã đăng ký tài khoản hội viên trên nền tảng kết nối <strong>VTV8.vn</strong>.</p>
             <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin: 15px 0;">
               <h4 style="margin-top: 0; color: #333;">Thông tin đăng ký của bạn:</h4>
               <table style="width: 100%; border-collapse: collapse;">
@@ -1767,7 +1767,7 @@ app.post('/api/members', async (req, res) => {
             </div>
             <p>Hồ sơ đăng ký của bạn hiện đang ở trạng thái <strong>Chờ duyệt (Pending)</strong>. Ban quản trị sẽ nhanh chóng kiểm tra thông tin và phê duyệt tài khoản của bạn trong thời gian sớm nhất.</p>
             <p>Khi hồ sơ được phê duyệt, bạn sẽ nhận được thông báo tiếp theo và có thể đăng nhập để sử dụng đầy đủ các tính năng giao thương và trợ lý AI.</p>
-            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống VTV8.today. Vui lòng không trả lời thư này.</p>
+            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống VTV8.vn. Vui lòng không trả lời thư này.</p>
           </div>
         `
       };
@@ -1970,7 +1970,7 @@ app.get('/api/posts', async (req, res) => {
       }
     }
 
-    let sql = `SELECT p.*, COALESCE(c.name, m.name, p.author_name, 'Ban Biên tập VTV8.today') AS company_name, COALESCE(m.tier, 'Standard') AS company_tier
+    let sql = `SELECT p.*, COALESCE(c.name, m.name, p.author_name, 'Ban Biên tập VTV8.vn') AS company_name, COALESCE(m.tier, 'Standard') AS company_tier
                FROM posts p 
                LEFT JOIN members m ON p.member_id = m.id 
                LEFT JOIN content_creators c ON p.creator_id = c.id
@@ -2429,7 +2429,7 @@ app.delete('/api/creator/posts/:id', creatorAuthMiddleware, async (req, res) => 
 // ════════════════════════════════════════════
 app.get('/sitemap.xml', async (req, res) => {
   try {
-    const baseUrl = process.env.SITE_URL || 'https://vtv8.today';
+    const baseUrl = process.env.SITE_URL || 'https://vtv8.vn';
     const staticPages = ['', '/posts', '/members', '/events', '/guide', '/register'];
 
     const [approvedPosts] = await db.query(
@@ -2468,7 +2468,7 @@ app.get('/sitemap.xml', async (req, res) => {
 });
 
 app.get('/robots.txt', (req, res) => {
-  const baseUrl = process.env.SITE_URL || 'https://vtv8.today';
+  const baseUrl = process.env.SITE_URL || 'https://vtv8.vn';
   const content = `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /dashboard\nDisallow: /api/\n\nSitemap: ${baseUrl}/sitemap.xml\n`;
   res.header('Content-Type', 'text/plain');
   res.send(content);
@@ -3006,7 +3006,7 @@ app.post('/api/chat', anyAuthMiddleware, async (req, res) => {
       // Đọc system_instruction từ ai_config
       const [aiConfigs] = await db.query("SELECT system_instruction FROM ai_config WHERE is_active = 1 LIMIT 1");
       const systemInstruction = (aiConfigs[0] && aiConfigs[0].system_instruction) || 
-        "Bạn là trợ lý AI VTV8.today — Hệ sinh thái số Văn hóa, Di sản, Lịch sử và Du lịch Việt Nam. Tôn vinh cội nguồn, kết nối thời đại. Hãy trả lời chuyên sâu, chuẩn xác, truyền cảm hứng và thân thiện bằng tiếng Việt hoặc tiếng Anh theo yêu cầu.";
+        "Bạn là trợ lý AI VTV8.vn — Hệ sinh thái số Văn hóa, Di sản, Lịch sử và Du lịch Việt Nam. Tôn vinh cội nguồn, kết nối thời đại. Hãy trả lời chuyên sâu, chuẩn xác, truyền cảm hứng và thân thiện bằng tiếng Việt hoặc tiếng Anh theo yêu cầu.";
 
       const [members] = await db.query("SELECT name,tier,industry,description,email,phone FROM members WHERE status='approved'");
       const [posts]   = await db.query("SELECT p.title,p.type,p.contact_info,m.name AS company FROM posts p JOIN members m ON p.member_id=m.id WHERE p.status='approved' ORDER BY p.created_at DESC LIMIT 10");
@@ -3493,7 +3493,7 @@ app.post('/api/leads', async (req, res) => {
     res.json({
       success: true,
       id: result.insertId,
-      message: 'Đăng ký thành công! Đội ngũ phát triển VTV8.today sẽ liên hệ với bạn trong thời gian sớm nhất.'
+      message: 'Đăng ký thành công! Đội ngũ phát triển VTV8.vn sẽ liên hệ với bạn trong thời gian sớm nhất.'
     });
   } catch (err) {
     console.error('Lỗi lưu lead /api/leads:', err.message);
@@ -3576,5 +3576,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ VTV8.today server đang chạy tại http://localhost:${PORT}`);
+  console.log(`✅ VTV8.vn server đang chạy tại http://localhost:${PORT}`);
 });

@@ -1,6 +1,6 @@
 /**
  * Cấu hình 8 Chuyên mục chính và các Lĩnh vực con tương ứng
- * dùng chung cho toàn bộ ứng dụng VTV8.today.
+ * dùng chung cho toàn bộ ứng dụng VTV8.vn.
  */
 
 export const CATEGORIES_DATA = [

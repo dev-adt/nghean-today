@@ -1,5 +1,5 @@
 -- ============================================
--- VTV8.today — MySQL Database Schema
+-- VTV8.vn — MySQL Database Schema
 -- Database: vtv8 | User: vtv8
 -- Lệnh import: mysql -u vtv8 -p vtv8 < schema.sql
 -- ============================================
@@ -179,12 +179,12 @@ CREATE TABLE IF NOT EXISTS sub_categories (
 ) ENGINE=InnoDB COMMENT='Lĩnh vực con';
 
 -- ============================================
--- DỮ LIỆU KHỞI TẠO MẪU (VTV8.today)
+-- DỮ LIỆU KHỞI TẠO MẪU (VTV8.vn)
 -- ============================================
 
 -- Admin mặc định (Username: admin | Password: Admin@123)
 INSERT INTO admins (username, password_hash, name, email, role) VALUES
-('admin', '$2b$10$3luJFH.EMVPnxeH8BdXn9.5tnCQ9huv13yzOzHrwYGiRhgV7dcufq', 'Ban Quản Trị VTV8.today', 'admin@vtv8.today', 'superadmin')
+('admin', '$2b$10$3luJFH.EMVPnxeH8BdXn9.5tnCQ9huv13yzOzHrwYGiRhgV7dcufq', 'Ban Quản Trị VTV8.vn', 'admin@vtv8.vn', 'superadmin')
 ON DUPLICATE KEY UPDATE name=VALUES(name);
 
 -- Hội viên mẫu
@@ -202,7 +202,7 @@ INSERT INTO posts (member_id, title, summary, body, type, status, is_featured, c
 INSERT INTO events (title, event_date, location, organizer, status) VALUES
 ('Lễ hội Phố Cổ Hội An & Đêm Rằm Hoa Đăng', '2026-09-15 18:00:00', 'Phố cổ Hội An, Quảng Nam', 'Trung tâm Văn hóa Thể thao Hội An', 'upcoming'),
 ('Festival Biển Quốc Tế Đà Nẵng 2026', '2026-09-22 08:30:00', 'Công viên Biển Đông, Đà Nẵng', 'Sở Du lịch TP. Đà Nẵng', 'upcoming'),
-('Diễn đàn Hợp tác Phát triển Du lịch Di sản & Chuyển đổi số VTV8.today', '2026-10-05 09:00:00', 'Đà Nẵng — Trực tuyến toàn quốc', 'Ban Biên tập VTV8.today', 'upcoming');
+('Diễn đàn Hợp tác Phát triển Du lịch Di sản & Chuyển đổi số VTV8.vn', '2026-10-05 09:00:00', 'Đà Nẵng — Trực tuyến toàn quốc', 'Ban Biên tập VTV8.vn', 'upcoming');
 
 -- Cấu hình AI mặc định
 INSERT INTO ai_config (provider, model, is_active) VALUES ('openrouter', 'google/gemini-3-flash-preview', 1);

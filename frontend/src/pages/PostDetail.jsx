@@ -272,7 +272,7 @@ export const PostDetail = () => {
       parsedTagsStr = String(post.tags);
     }
   }
-  const metaKeywords = [parsedTagsStr, post.category, post.sub_category, 'VTV8.today', 'Du lịch Việt Nam', post.title].filter(Boolean).join(', ');
+  const metaKeywords = [parsedTagsStr, post.category, post.sub_category, 'VTV8.vn', 'Du lịch Việt Nam', post.title].filter(Boolean).join(', ');
 
   // Generate NewsArticle JSON-LD schema
   const newsSchema = {
@@ -284,11 +284,11 @@ export const PostDetail = () => {
     "dateModified": post.updated_at || post.created_at,
     "author": [{
       "@type": "Organization",
-      "name": post.company_name || "Hội viên VTV8.today"
+      "name": post.company_name || "Hội viên VTV8.vn"
     }],
     "publisher": {
       "@type": "Organization",
-      "name": "VTV8.today",
+      "name": "VTV8.vn",
       "logo": {
         "@type": "ImageObject",
         "url": "https://doson.today/assets/logo.png"

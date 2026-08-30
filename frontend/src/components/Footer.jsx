@@ -153,7 +153,7 @@ export const Footer = () => {
           color: '#64748b'
         }}>
           <div>
-            © 2026 <strong>VTV8.today</strong>. {currentLang === 'en' ? 'All rights reserved.' : 'Bảo lưu mọi quyền.'}
+            © 2026 <strong>VTV8.vn</strong>. {currentLang === 'en' ? 'All rights reserved.' : 'Bảo lưu mọi quyền.'}
           </div>
         </div>
       </div>
