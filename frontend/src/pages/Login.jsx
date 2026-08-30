@@ -82,8 +82,8 @@ export const Login = () => {
       <div style={{ width: '100%', maxWidth: '420px', padding: '1.5rem', zIndex: 10 }}>
         <div className="glass-card" style={{ padding: '2.5rem 2.25rem', borderRadius: '16px', position: 'relative', overflow: 'hidden' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', marginBottom: '2rem', textAlign: 'center' }}>
-            <div className="logo-icon" style={{ width: '56px', height: '56px', borderRadius: '16px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(2, 132, 199, 0.35)', border: '1px solid rgba(56, 189, 248, 0.3)' }}>
-              <img src="/vtv8_logo.png" alt="VTV8.vn Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div className="logo-icon" style={{ width: 'auto', height: '60px', borderRadius: '16px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(2, 132, 199, 0.35)', border: '1px solid rgba(56, 189, 248, 0.3)', padding: '6px 14px', background: 'rgba(15, 23, 42, 0.6)' }}>
+              <img src="/vtv8_logo.png" alt="VTV8.vn Logo" style={{ height: '100%', width: 'auto', objectFit: 'contain' }} />
             </div>
             <div>
               <div className="logo-name" style={{ fontFamily: 'var(--font-title)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>VTV8.vn</div>

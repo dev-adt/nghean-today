@@ -31,7 +31,7 @@ export const Footer = () => {
                 color: '#ffffff',
                 letterSpacing: '-0.5px'
               }}>
-                VTV8<span style={{ color: '#ef4444' }}>.today</span>
+                VTV8<span style={{ color: '#ef4444' }}>.vn</span>
               </div>
               <div style={{ fontSize: '9px', letterSpacing: '1px', color: '#93c5fd', fontWeight: '600', textTransform: 'uppercase' }}>
                 {currentLang === 'en' ? 'Culture • Heritage • History • Tourism' : 'VĂN HÓA - DI SẢN - LỊCH SỬ - DU LỊCH'}

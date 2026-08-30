@@ -139,35 +139,42 @@ export const Navbar = () => {
           style={{ 
             display: 'flex', 
             alignItems: 'center',
-            gap: '8px',
+            gap: '10px',
             textDecoration: 'none', 
             flexShrink: 0 
           }}
         >
           <img 
             src="/vtv8_logo.png" 
-            alt="VTV8 Logo" 
-            style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover', border: '1px solid rgba(56, 189, 248, 0.35)', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }} 
+            alt="VTV8.vn Logo" 
+            style={{ 
+              height: '36px', 
+              width: 'auto', 
+              maxHeight: '36px',
+              objectFit: 'contain',
+              display: 'block'
+            }} 
           />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '2px' }}>
               <span style={{
                 fontFamily: "'Outfit', 'Plus Jakarta Sans', sans-serif",
-                fontSize: '21px',
+                fontSize: '22px',
                 fontWeight: '900',
                 color: '#ffffff',
-                letterSpacing: '-0.5px'
+                letterSpacing: '-0.5px',
+                lineHeight: 1.1
               }}>
-                VTV8<span style={{ color: '#ef4444' }}>.today</span>
+                VTV8<span style={{ color: '#ef4444' }}>.vn</span>
               </span>
             </div>
             <span style={{
-              fontSize: '8px',
+              fontSize: '8.5px',
               letterSpacing: '0.8px',
               color: '#93c5fd',
               fontWeight: '600',
               textTransform: 'uppercase',
-              marginTop: '-3px'
+              marginTop: '1px'
             }}>
               {currentLang === 'en' ? 'Culture • Heritage • Tourism' : 'VĂN HÓA - DI SẢN - DU LỊCH'}
             </span>
