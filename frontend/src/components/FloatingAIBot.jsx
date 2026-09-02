@@ -62,7 +62,7 @@ export const FloatingAIBot = () => {
       >
         <img
           src="/ai_robot_avatar-removebg.png"
-          alt="Doson AI Assistant"
+          alt="AI Assistant"
           style={{
             width: '100%',
             height: '100%',
@@ -70,27 +70,6 @@ export const FloatingAIBot = () => {
             background: 'transparent'
           }}
         />
-
-        {/* Small "GPT" Green Badge on Bottom Right */}
-        <span
-          style={{
-            position: 'absolute',
-            bottom: '2px',
-            right: '0px',
-            backgroundColor: '#10b981',
-            color: '#ffffff',
-            fontSize: '10px',
-            fontWeight: '800',
-            padding: '2px 7px',
-            borderRadius: '10px',
-            border: '1.5px solid #ffffff',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
-            letterSpacing: '0.04em',
-            lineHeight: '1.2'
-          }}
-        >
-          GPT
-        </span>
       </div>
 
       {/* Label under robot */}
