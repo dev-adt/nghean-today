@@ -49,7 +49,7 @@ const SEOHead = ({
 
     // 2. Standard Meta Tags
     const pageDesc = description || 'Hệ sinh thái số Nghean.today kết nối văn hóa, di sản, lịch sử và điểm đến Việt Nam với cộng đồng hội viên doanh nghiệp, chuyên gia, du khách.';
-    const pageKeywords = keywords || 'Nghệ An, nghean vn, nghean.today, du lịch Việt Nam, di sản, văn hóa, lịch sử, điểm đến miền Trung, Tây Nguyên, hội viên du lịch, trợ lý AI du lịch';
+    const pageKeywords = keywords || 'Nghệ An, nghean.today, du lịch Nghệ An, Dân ca Ví Giặm, Cửa Lò, Nam Đàn, Quê Bác, doanh nghiệp Nghệ An, xúc tiến đầu tư, trợ lý AI';
     const canonicalUrl = url ? (url.startsWith('http') ? url : `${siteUrl}${url}`) : window.location.href;
     const ogImage = image || `${siteUrl}/assets/og-image.jpg`;
 

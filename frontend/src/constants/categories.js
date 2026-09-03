@@ -31,11 +31,11 @@ export const CATEGORIES_DATA = [
     name: 'Điểm đến nổi bật',
     name_en: 'Featured Destinations',
     subcategories: [
-      'Miền Trung & Duyên hải',
-      'Đại ngàn Tây Nguyên',
-      'Kỳ quan Bắc Bộ',
-      'Sắc màu Phương Nam',
-      'Thiên đường biển đảo'
+      'Thành phố Vinh & vùng phụ cận',
+      'Cửa Lò & du lịch biển',
+      'Nam Đàn – Quê hương Bác Hồ',
+      'Miền Tây Nghệ An',
+      'Điểm đến cộng đồng'
     ]
   },
   {
@@ -134,7 +134,7 @@ export const CATEGORY_TRANSLATIONS = {
   'Tuyến du lịch di sản': { vi: 'Tuyến du lịch di sản', en: 'Heritage Travel Routes' },
 
   'Miền Trung & Duyên hải': { vi: 'Miền Trung & Duyên hải', en: 'Central Coast Region' },
-  'Đại ngàn Tây Nguyên': { vi: 'Đại ngàn Tây Nguyên', en: 'Central Highlands' },
+  'Miền Tây Nghệ An': { vi: 'Miền Tây Nghệ An', en: 'Western Nghe An' },
   'Kỳ quan Bắc Bộ': { vi: 'Kỳ quan Bắc Bộ', en: 'Northern Wonders' },
   'Sắc màu Phương Nam': { vi: 'Sắc màu Phương Nam', en: 'Southern Highlights' },
   'Thiên đường biển đảo': { vi: 'Thiên đường biển đảo', en: 'Island & Marine Paradise' },

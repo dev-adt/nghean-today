@@ -1,7 +1,7 @@
 -- ============================================
--- VTV8.vn — MySQL Database Schema
--- Database: vtv8 | User: vtv8
--- Lệnh import: mysql -u vtv8 -p vtv8 < schema.sql
+-- Nghean.today — MySQL Database Schema
+-- Database: nghean_today_db
+-- Lệnh import: mysql -u root -p nghean_today_db < schema.sql
 -- ============================================
 
 -- ── Bảng hội viên ─────────────────────────────────────────────
@@ -178,31 +178,5 @@ CREATE TABLE IF NOT EXISTS sub_categories (
   INDEX idx_category (category_id)
 ) ENGINE=InnoDB COMMENT='Lĩnh vực con';
 
--- ============================================
--- DỮ LIỆU KHỞI TẠO MẪU (VTV8.vn)
--- ============================================
-
--- Admin mặc định (Username: admin | Password: Admin@123)
-INSERT INTO admins (username, password_hash, name, email, role) VALUES
-('admin', '$2b$10$3luJFH.EMVPnxeH8BdXn9.5tnCQ9huv13yzOzHrwYGiRhgV7dcufq', 'Ban Quản Trị VTV8.vn', 'admin@vtv8.vn', 'superadmin')
-ON DUPLICATE KEY UPDATE name=VALUES(name);
-
--- Hội viên mẫu
-INSERT INTO members (name, tax_code, industry, tier, status, contact_name, contact_pos, email, phone, description, address) VALUES
-('Công ty Du lịch & Di sản Miền Trung', '0401234567', 'Du lịch - Lữ hành', 'Platinum', 'approved', 'Nguyễn Văn Hùng', 'Giám đốc', 'hung@mientrungtravel.vn', '0901111222', 'Đơn vị tổ chức các tour di sản văn hóa thế giới Huế - Hội An - Mỹ Sơn hàng đầu miền Trung.', 'Hải Châu, Đà Nẵng'),
-('Hội An Heritage Eco Resort', '0409876543', 'Khách sạn - Nghỉ dưỡng', 'Gold', 'approved', 'Trần Thị Lan', 'Tổng giám đốc', 'lan@hoianecoresort.vn', '0912333444', 'Khu nghỉ dưỡng sinh thái ven sông Thu Bồn, không gian văn hóa phố cổ độc đáo.', 'Cẩm Châu, Hội An, Quảng Nam'),
-('Hợp tác xã Cà phê Arabica Cầu Đất Đà Lạt', '5801234567', 'Nông sản - OCOP', 'Silver', 'approved', 'Lê Quang Minh', 'Chủ nhiệm HTX', 'minh@caudatcoffee.vn', '0933555666', 'Sản xuất và phân phối cà phê Arabica đặc sản Tây Nguyên đạt chứng nhận OCOP 4 sao.', 'Cầu Đất, Đà Lạt, Lâm Đồng');
-
--- Bài viết mẫu
-INSERT INTO posts (member_id, title, summary, body, type, status, is_featured, contact_info) VALUES
-(1, 'Hành trình 48 Giờ Khám Phá Di Sản Miền Trung: Huế – Đà Nẵng – Hội An', 'Cẩm nang chi tiết lịch trình 48 giờ trải nghiệm các di sản thế giới tại miền Trung.', 'Hành trình kết nối di sản văn hóa thế giới đưa du khách ghé thăm Quần thể di tích Cố đô Huế, ngắm nhìn Cầu Rồng Đà Nẵng và thả hoa đăng trên sông Hoài phố cổ Hội An...', 'Du lịch', 'approved', 1, 'hung@mientrungtravel.vn | 0901 111 222'),
-(2, 'Tôn vinh nghệ nhân giữ lửa làng nghề gốm Thanh Hà 500 năm tuổi', 'Khám phá nét đẹp văn hóa truyền thống của làng gốm cổ bên bờ sông Thu Bồn.', 'Trải qua hơn 5 thế kỷ hình thành và phát triển, các nghệ nhân làng gốm Thanh Hà (Hội An) vẫn miệt mài tạo nên những sản phẩm đất nung mộc mạc mang đậm hồn quê Việt...', 'Văn hóa', 'approved', 1, 'lan@hoianecoresort.vn | 0912 333 444');
-
--- Sự kiện mẫu
-INSERT INTO events (title, event_date, location, organizer, status) VALUES
-('Lễ hội Phố Cổ Hội An & Đêm Rằm Hoa Đăng', '2026-09-15 18:00:00', 'Phố cổ Hội An, Quảng Nam', 'Trung tâm Văn hóa Thể thao Hội An', 'upcoming'),
-('Festival Biển Quốc Tế Đà Nẵng 2026', '2026-09-22 08:30:00', 'Công viên Biển Đông, Đà Nẵng', 'Sở Du lịch TP. Đà Nẵng', 'upcoming'),
-('Diễn đàn Hợp tác Phát triển Du lịch Di sản & Chuyển đổi số VTV8.vn', '2026-10-05 09:00:00', 'Đà Nẵng — Trực tuyến toàn quốc', 'Ban Biên tập VTV8.vn', 'upcoming');
-
--- Cấu hình AI mặc định
-INSERT INTO ai_config (provider, model, is_active) VALUES ('openrouter', 'google/gemini-3-flash-preview', 1);
+-- Dữ liệu vận hành (quản trị viên, hội viên, bài viết và sự kiện) được tạo
+-- qua trang quản trị. Schema production không chèn tài khoản hoặc nội dung demo.

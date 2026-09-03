@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+﻿import React, { useRef, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 export const RichTextEditor = ({ value, onChange, placeholder }) => {
@@ -199,7 +199,7 @@ export const RichTextEditor = ({ value, onChange, placeholder }) => {
     reader.onloadend = async () => {
       try {
         const base64Data = reader.result.split(',')[1];
-        const authToken = localStorage.getItem('doson_creator_token') || localStorage.getItem('doson_member_token') || localStorage.getItem('doson_admin_token');
+        const authToken = localStorage.getItem('nghean_creator_token') || localStorage.getItem('nghean_member_token') || localStorage.getItem('nghean_admin_token');
         
         const res = await fetch('/api/upload', {
           method: 'POST',

@@ -555,7 +555,7 @@ export const MemberDashboard = () => {
                       <option value="Cà Mau" />
                       <option value="Cần Thơ" />
                       <option value="Cao Bằng" />
-                      <option value="Đà Nẵng" />
+                      <option value="Nghệ An" />
                       <option value="Đắk Lắk" />
                       <option value="Đắk Nông" />
                       <option value="Điện Biên" />
@@ -907,7 +907,7 @@ export const MemberDashboard = () => {
 
                   <div className="fg">
                     <label>Từ khoá (phân tách bằng dấu phẩy)</label>
-                    <input type="text" id="tags" value={newPostData.tags} onChange={handleNewPostChange} placeholder="Ví dụ: du lịch di sản, khách sạn Hội An, ẩm thực Huế" />
+                    <input type="text" id="tags" value={newPostData.tags} onChange={handleNewPostChange} placeholder="Ví dụ: du lịch Cửa Lò, lưu trú tại Vinh, ẩm thực xứ Nghệ" />
                   </div>
                 </div>
 

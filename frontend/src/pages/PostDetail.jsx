@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
@@ -197,7 +197,7 @@ export const PostDetail = () => {
       setIsTranslated(false);
       setLoading(true);
       try {
-        const activeToken = token || localStorage.getItem('doson_creator_token') || localStorage.getItem('doson_member_token') || localStorage.getItem('doson_admin_token');
+        const activeToken = token || localStorage.getItem('nghean_creator_token') || localStorage.getItem('nghean_member_token') || localStorage.getItem('nghean_admin_token');
         const headers = activeToken ? { 'Authorization': 'Bearer ' + activeToken } : {};
         const res = await fetch(`/api/posts/${id}`, { headers });
         if (res.ok) {
@@ -291,7 +291,7 @@ export const PostDetail = () => {
       "name": "Nghean.today",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://doson.today/assets/logo.png"
+        "url": "https://nghean.today/nghean-logo.svg"
       }
     },
     "description": metaDescription

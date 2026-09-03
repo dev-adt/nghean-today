@@ -1,5 +1,5 @@
 /**
- * BizHub — Database Module (MySQL)
+ * Nghean.today — Database Module (MySQL)
  * File: db.js
  */
 
@@ -8,9 +8,9 @@ const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
   host     : process.env.DB_HOST     || 'localhost',
   port     : process.env.DB_PORT     || 3306,
-  user     : process.env.DB_USER     || 'bizhub_user',
+  user     : process.env.DB_USER     || 'nghean_today',
   password : process.env.DB_PASSWORD || '',
-  database : process.env.DB_NAME     || 'bizhub',
+  database : process.env.DB_NAME     || 'nghean_today_db',
   charset  : 'utf8mb4',
   waitForConnections: true,
   connectionLimit   : 10,
@@ -20,7 +20,7 @@ const pool = mysql.createPool({
 // Test kết nối khi khởi động
 pool.getConnection()
   .then(conn => {
-    console.log('✅ MySQL kết nối thành công — database:', process.env.DB_NAME || 'bizhub');
+    console.log('✅ MySQL kết nối thành công — database:', process.env.DB_NAME || 'nghean_today_db');
     conn.release();
   })
   .catch(err => {

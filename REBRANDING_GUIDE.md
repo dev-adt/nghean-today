@@ -91,4 +91,4 @@ cd frontend && npm install && npm run build && cd ..
 # Chạy thử nghiệm
 node server.js
 ```
-Truy cập `http://localhost:5000` trên trình duyệt để kiểm tra toàn bộ giao diện và chức năng.
+Truy cập `http://localhost:3025` trên trình duyệt để kiểm tra toàn bộ giao diện và chức năng.

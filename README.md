@@ -83,7 +83,7 @@ node server.js
 # Hoặc chạy môi trường phát triển Frontend (Hot reload)
 cd frontend && npm run dev
 ```
-Truy cập: `http://localhost:5000` (Backend SPA) hoặc `http://localhost:5173` (Frontend Dev Server).
+Truy cập: `http://localhost:3025` (Backend SPA) hoặc `http://localhost:5173` (Frontend Dev Server).
 
 ---
 

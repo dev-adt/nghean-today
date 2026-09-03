@@ -1,5 +1,5 @@
 /**
- * BizHub AI — Backend Server (MySQL version)
+ * Nghean.today — Backend Server (MySQL version)
  * Node.js + Express + MySQL2
  */
 
@@ -40,7 +40,7 @@ if (process.env.SMTP_HOST) {
 }
 
 const app  = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3025;
 
 // Helper tạo URL slug chuẩn SEO từ chuỗi tiếng Việt
 function slugify(text) {
@@ -141,7 +141,16 @@ function getAPIKey(provider) {
   return keys[provider] || '';
 }
 
-app.use(cors({ origin: process.env.ALLOWED_ORIGIN || '*' }));
+const allowedOrigins = (process.env.ALLOWED_ORIGIN || '')
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Origin không được phép bởi CORS'));
+  }
+}));
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 
@@ -517,17 +526,6 @@ db.query(`
         console.log('✅ Đã thêm cột member_id vào bảng event_interests');
       }
 
-      // Seed dữ liệu sự kiện mẫu nếu bảng events trống
-      const [existingEvents] = await db.query("SELECT id FROM events LIMIT 1");
-      if (!existingEvents.length) {
-        await db.query(`
-          INSERT INTO events (title, description, event_date, end_date, location, organizer, capacity, status, image_url) VALUES
-          ('Festival Văn hóa & Du lịch Xứ Nghệ 2026', 'Sự kiện quảng bá di sản, Dân ca Ví Giặm và kết nối giao thương du lịch các tỉnh miền Trung.', '2026-09-15 08:30:00', '2026-09-18 21:00:00', 'Công viên Biển Đông, TP. Đà Nẵng', 'Ban Quản trị VTV8.vn & Sở Du lịch Đà Nẵng', 500, 'upcoming', 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80'),
-          ('Ngày hội Văn hóa Xứ Nghệ 2026', 'Ngày hội giao lưu văn hóa nghệ thuật cồng chiêng, ẩm thực rượu cần và trình diễn nghề dệt thổ cẩm truyền thống.', '2026-10-20 09:00:00', '2026-10-22 18:00:00', 'Quảng trường 10/3, TP. Buôn Ma Thuột, Đắk Lắk', 'Hiệp hội Du lịch Tây Nguyên & VTV8.vn', 300, 'upcoming', 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80'),
-          ('Diễn đàn Chuyển đổi số & Du lịch Di sản Thông minh 2026', 'Hội thảo chuyên sâu kết nối các doanh nghiệp lữ hành, khách sạn, nhà cung cấp công nghệ VR/AR và trợ lý AI.', '2026-11-05 13:30:00', '2026-11-05 17:30:00', 'Trung tâm Hội nghị Quốc tế, TP. Huế', 'Trung tâm Bảo tồn Di tích Cố đô Huế & VTV8.vn', 200, 'upcoming', 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80')
-        `);
-        console.log('✅ Đã khởi tạo 3 sự kiện mẫu tiêu biểu cho Nghean.today');
-      }
     } catch (e) {
       console.warn('Cảnh báo kiểm tra bảng events:', e.message);
     }
@@ -582,14 +580,9 @@ db.query(`
     }
 
     const [catCount] = await db.query('SELECT COUNT(*) as count FROM categories');
-    const [hasOldCategories] = await db.query("SELECT COUNT(*) as count FROM categories WHERE name LIKE '%Nghean%'");
-
-    if (catCount[0].count === 0 || hasOldCategories[0].count > 0) {
+    // Chỉ seed khi chưa có dữ liệu; luôn bảo toàn các chuyên mục do admin quản lý.
+    if (catCount[0].count === 0) {
       console.log('🌱 Đang khởi tạo/đồng bộ dữ liệu 8 Chuyên mục & Lĩnh vực Nghean.today...');
-      if (hasOldCategories[0].count > 0) {
-        await db.query('DELETE FROM categories WHERE name LIKE "%VTV8%"');
-      }
-
       const defaultCategories = [
         {
           name: 'Văn hóa – Du lịch', name_en: 'Culture & Tourism', order: 1,
@@ -612,11 +605,11 @@ db.query(`
         {
           name: 'Điểm đến nổi bật', name_en: 'Featured Destinations', order: 3,
           subs: [
-            { vi: 'Miền Trung & Duyên hải', en: 'Central Coast Region' },
-            { vi: 'Đại ngàn Tây Nguyên', en: 'Central Highlands' },
-            { vi: 'Kỳ quan Bắc Bộ', en: 'Northern Wonders' },
-            { vi: 'Sắc màu Phương Nam', en: 'Southern Highlights' },
-            { vi: 'Thiên đường biển đảo', en: 'Island & Marine Paradise' }
+            { vi: 'Thành phố Vinh & vùng phụ cận', en: 'Vinh City & Surroundings' },
+            { vi: 'Miền Tây Nghệ An', en: 'Western Nghe An' },
+            { vi: 'Nam Đàn – Quê hương Bác Hồ', en: 'Nam Dan – President Ho Chi Minh Homeland' },
+            { vi: 'Cửa Lò & du lịch biển', en: 'Cua Lo & Beach Tourism' },
+            { vi: 'Điểm đến cộng đồng', en: 'Community Destinations' }
           ]
         },
         {
@@ -3102,7 +3095,7 @@ ${knowledgeText ? `\n${knowledgeText}` : ''}`;
       const msgs = [{ role: 'system', content: memberContext }, ...messages];
       const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method : 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + activeKey, 'HTTP-Referer': process.env.SITE_URL || 'https://bizhub.vn', 'X-Title': 'BizHub AI' },
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + activeKey, 'HTTP-Referer': process.env.SITE_URL || 'https://nghean.today', 'X-Title': 'Nghean.today AI' },
         body   : JSON.stringify({ model, max_tokens: 1024, messages: msgs }),
       });
       const d = await r.json();
@@ -3245,7 +3238,7 @@ Preserve all HTML tags, line breaks, formatting, and markdown if present. Do not
     else if (provider === 'openrouter') {
       const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method : 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey, 'HTTP-Referer': process.env.SITE_URL || 'https://bizhub.vn', 'X-Title': 'BizHub AI' },
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey, 'HTTP-Referer': process.env.SITE_URL || 'https://nghean.today', 'X-Title': 'Nghean.today AI' },
         body   : JSON.stringify({ 
           model, 
           max_tokens: 2048, 
@@ -3559,7 +3552,7 @@ app.get('/api/debug-env', (req, res) => {
     success: true,
     directory: __dirname,
     port: PORT,
-    database: process.env.DB_NAME || 'bizhub',
+    database: process.env.DB_NAME || 'nghean_today_db',
     timezone: process.env.TZ || 'N/A',
     time: new Date().toISOString()
   });

@@ -483,7 +483,7 @@ export const CreatorDashboard = () => {
 
                   <div className="fg">
                     <label style={{ fontSize: '13px', fontWeight: 600 }}>Từ khoá SEO (phân tách bằng dấu phẩy)</label>
-                    <input type="text" id="tags" value={newPostData.tags} onChange={handleNewPostChange} placeholder="Ví dụ: du lịch di sản, văn hóa Đà Nẵng, lễ hội Huế" />
+                    <input type="text" id="tags" value={newPostData.tags} onChange={handleNewPostChange} placeholder="Ví dụ: du lịch Cửa Lò, Dân ca Ví Giặm, Lễ hội Làng Sen" />
                   </div>
                 </div>
 

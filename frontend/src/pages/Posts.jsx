@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
@@ -68,7 +68,7 @@ export const Posts = () => {
     let isMounted = true;
     const loadPosts = async () => {
       try {
-        const activeToken = token || localStorage.getItem('doson_creator_token') || localStorage.getItem('doson_member_token') || localStorage.getItem('doson_admin_token');
+        const activeToken = token || localStorage.getItem('nghean_creator_token') || localStorage.getItem('nghean_member_token') || localStorage.getItem('nghean_admin_token');
         const headers = activeToken ? { 'Authorization': 'Bearer ' + activeToken } : {};
         const res = await fetch('/api/posts?status=all', { headers });
         if (!res.ok) throw new Error('Không thể tải danh sách bài viết');
@@ -158,7 +158,7 @@ export const Posts = () => {
       <SEOHead 
         title={currentLang === 'en' ? 'Business Opportunities & News' : 'Bảng tin cơ hội & Quảng bá Doanh nghiệp'}
         description="Khám phá các tin đăng tìm kiếm đối tác, nhu cầu hợp tác thương mại, sự kiện kết nối đầu tư và thông tin doanh nghiệp trên toàn quốc."
-        keywords="bảng tin doanh nghiệp, cơ hội kinh doanh, Việt Nam, Miền Trung, Tây Nguyên, hợp tác thương mại, quảng bá doanh nghiệp"
+        keywords="bảng tin doanh nghiệp Nghệ An, cơ hội kinh doanh, xúc tiến đầu tư, hợp tác thương mại, quảng bá doanh nghiệp"
         url="/posts"
       />
 

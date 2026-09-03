@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Navbar from '../components/Navbar';
@@ -21,14 +21,14 @@ export const AIChat = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [aiConfig, setAiConfig] = useState({ provider: 'Gemini', model: 'gemini-1.5-flash' });
   const [selectedModelOverride, setSelectedModelOverride] = useState(() => {
-    return localStorage.getItem('doson_chat_model_override') || '';
+    return localStorage.getItem('nghean_chat_model_override') || '';
   });
 
   const autoSentRef = useRef(false);
 
   const handleModelOverrideChange = (val) => {
     setSelectedModelOverride(val);
-    localStorage.setItem('doson_chat_model_override', val);
+    localStorage.setItem('nghean_chat_model_override', val);
   };
 
   const messagesEndRef = useRef(null);

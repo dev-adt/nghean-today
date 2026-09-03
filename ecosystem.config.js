@@ -7,7 +7,7 @@
 module.exports = {
   apps: [
     {
-      name        : 'nghean-today-prod',
+      name        : 'nghean-today',
       script      : 'server.js',
       instances   : 1,           // tăng lên 'max' nếu muốn cluster
       exec_mode   : 'fork',
@@ -16,7 +16,7 @@ module.exports = {
 
       env: {
         NODE_ENV : 'production',
-        PORT     : 3024,
+        PORT     : 3025,
       },
 
       // Log

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+﻿import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
@@ -11,13 +11,13 @@ export const AuthProvider = ({ children }) => {
   // Khôi phục phiên làm việc khi load trang
   useEffect(() => {
     const checkAuth = async () => {
-      const adminToken = localStorage.getItem('doson_admin_token');
-      const adminUserStr = localStorage.getItem('doson_admin_user');
-      const memberToken = localStorage.getItem('doson_member_token');
-      const memberUserStr = localStorage.getItem('doson_member_user');
+      const adminToken = localStorage.getItem('nghean_admin_token');
+      const adminUserStr = localStorage.getItem('nghean_admin_user');
+      const memberToken = localStorage.getItem('nghean_member_token');
+      const memberUserStr = localStorage.getItem('nghean_member_user');
 
-      const creatorToken = localStorage.getItem('doson_creator_token');
-      const creatorUserStr = localStorage.getItem('doson_creator_user');
+      const creatorToken = localStorage.getItem('nghean_creator_token');
+      const creatorUserStr = localStorage.getItem('nghean_creator_user');
 
       if (adminToken && adminUserStr) {
         try {
@@ -37,8 +37,8 @@ export const AuthProvider = ({ children }) => {
         } catch (e) {
           console.error("Admin session verification failed", e);
         }
-        localStorage.removeItem('doson_admin_token');
-        localStorage.removeItem('doson_admin_user');
+        localStorage.removeItem('nghean_admin_token');
+        localStorage.removeItem('nghean_admin_user');
       }
 
       if (creatorToken && creatorUserStr) {
@@ -59,8 +59,8 @@ export const AuthProvider = ({ children }) => {
         } catch (e) {
           console.error("Creator session verification failed", e);
         }
-        localStorage.removeItem('doson_creator_token');
-        localStorage.removeItem('doson_creator_user');
+        localStorage.removeItem('nghean_creator_token');
+        localStorage.removeItem('nghean_creator_user');
       }
 
       if (memberToken && memberUserStr) {
@@ -81,8 +81,8 @@ export const AuthProvider = ({ children }) => {
         } catch (e) {
           console.error("Member session verification failed", e);
         }
-        localStorage.removeItem('doson_member_token');
-        localStorage.removeItem('doson_member_user');
+        localStorage.removeItem('nghean_member_token');
+        localStorage.removeItem('nghean_member_user');
       }
 
       // Fallback về guest
@@ -111,12 +111,12 @@ export const AuthProvider = ({ children }) => {
     setRole('creator');
     setUser(data.creator);
 
-    localStorage.setItem('doson_creator_token', data.token);
-    localStorage.setItem('doson_creator_user', JSON.stringify(data.creator));
-    localStorage.removeItem('doson_admin_token');
-    localStorage.removeItem('doson_admin_user');
-    localStorage.removeItem('doson_member_token');
-    localStorage.removeItem('doson_member_user');
+    localStorage.setItem('nghean_creator_token', data.token);
+    localStorage.setItem('nghean_creator_user', JSON.stringify(data.creator));
+    localStorage.removeItem('nghean_admin_token');
+    localStorage.removeItem('nghean_admin_user');
+    localStorage.removeItem('nghean_member_token');
+    localStorage.removeItem('nghean_member_user');
 
     return data;
   };
@@ -138,29 +138,29 @@ export const AuthProvider = ({ children }) => {
 
     if (data.role === 'admin') {
       setUser(data.admin);
-      localStorage.setItem('doson_admin_token', data.token);
-      localStorage.setItem('doson_admin_user', JSON.stringify(data.admin));
-      localStorage.removeItem('doson_member_token');
-      localStorage.removeItem('doson_member_user');
-      localStorage.removeItem('doson_creator_token');
-      localStorage.removeItem('doson_creator_user');
+      localStorage.setItem('nghean_admin_token', data.token);
+      localStorage.setItem('nghean_admin_user', JSON.stringify(data.admin));
+      localStorage.removeItem('nghean_member_token');
+      localStorage.removeItem('nghean_member_user');
+      localStorage.removeItem('nghean_creator_token');
+      localStorage.removeItem('nghean_creator_user');
     } else if (data.role === 'member') {
       setUser(data.user);
-      localStorage.setItem('doson_member_token', data.token);
-      localStorage.setItem('doson_member_user', JSON.stringify(data.user));
-      localStorage.removeItem('doson_admin_token');
-      localStorage.removeItem('doson_admin_user');
-      localStorage.removeItem('doson_creator_token');
-      localStorage.removeItem('doson_creator_user');
+      localStorage.setItem('nghean_member_token', data.token);
+      localStorage.setItem('nghean_member_user', JSON.stringify(data.user));
+      localStorage.removeItem('nghean_admin_token');
+      localStorage.removeItem('nghean_admin_user');
+      localStorage.removeItem('nghean_creator_token');
+      localStorage.removeItem('nghean_creator_user');
     } else if (data.role === 'creator') {
       const creatorObj = data.creator || data.user;
       setUser(creatorObj);
-      localStorage.setItem('doson_creator_token', data.token);
-      localStorage.setItem('doson_creator_user', JSON.stringify(creatorObj));
-      localStorage.removeItem('doson_admin_token');
-      localStorage.removeItem('doson_admin_user');
-      localStorage.removeItem('doson_member_token');
-      localStorage.removeItem('doson_member_user');
+      localStorage.setItem('nghean_creator_token', data.token);
+      localStorage.setItem('nghean_creator_user', JSON.stringify(creatorObj));
+      localStorage.removeItem('nghean_admin_token');
+      localStorage.removeItem('nghean_admin_user');
+      localStorage.removeItem('nghean_member_token');
+      localStorage.removeItem('nghean_member_user');
     }
 
     return data;
@@ -188,12 +188,12 @@ export const AuthProvider = ({ children }) => {
       console.error("Logout API call failed", e);
     }
 
-    localStorage.removeItem('doson_admin_token');
-    localStorage.removeItem('doson_admin_user');
-    localStorage.removeItem('doson_member_token');
-    localStorage.removeItem('doson_member_user');
-    localStorage.removeItem('doson_creator_token');
-    localStorage.removeItem('doson_creator_user');
+    localStorage.removeItem('nghean_admin_token');
+    localStorage.removeItem('nghean_admin_user');
+    localStorage.removeItem('nghean_member_token');
+    localStorage.removeItem('nghean_member_user');
+    localStorage.removeItem('nghean_creator_token');
+    localStorage.removeItem('nghean_creator_user');
     
     setRole('guest');
     setUser(null);
@@ -201,12 +201,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const setGuestMode = () => {
-    localStorage.removeItem('doson_admin_token');
-    localStorage.removeItem('doson_admin_user');
-    localStorage.removeItem('doson_member_token');
-    localStorage.removeItem('doson_member_user');
-    localStorage.removeItem('doson_creator_token');
-    localStorage.removeItem('doson_creator_user');
+    localStorage.removeItem('nghean_admin_token');
+    localStorage.removeItem('nghean_admin_user');
+    localStorage.removeItem('nghean_member_token');
+    localStorage.removeItem('nghean_member_user');
+    localStorage.removeItem('nghean_creator_token');
+    localStorage.removeItem('nghean_creator_user');
     setRole('guest');
     setUser(null);
     setToken(null);

@@ -283,7 +283,7 @@ export const Register = () => {
                         <datalist id="cities-list">
                           <option value="Hà Nội" />
                           <option value="TP. Hồ Chí Minh" />
-                          <option value="Đà Nẵng" />
+                          <option value="Nghệ An" />
                           <option value="Bình Dương" />
                           <option value="Đồng Nai" />
                           <option value="Hải Phòng" />

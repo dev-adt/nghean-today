@@ -46,9 +46,9 @@ export const brandConfig = {
 
   // Nhận diện hình ảnh & Logo
   logo: {
-    primary: '/vtv8_logo.png', // Logo hệ thống
+    primary: '/nghean-logo.svg', // Biểu trưng Nghean.today
     alt: 'Nghean.today Logo',
-    favicon: '/favicon.png',
+    favicon: '/nghean-logo.svg',
     defaultThumbnail: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&q=80',
     fallbackCompanyLogo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=80'
   },
