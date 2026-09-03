@@ -178,5 +178,16 @@ CREATE TABLE IF NOT EXISTS sub_categories (
   INDEX idx_category (category_id)
 ) ENGINE=InnoDB COMMENT='Lĩnh vực con';
 
--- Dữ liệu vận hành (quản trị viên, hội viên, bài viết và sự kiện) được tạo
--- qua trang quản trị. Schema production không chèn tài khoản hoặc nội dung demo.
+-- ── Tài khoản quản trị mặc định ───────────────────────────────
+-- Username: admin | Password ban đầu: Admin@123
+-- Cần đổi mật khẩu ngay sau lần đăng nhập đầu tiên.
+INSERT INTO admins (username, password_hash, name, email, role) VALUES
+('admin', '$2b$10$3luJFH.EMVPnxeH8BdXn9.5tnCQ9huv13yzOzHrwYGiRhgV7dcufq', 'Ban Quản trị Nghean.today', 'admin@nghean.today', 'superadmin')
+ON DUPLICATE KEY UPDATE
+  password_hash = VALUES(password_hash),
+  name = VALUES(name),
+  email = VALUES(email),
+  role = VALUES(role);
+
+-- Hội viên, bài viết và sự kiện được tạo qua trang quản trị;
+-- schema production không chèn nội dung demo.

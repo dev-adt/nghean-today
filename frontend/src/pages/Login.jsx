@@ -83,7 +83,7 @@ export const Login = () => {
         <div className="glass-card" style={{ padding: '2.5rem 2.25rem', borderRadius: '16px', position: 'relative', overflow: 'hidden' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', marginBottom: '2rem', textAlign: 'center' }}>
             <div className="logo-icon" style={{ width: 'auto', height: '60px', borderRadius: '16px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(2, 132, 199, 0.35)', border: '1px solid rgba(56, 189, 248, 0.3)', padding: '6px 14px', background: 'rgba(15, 23, 42, 0.6)' }}>
-              <img src="/nghean_logo.png" alt="Nghean.today Logo" style={{ height: '100%', width: 'auto', objectFit: 'contain' }} />
+              <img src="/nghean-logo.svg" alt="Nghean.today Logo" style={{ height: '100%', width: 'auto', objectFit: 'contain' }} />
             </div>
             <div>
               <div className="logo-name" style={{ fontFamily: 'var(--font-title)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>Nghean.today</div>
