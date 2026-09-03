@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import brandConfig from '../brand.config';
 
 const LANGS = {
   vi: {
@@ -2040,7 +2041,7 @@ const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
   const [currentLang, setCurrentLang] = useState(() => {
-    return localStorage.getItem('VTV8.vn_lang') || 'vi';
+    return localStorage.getItem('app_lang') || localStorage.getItem('VTV8.vn_lang') || 'vi';
   });
 
   const t = (key) => {
@@ -2053,17 +2054,18 @@ export const LanguageProvider = ({ children }) => {
   const changeLang = (lang) => {
     if (LANGS[lang]) {
       setCurrentLang(lang);
-      localStorage.setItem('VTV8.vn_lang', lang);
+      localStorage.setItem('app_lang', lang);
     }
   };
 
   const getLangDetails = () => LANGS[currentLang] || LANGS.vi;
 
   return (
-    <LanguageContext.Provider value={{ currentLang, t, changeLang, getLangDetails, LANGS }}>
+    <LanguageContext.Provider value={{ currentLang, t, changeLang, getLangDetails, LANGS, brand: brandConfig }}>
       {children}
     </LanguageContext.Provider>
   );
 };
 
 export const useTranslation = () => useContext(LanguageContext);
+

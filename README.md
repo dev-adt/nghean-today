@@ -1,217 +1,123 @@
-# VTV8.vn — Hệ sinh thái số Du lịch, Văn hóa & Di sản Việt Nam
+# 🌟 CODEBASE TODAY — WHITE-LABEL DIGITAL ECOSYSTEM PLATFORM
 
-Nền tảng số **VTV8.vn** quảng bá du lịch, văn hóa, di sản và lịch sử Việt Nam; kết nối điểm đến, doanh nghiệp, cộng đồng hội viên và du khách trong nước, quốc tế cùng Trợ lý AI đa ngôn ngữ 24/7.
+> **Codebase Template chuẩn mực** giúp bạn nhanh chóng khởi tạo và vận hành nền tảng số đa chức năng (Văn hóa, Du lịch, Di sản, Báo chí, Doanh nghiệp, Thương mại điện tử & Trợ lý Trí tuệ Nhân tạo AI) cho **bất kỳ thương hiệu hoặc địa phương nào** chỉ trong vài phút!
 
----
-
-## 📋 Thông số Cấu hình Mặc định (Production / Staging)
-
-- **Domain**: `dev.vtv8.vn`
-- **Backend Node.js Port**: `3023`
-- **Database Engine**: MySQL 5.7+ / MariaDB 10.x
-- **Database Name**: `vtv8`
-- **Database Username**: `vtv8`
-- **Quản lý tiến trình**: PM2 (`vtv8-today`)
-- **Web Server / Reverse Proxy**: Nginx (aaPanel)
-- **CI/CD Workflow**: GitHub Actions tự động build sang branch `deploy`
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18-blue.svg)](https://react.dev/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)](https://www.mysql.com/)
+[![Gemini AI](https://img.shields.io/badge/Google_Gemini-2.5_Flash-purple.svg)](https://ai.google.dev/)
+[![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 
 ---
 
-## 📁 Cấu trúc Thư mục
+## 🚀 TẠI SAO CHỌN CODEBASE TODAY?
 
-```text
-vtv8-today/
-├── .github/workflows/deploy.yml # Workflow tự động build frontend & push sang branch deploy
-├── server.js                    # Express Backend API, xác thực, proxy AI & phục vụ SPA
-├── schema.sql                   # Cấu trúc CSDL MySQL đầy đủ cho hệ thống VTV8
-├── .env.example                 # Bản mẫu biến môi trường (port 3023, db vtv8)
-├── ecosystem.config.js          # Cấu hình khởi chạy PM2 (app name: vtv8-today, port: 3023)
-├── nginx.conf                   # Cấu hình Nginx reverse proxy mẫu chống dính cache cho aaPanel
-├── package.json                 # Dependencies cho Node.js Backend
-│
-├── frontend/                    # Mã nguồn React Frontend (Vite + React 18/Router 7)
-│   ├── src/                     # Toàn bộ Components, Pages, Contexts của VTV8.vn
-│   ├── index.html               # Trang HTML gốc tích hợp meta anti-cache
-│   ├── vite.config.js           # Cấu hình Vite xuất bundle sang ../public
-│   └── package.json             # Dependencies cho Frontend
-│
-└── public/                      # Thư mục chứa bundle tĩnh đã biên dịch (index.html, JS/CSS hash)
+- ⚡ **White-label 100%**: Toàn bộ định danh thương hiệu (Tên, Slogan, Logo, Màu sắc, Hotline, AI Assistant) được quản lý tập trung qua `brand.config.js`.
+- 🤖 **Tự động hóa với AI Agent**: Cung cấp sẵn file prompt mẫu [PROMPT_FOR_AI_AGENT.md](PROMPT_FOR_AI_AGENT.md) để AI (Antigravity / Cursor / Claude) tự động clone và tùy biến sang thương hiệu mới chỉ bằng 1 câu lệnh.
+- 🛠️ **CLI Rebrand Tool**: Tích hợp sẵn script `node scripts/rebrand.js` giúp đổi tên và đồng bộ toàn bộ dự án từ dòng lệnh.
+- 🧠 **Tích hợp Sâu AI Gemini 2.5 Flash**: Trợ lý AI hỏi đáp thông minh, RAG tìm kiếm ngữ cảnh dữ liệu doanh nghiệp và bài viết, tự động phản hồi chuyên nghiệp.
+- 👥 **Cổng Doanh nghiệp & Quản trị CMS**: Đầy đủ tính năng Đăng ký hội viên theo gói, Phê duyệt hồ sơ, Đăng tin bài, Quản lý sự kiện, Gửi email tự động SMTP.
+- 📦 **Sẵn sàng Triển khai VPS**: Tích hợp sẵn cấu hình Nginx, PM2 Cluster, Let's Encrypt SSL và GitHub Actions CI/CD.
+
+---
+
+## 📂 TÀI LIỆU HƯỚNG DẪN CHI TIẾT
+
+| Tài liệu | Mô tả |
+| :--- | :--- |
+| 🤖 [**PROMPT_FOR_AI_AGENT.md**](PROMPT_FOR_AI_AGENT.md) | **Prompt mẫu chuẩn** để giao cho AI Agent tự động đổi thương hiệu 100% |
+| 📖 [**REBRANDING_GUIDE.md**](REBRANDING_GUIDE.md) | Sổ tay hướng dẫn chi tiết từng bước đổi thương hiệu cho Developer |
+| 🏗️ [**CODEBASE_ARCHITECTURE.md**](CODEBASE_ARCHITECTURE.md) | Tài liệu kiến trúc toàn diện (Data flow, API, DB Schema, Gemini RAG) |
+| 🌐 [**huong_dan_deploy_vps.md**](huong_dan_deploy_vps.md) | Hướng dẫn triển khai Production lên VPS (aaPanel / Ubuntu / Nginx / PM2) |
+| 🛡️ [**huong_dan_admin.md**](huong_dan_admin.md) | Cẩm nang sử dụng bảng điều khiển Quản trị viên (CMS Admin) |
+| 🏢 [**huong_dan_doanh_nghiep.md**](huong_dan_doanh_nghiep.md) | Hướng dẫn dành cho Hội viên doanh nghiệp sử dụng portal |
+
+---
+
+## ⚡ BẮT ĐẦU NHANH (QUICK START TRONG 5 PHÚT)
+
+### 1. Clone Kho mã nguồn
+```bash
+git clone https://github.com/dev-adt/codebase-today.git my-new-project
+cd my-new-project
+```
+
+### 2. Đổi Thương hiệu (Chọn 1 trong 2 cách)
+
+#### 👉 Cách A: Dùng AI Agent (Khuyên dùng ⚡)
+Mở [PROMPT_FOR_AI_AGENT.md](PROMPT_FOR_AI_AGENT.md), điền thông tin thương hiệu mới của bạn và gửi cho AI trong IDE!
+
+#### 👉 Cách B: Dùng Script CLI
+```bash
+node scripts/rebrand.js
 ```
 
 ---
 
-## 🚀 HƯỚNG DẪN DEPLOY TRÊN AAPANEL VPS (TỪNG BƯỚC CHI TIẾT)
-
-### Bước 1: Tạo Database MySQL trên aaPanel
-1. Đăng nhập vào bảng điều khiển **aaPanel** > Chọn menu **Databases** > Nhấn **Add Database**:
-   - **DBName**: `vtv8`
-   - **Username**: `vtv8`
-   - **Password**: *(Đặt mật khẩu của bạn và lưu lại để điền vào .env)*
-   - **Character Set**: `utf8mb4`
-2. Bấm **Submit** để tạo database.
-
----
-
-### Bước 2: Clone Mã nguồn về VPS & Import Database
-Mở **Terminal** trên aaPanel (hoặc SSH vào VPS) và chạy các lệnh sau:
-
+### 3. Cài đặt Thư viện & Cấu hình Biến môi trường
 ```bash
-# 1. Di chuyển vào thư mục web của aaPanel
-cd /www/wwwroot
+# Cài đặt dependencies cho Backend & Frontend
+npm install
+cd frontend && npm install && npm run build && cd ..
 
-# 2. Clone mã nguồn từ branch 'deploy' (đã có sẵn thư mục public và schema.sql)
-git clone -b deploy https://github.com/dev-adt/vtv8-today.git dev.vtv8.vn
-
-# 3. Đi vào thư mục dự án
-cd /www/wwwroot/dev.vtv8.vn
-
-# 4. Import cấu trúc bảng vào MySQL bằng lệnh Terminal (nhập mật khẩu DB khi được hỏi):
-mysql -u vtv8 -p vtv8 < schema.sql
-
-# 5. Cài đặt các thư viện backend
-npm install --production
-```
-
-> **Mẹo**: Nếu dùng tài khoản root MySQL trên aaPanel, bạn cũng có thể chạy:
-> ```bash
-> mysql -u root -p vtv8 < schema.sql
-> ```
-
----
-
-### Bước 3: Tạo và Cấu hình file `.env`
-Tạo file `.env` từ file mẫu:
-
-```bash
+# Tạo file cấu hình môi trường
 cp .env.example .env
-nano .env
 ```
-
-Điền các thông tin của bạn vào `.env`:
-
-```env
-PORT=3023
-SITE_URL=https://dev.vtv8.vn
-ALLOWED_ORIGIN=https://dev.vtv8.vn
-
-# Cấu hình MySQL đã tạo ở Bước 1
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=vtv8
-DB_USER=vtv8
-DB_PASSWORD=MẬT_KHẨU_DATABASE_CỦA_BẠN
-
-# Cấu hình API Key AI (Tùy chọn: OpenAI, Gemini, DeepSeek, OpenRouter...)
-GEMINI_API_KEY=
-OPENAI_API_KEY=
-OPENROUTER_API_KEY=
-```
-
-*(Nhấn `Ctrl + O` rồi `Enter` để lưu, sau đó `Ctrl + X` để thoát nano).*
+Mở `.env` và điền thông tin kết nối MySQL, Port và Gemini API Key của bạn.
 
 ---
 
-### Bước 4: Khởi chạy Backend với PM2
-Khởi chạy ứng dụng và thiết lập tự khởi động khi VPS reboot:
+### 4. Khởi tạo Cơ sở dữ liệu (MySQL)
+```bash
+mysql -u root -p -e "CREATE DATABASE my_today_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p my_today_db < schema.sql
+```
+
+---
+
+### 5. Khởi chạy Ứng dụng
+```bash
+# Chạy Backend Server
+node server.js
+
+# Hoặc chạy môi trường phát triển Frontend (Hot reload)
+cd frontend && npm run dev
+```
+Truy cập: `http://localhost:5000` (Backend SPA) hoặc `http://localhost:5173` (Frontend Dev Server).
+
+---
+
+## 🏛️ CẤU TRÚC THƯ THƯƠNG HIỆU TẬP TRUNG
+
+Toàn bộ thông số thương hiệu nằm tại:
+- **Frontend**: [`frontend/src/brand.config.js`](frontend/src/brand.config.js)
+  ```javascript
+  export const brandConfig = {
+    brandName: 'DANANG.today',
+    brandShortName: 'DANANG',
+    slogan: 'Khám phá thành phố đáng sống',
+    domain: 'danang.today',
+    colors: { primary: '#059669', ... },
+    aiAssistant: { name: 'AI DaNang Assistant', ... },
+    contact: { hotline: '0236 3888 999', email: 'contact@danang.today', ... }
+  };
+  ```
+- **Backend**: [`config/brand.config.js`](config/brand.config.js)
+
+---
+
+## 🚢 TRIỂN KHAI PRODUCTION (VPS / PM2 / NGINX)
 
 ```bash
-# Khởi chạy ứng dụng qua file cấu hình ecosystem
+# Khởi chạy bằng PM2
 pm2 start ecosystem.config.js
-
-# Lưu trạng thái PM2
 pm2 save
 pm2 startup
 ```
 
-Kiểm tra trạng thái hoạt động:
-```bash
-pm2 status
-pm2 logs vtv8-today
-```
-
-*(Bạn sẽ thấy dòng log: `VTV8.vn server đang chạy tại http://localhost:3023`)*
+Xem chi tiết tại [huong_dan_deploy_vps.md](huong_dan_deploy_vps.md).
 
 ---
 
-### Bước 5: Tạo Website & Cấu hình Nginx Reverse Proxy trên aaPanel
-1. Vào aaPanel > **Website** > Nhấn **Add site**:
-   - **Domain**: `dev.vtv8.vn`
-   - **Root directory**: `/www/wwwroot/dev.vtv8.vn/public`
-   - **Database**: *No* (vì đã tạo ở Bước 1)
-   - **PHP version**: *Pure / Static* (hoặc bất kỳ vì ta dùng Node.js)
-2. Cấu hình **SSL (HTTPS)**:
-   - Trong danh sách Website, click vào tên miền `dev.vtv8.vn` > chọn tab **SSL** > chọn **Let's Encrypt** > tích chọn domain và bấm **Apply** để cấp chứng chỉ SSL miễn phí tự động gia hạn.
-   - Bật công tắc **Force HTTPS**.
-3. Cấu hình **Nginx Config (Chống dính cache & Proxy port 3023)**:
-   - Cũng trong bảng cài đặt website đó, chuyển sang tab **Config File**.
-   - Dán cấu hình Nginx sau vào giữa block `server { ... }` (hoặc thay thế nội dung file config):
-
-```nginx
-server {
-    listen 80;
-    listen 443 ssl http2;
-    server_name dev.vtv8.vn;
-
-    # Root trỏ vào thư mục public chứa file tĩnh
-    root /www/wwwroot/dev.vtv8.vn/public;
-    index index.html;
-
-    # SSL Cert do aaPanel tự tạo
-    # ssl_certificate ...
-    # ssl_certificate_key ...
-
-    # Gzip nén trang
-    gzip on;
-    gzip_types text/plain text/css application/json application/javascript;
-
-    # ── Proxy toàn bộ API về Node.js (Port 3023) ──
-    location /api/ {
-        proxy_pass         http://127.0.0.1:3023;
-        proxy_http_version 1.1;
-        proxy_set_header   Upgrade $http_upgrade;
-        proxy_set_header   Connection 'upgrade';
-        proxy_set_header   Host $host;
-        proxy_set_header   X-Real-IP $remote_addr;
-        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_read_timeout 120s;
-    }
-
-    # ── Upload media ──
-    location /uploads/ {
-        proxy_pass         http://127.0.0.1:3023;
-        proxy_set_header   Host $host;
-        proxy_set_header   X-Real-IP $remote_addr;
-    }
-
-    # ── Assets có hash: Cache dài hạn 1 năm ──
-    location /assets/ {
-        expires 1y;
-        add_header Cache-Control "public, max-age=31536000, immutable";
-    }
-
-    # ── SPA Routing & CHỐNG DÍNH CACHE index.html ──
-    location / {
-        try_files $uri $uri/ /index.html;
-        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate";
-        add_header Pragma "no-cache";
-        add_header Expires "0";
-    }
-}
-```
-4. Bấm **Save** để lưu cấu hình Nginx.
-
----
-
-## 🔄 QUY TRÌNH CẬP NHẬT CODE SAU NÀY (CI/CD SIÊU NHANH)
-
-Nhờ có quy trình CI/CD tự động bằng GitHub Actions:
-1. Mỗi khi bạn chỉnh sửa mã nguồn ở máy cá nhân và chạy `git push origin main`, **GitHub Actions sẽ tự động biên dịch frontend và xuất bản sang branch `deploy`**.
-2. Khi muốn cập nhật phiên bản mới nhất lên VPS, bạn chỉ cần mở Terminal trên VPS và chạy 2 lệnh:
-
-```bash
-cd /www/wwwroot/dev.vtv8.vn
-git pull origin deploy
-pm2 restart vtv8-today
-```
-
-⚡ **Website sẽ lập tức cập nhật phiên bản mới nhất mà không bao giờ bị lỗi dính cache trình duyệt!**
+## 📄 GIẤY PHÉP (LICENSE)
+Phát triển và bảo trì bởi **dev-adt**. Được cấp phép theo giấy phép MIT.

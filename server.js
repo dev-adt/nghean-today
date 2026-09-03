@@ -13,6 +13,7 @@ const fs      = require('fs');
 const crypto  = require('crypto');
 const db      = require('./db');
 const nodemailer = require('nodemailer');
+const brandConfig = require('./config/brand.config');
 
 // Cấu hình SMTP gửi Mail
 let transporter = null;
@@ -1226,22 +1227,22 @@ app.post('/api/forgot-password', async (req, res) => {
     // Gửi mail thông báo mật khẩu mới
     if (transporter) {
       const mailOptions = {
-        from: process.env.SMTP_FROM || `"VTV8.vn" <${process.env.SMTP_USER}>`,
+        from: brandConfig.email.fromAddress,
         to: email,
         bcc: process.env.SMTP_BCC || undefined,
-        subject: '[VTV8.vn] Khôi phục mật khẩu tài khoản',
+        subject: `[${brandConfig.brandShortName}] Khôi phục mật khẩu tài khoản`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
             <h2 style="color: #1E88E5; border-bottom: 2px solid #1E88E5; padding-bottom: 10px;">Cấp lại mật khẩu thành công!</h2>
             <p>Xin chào <strong>${member.name}</strong>,</p>
-            <p>Chúng tôi nhận được yêu cầu khôi phục mật khẩu của bạn cho tài khoản kết nối doanh nghiệp trên <strong>VTV8.vn</strong>.</p>
+            <p>Chúng tôi nhận được yêu cầu khôi phục mật khẩu của bạn cho tài khoản kết nối doanh nghiệp trên <strong>${brandConfig.brandName}</strong>.</p>
             <p>Mật khẩu mới của bạn đã được khởi tạo ngẫu nhiên như sau:</p>
             <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin: 20px 0; text-align: center;">
               <span style="font-family: monospace; font-size: 20px; font-weight: bold; color: #1E88E5; letter-spacing: 2px;">${newPassword}</span>
             </div>
             <p style="color: #d32f2f;"><strong>Khuyến cáo bảo mật:</strong> Vui lòng đăng nhập ngay bằng mật khẩu tạm thời này và truy cập vào Dashboard thành viên để đổi lại mật khẩu cá nhân của bạn.</p>
-            <p>Trân trọng,<br/>Ban Quản Trị VTV8.vn</p>
-            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống VTV8.vn. Vui lòng không trả lời thư này.</p>
+            <p>Trân trọng,<br/>${brandConfig.email.fromName}</p>
+            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống ${brandConfig.brandName}. Vui lòng không trả lời thư này.</p>
           </div>
         `
       };
@@ -1739,15 +1740,15 @@ app.post('/api/members', async (req, res) => {
     // Gửi email thông báo đăng ký (nếu có nhập email)
     if (transporter && cleanEmail) {
       const mailOptions = {
-        from: process.env.SMTP_FROM || `"VTV8.vn" <${process.env.SMTP_USER}>`,
+        from: brandConfig.email.fromAddress,
         to: cleanEmail,
         bcc: process.env.SMTP_BCC || undefined,
-        subject: '[VTV8.vn] Đăng ký tài khoản thành công',
+        subject: `[${brandConfig.brandShortName}] Đăng ký tài khoản thành công`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
-            <h2 style="color: #1E88E5; border-bottom: 2px solid #1E88E5; padding-bottom: 10px;">Gia nhập Hệ sinh thái VTV8.vn thành công!</h2>
+            <h2 style="color: #1E88E5; border-bottom: 2px solid #1E88E5; padding-bottom: 10px;">Gia nhập Hệ sinh thái ${brandConfig.brandName} thành công!</h2>
             <p>Xin chào <strong>${name}</strong>,</p>
-            <p>Cảm ơn doanh nghiệp của bạn đã đăng ký tài khoản hội viên trên nền tảng kết nối <strong>VTV8.vn</strong>.</p>
+            <p>Cảm ơn doanh nghiệp của bạn đã đăng ký tài khoản hội viên trên nền tảng kết nối <strong>${brandConfig.brandName}</strong>.</p>
             <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin: 15px 0;">
               <h4 style="margin-top: 0; color: #333;">Thông tin đăng ký của bạn:</h4>
               <table style="width: 100%; border-collapse: collapse;">
@@ -1767,7 +1768,7 @@ app.post('/api/members', async (req, res) => {
             </div>
             <p>Hồ sơ đăng ký của bạn hiện đang ở trạng thái <strong>Chờ duyệt (Pending)</strong>. Ban quản trị sẽ nhanh chóng kiểm tra thông tin và phê duyệt tài khoản của bạn trong thời gian sớm nhất.</p>
             <p>Khi hồ sơ được phê duyệt, bạn sẽ nhận được thông báo tiếp theo và có thể đăng nhập để sử dụng đầy đủ các tính năng giao thương và trợ lý AI.</p>
-            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống VTV8.vn. Vui lòng không trả lời thư này.</p>
+            <p style="margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-size: 12px; color: #999;">Đây là email tự động từ hệ thống ${brandConfig.brandName}. Vui lòng không trả lời thư này.</p>
           </div>
         `
       };
@@ -3005,8 +3006,7 @@ app.post('/api/chat', anyAuthMiddleware, async (req, res) => {
     try {
       // Đọc system_instruction từ ai_config
       const [aiConfigs] = await db.query("SELECT system_instruction FROM ai_config WHERE is_active = 1 LIMIT 1");
-      const systemInstruction = (aiConfigs[0] && aiConfigs[0].system_instruction) || 
-        "Bạn là trợ lý AI VTV8.vn — Hệ sinh thái số Văn hóa, Di sản, Lịch sử và Du lịch Việt Nam. Tôn vinh cội nguồn, kết nối thời đại. Hãy trả lời chuyên sâu, chuẩn xác, truyền cảm hứng và thân thiện bằng tiếng Việt hoặc tiếng Anh theo yêu cầu.";
+      const systemInstruction = (aiConfigs[0] && aiConfigs[0].system_instruction) || brandConfig.ai.systemPrompt;
 
       const [members] = await db.query("SELECT name,tier,industry,description,email,phone FROM members WHERE status='approved'");
       const [posts]   = await db.query("SELECT p.title,p.type,p.contact_info,m.name AS company FROM posts p JOIN members m ON p.member_id=m.id WHERE p.status='approved' ORDER BY p.created_at DESC LIMIT 10");
@@ -3576,5 +3576,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ VTV8.vn server đang chạy tại http://localhost:${PORT}`);
+  console.log(`✅ ${brandConfig.appName} server đang chạy tại http://localhost:${PORT}`);
 });

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import brandConfig from './brand.config';
 
 // Pages
 import Home from './pages/Home';
@@ -26,12 +27,15 @@ import AdminCategories from './pages/AdminCategories';
 import AdminCreators from './pages/AdminCreators';
 import AdminLeads from './pages/AdminLeads';
 
-// Tự động cuộn lên đầu trang khi chuyển tuyến đường
+// Tự động cuộn lên đầu trang khi chuyển tuyến đường và đồng bộ title
 function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (pathname === '/') {
+      document.title = `${brandConfig.brandName} — ${brandConfig.slogan}`;
+    }
   }, [pathname]);
 
   return null;

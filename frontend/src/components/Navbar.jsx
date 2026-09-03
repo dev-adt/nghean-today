@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
 import { CATEGORIES_DATA, getCategoryLabel, getSubCategoryLabel } from '../constants/categories';
+import brandConfig from '../brand.config';
 
 // Compact label dictionary for the top navigation bar to prevent horizontal overflow
 const SHORT_NAV_LABELS = {
@@ -94,7 +95,17 @@ export const Navbar = () => {
     return getSubCategoryLabel(sub, currentLang);
   };
 
+  // Helper safely getting subcategories list
   const getSubList = (cat) => {
+    if (!cat) return [];
+    if (typeof cat.subcategories === 'string') {
+      try {
+        const parsed = JSON.parse(cat.subcategories);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {
+        return [];
+      }
+    }
     if (Array.isArray(cat.sub_categories) && cat.sub_categories.length > 0) {
       return cat.sub_categories;
     }
@@ -145,8 +156,11 @@ export const Navbar = () => {
           }}
         >
           <img 
-            src="/vtv8_logo.png" 
-            alt="VTV8.vn Logo" 
+            src={brandConfig.logo.primary || "/vtv8_logo.png"} 
+            alt={brandConfig.logo.alt || `${brandConfig.brandName} Logo`} 
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
             style={{ 
               height: '36px', 
               width: 'auto', 
@@ -165,7 +179,7 @@ export const Navbar = () => {
                 letterSpacing: '-0.5px',
                 lineHeight: 1.1
               }}>
-                VTV8<span style={{ color: '#ef4444' }}>.vn</span>
+                {brandConfig.brandShortName || 'TODAY'}<span style={{ color: '#ef4444' }}>.{brandConfig.brandName.includes('.') ? brandConfig.brandName.split('.').slice(1).join('.') : 'platform'}</span>
               </span>
             </div>
             <span style={{
@@ -176,7 +190,7 @@ export const Navbar = () => {
               textTransform: 'uppercase',
               marginTop: '1px'
             }}>
-              {currentLang === 'en' ? 'Culture • Heritage • Tourism' : 'VĂN HÓA - DI SẢN - DU LỊCH'}
+              {currentLang === 'en' ? (brandConfig.tagline || 'Culture • Heritage • Tourism') : (brandConfig.slogan || 'TÔN VINH CỘI NGUỒN - KẾT NỐI THỜI ĐẠI')}
             </span>
           </div>
         </Link>
