@@ -116,7 +116,7 @@ export const Navbar = () => {
   };
 
   return (
-    <header className="vtv8-navbar-header" style={{
+    <header className="nghean-navbar-header" style={{
       position: 'sticky',
       top: 0,
       zIndex: 1000,
@@ -156,7 +156,7 @@ export const Navbar = () => {
           }}
         >
           <img 
-            src={brandConfig.logo.primary || "/vtv8_logo.png"} 
+            src={brandConfig.logo.primary || "/nghean_logo.png"} 
             alt={brandConfig.logo.alt || `${brandConfig.brandName} Logo`} 
             onError={(e) => {
               e.target.style.display = 'none';
@@ -196,7 +196,7 @@ export const Navbar = () => {
         </Link>
 
         {/* 2. CENTER NAVIGATION: BALANCED & CENTER-FOCUSED */}
-        <nav className="vtv8-nav-center" style={{
+        <nav className="nghean-nav-center" style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -224,7 +224,7 @@ export const Navbar = () => {
               >
                 <Link
                   to={`/posts?category=${encodeURIComponent(cat.name)}`}
-                  className={`vtv8-nav-link ${isCatActive ? 'active' : ''}`}
+                  className={`nghean-nav-link ${isCatActive ? 'active' : ''}`}
                   style={{
                     color: isCatActive ? '#38bdf8' : '#ffffff',
                     backgroundColor: isOpen || isCatActive ? 'rgba(56, 189, 248, 0.18)' : 'transparent',
@@ -341,7 +341,7 @@ export const Navbar = () => {
           {/* Members Link */}
           <Link
             to="/members"
-            className={`vtv8-nav-link ${location.pathname === '/members' ? 'active' : ''}`}
+            className={`nghean-nav-link ${location.pathname === '/members' ? 'active' : ''}`}
             style={{
               color: location.pathname === '/members' ? '#38bdf8' : '#ffffff',
               backgroundColor: location.pathname === '/members' ? 'rgba(56, 189, 248, 0.18)' : 'transparent',
@@ -542,7 +542,7 @@ export const Navbar = () => {
 
           {/* Mobile Drawer Toggle */}
           <button
-            className="vtv8-mobile-toggle"
+            className="nghean-mobile-toggle"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             style={{
               background: 'none',

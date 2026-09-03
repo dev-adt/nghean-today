@@ -1,13 +1,13 @@
 // PM2 Ecosystem Config
 // Chạy: pm2 start ecosystem.config.js
-// Xem log: pm2 logs bizhub-ai
-// Reload: pm2 reload bizhub-ai
+// Xem log: pm2 logs nghean-today-prod
+// Reload: pm2 reload nghean-today-prod
 // Auto-start khi reboot: pm2 startup && pm2 save
 
 module.exports = {
   apps: [
     {
-      name        : 'vtv8-today-prod',
+      name        : 'nghean-today-prod',
       script      : 'server.js',
       instances   : 1,           // tăng lên 'max' nếu muốn cluster
       exec_mode   : 'fork',

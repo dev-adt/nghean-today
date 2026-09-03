@@ -83,10 +83,10 @@ export const Sidebar = () => {
     <aside className="sidebar">
       <Link to="/admin-dashboard" className="sb-logo" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
         <div className="sb-logo-icon" style={{ overflow: 'hidden', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="/vtv8_logo.png" alt="VTV8.vn Logo" style={{ height: '28px', width: 'auto', objectFit: 'contain' }} />
+          <img src="/nghean_logo.png" alt="Nghean.today Logo" style={{ height: '28px', width: 'auto', objectFit: 'contain' }} />
         </div>
         <div>
-          <div className="sb-logo-name">VTV8.vn</div>
+          <div className="sb-logo-name">Nghean.today</div>
           <div className="sb-logo-sub">Hội viên doanh nghiệp</div>
         </div>
       </Link>

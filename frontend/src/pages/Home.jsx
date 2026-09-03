@@ -314,10 +314,10 @@ export const Home = () => {
   // 5 FAQs
   const FAQS = [
     {
-      q: currentLang === 'en' ? 'What content does VTV8.vn provide?' : 'VTV8.vn cung cấp những nội dung gì?',
+      q: currentLang === 'en' ? 'What content does Nghean.today provide?' : 'Nghean.today cung cấp những nội dung gì?',
       a: currentLang === 'en'
-        ? 'VTV8.vn is a dedicated digital ecosystem for Vietnamese tourism, culture, heritage, and history (especially Central & Central Highlands, expanding nationwide). It provides specialized articles, interactive digital maps, curated itineraries, travel guides, event/festival updates, and digital showrooms for verified tourism businesses.'
-        : 'VTV8.vn là hệ sinh thái số chuyên sâu về du lịch, văn hóa, di sản và lịch sử Việt Nam (đặc biệt là miền Trung - Tây Nguyên và mở rộng toàn quốc). Nền tảng cung cấp các bài viết chuyên đề, bản đồ số, gợi ý hành trình, cẩm nang trải nghiệm, tin tức sự kiện lễ hội và danh bạ showroom số của các doanh nghiệp du lịch uy tín.'
+        ? 'Nghean.today is a dedicated digital ecosystem for Vietnamese tourism, culture, heritage, and history (especially North Central Coast & Nghe An, expanding nationwide). It provides specialized articles, interactive digital maps, curated itineraries, travel guides, event/festival updates, and digital showrooms for verified tourism businesses.'
+        : 'Nghean.today là hệ sinh thái số chuyên sâu về du lịch, văn hóa, di sản và lịch sử Việt Nam (đặc biệt là miền Bắc Trung Bộ & Xứ Nghệ và mở rộng toàn quốc). Nền tảng cung cấp các bài viết chuyên đề, bản đồ số, gợi ý hành trình, cẩm nang trải nghiệm, tin tức sự kiện lễ hội và danh bạ showroom số của các doanh nghiệp du lịch uy tín.'
     },
     {
       q: currentLang === 'en' ? 'Who can register as a member?' : 'Ai có thể đăng ký trở thành hội viên?',
@@ -334,8 +334,8 @@ export const Home = () => {
     {
       q: currentLang === 'en' ? 'What knowledge sources power the AI Assistant?' : 'Trợ lý AI sử dụng những nguồn dữ liệu nào?',
       a: currentLang === 'en'
-        ? 'The VTV8.vn AI Assistant is trained and cross-referenced with verified cultural and historical knowledge archives from VTV8, combined with real-time destination databases, event calendars, and authenticated member profiles.'
-        : 'Trợ lý AI VTV8.vn được huấn luyện và đối chiếu từ nguồn tri thức chuẩn xác về lịch sử, văn hóa, di sản đã được kiểm duyệt của VTV8, kết hợp với dữ liệu thời gian thực từ cơ sở dữ liệu điểm đến, lịch sự kiện và hồ sơ doanh nghiệp đã xác minh.'
+        ? 'The Nghean.today AI Assistant is trained and cross-referenced with verified cultural and historical knowledge archives from Nghệ An, combined with real-time destination databases, event calendars, and authenticated member profiles.'
+        : 'Trợ lý AI Nghean.today được huấn luyện và đối chiếu từ nguồn tri thức chuẩn xác về lịch sử, văn hóa, di sản đã được kiểm duyệt của Nghệ An, kết hợp với dữ liệu thời gian thực từ cơ sở dữ liệu điểm đến, lịch sự kiện và hồ sơ doanh nghiệp đã xác minh.'
     },
     {
       q: currentLang === 'en' ? 'How to submit media and destination collaboration proposals?' : 'Làm thế nào để đề nghị hợp tác truyền thông?',
@@ -346,14 +346,14 @@ export const Home = () => {
   ];
 
   return (
-    <div className="vtv8-homepage-wrapper" style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#0f172a' }}>
+    <div className="nghean-homepage-wrapper" style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#0f172a' }}>
       <SEOHead
         title={currentLang === 'en' 
-          ? "VTV8.vn — Honoring Heritage, Connecting the Era | Tourism, Culture & Heritage Portal"
-          : "VTV8.vn — Tôn vinh cội nguồn, kết nối thời đại | Chuyên trang Du lịch, Văn hóa, Di sản"}
+          ? "Nghean.today — Honoring Heritage, Connecting the Era | Tourism, Culture & Heritage Portal"
+          : "Nghean.today — Tôn vinh cội nguồn, kết nối thời đại | Chuyên trang Du lịch, Văn hóa, Di sản"}
         description={currentLang === 'en'
-          ? "Digital platform VTV8.vn connects Vietnamese culture, heritage, history and tourism with businesses, members and global travelers."
-          : "Nền tảng số VTV8.vn kết nối văn hóa, di sản, lịch sử và du lịch Việt Nam với cộng đồng hội viên, doanh nghiệp và du khách."}
+          ? "Digital platform Nghean.today connects Vietnamese culture, heritage, history and tourism with businesses, members and global travelers."
+          : "Nền tảng số Nghean.today kết nối văn hóa, di sản, lịch sử và du lịch Việt Nam với cộng đồng hội viên, doanh nghiệp và du khách."}
       />
       <Navbar />
 
@@ -397,7 +397,7 @@ export const Home = () => {
             marginBottom: '1.8rem',
             boxShadow: '0 4px 16px rgba(0,0,0,0.3)'
           }}>
-            <span>{currentLang === 'en' ? 'VTV8.VN • DIGITAL TOURISM & CULTURE ECOSYSTEM' : 'VTV8.VN • HỆ SINH THÁI SỐ DU LỊCH & VĂN HÓA'}</span>
+            <span>{currentLang === 'en' ? 'Nghệ An.VN • DIGITAL TOURISM & CULTURE ECOSYSTEM' : 'Nghệ An.VN • HỆ SINH THÁI SỐ DU LỊCH & VĂN HÓA'}</span>
           </div>
 
           <h1 style={{
@@ -598,8 +598,8 @@ export const Home = () => {
             lineHeight: '1.7'
           }}>
             {currentLang === 'en'
-              ? 'VTV8.vn is a dedicated digital ecosystem for culture, heritage, history, and tourism, combining quality journalism, community members, rich destination data, and multilingual AI assistance.'
-              : 'VTV8.vn được định hướng trở thành hệ sinh thái số chuyên sâu về văn hóa, di sản, lịch sử và du lịch, kết hợp nội dung chất lượng, cộng đồng hội viên, dữ liệu điểm đến và trợ lý AI đa ngôn ngữ.'}
+              ? 'Nghean.today is a dedicated digital ecosystem for culture, heritage, history, and tourism, combining quality journalism, community members, rich destination data, and multilingual AI assistance.'
+              : 'Nghean.today được định hướng trở thành hệ sinh thái số chuyên sâu về văn hóa, di sản, lịch sử và du lịch, kết hợp nội dung chất lượng, cộng đồng hội viên, dữ liệu điểm đến và trợ lý AI đa ngôn ngữ.'}
           </p>
 
           <div style={{
@@ -778,11 +778,11 @@ export const Home = () => {
             {CATEGORY_CARDS.map((cat) => (
               <div
                 key={cat.id}
-                className="vtv8-category-card"
+                className="nghean-category-card"
                 onClick={() => navigate(`/posts?category=${encodeURIComponent(cat.category)}`)}
               >
                 <img src={cat.img} alt={cat.title} />
-                <div className="vtv8-category-overlay">
+                <div className="nghean-category-overlay">
                   <h3 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '0.4rem' }}>
                     {cat.title}
                   </h3>
@@ -915,13 +915,13 @@ export const Home = () => {
                 ? 'Smart AI assistant solution for handling administrative procedures, looking up public policies, and supporting 24/7 public services for local citizens.'
                 : 'Mô hình trợ lý AI thông minh giải quyết thủ tục hành chính, tra cứu chính sách và hỗ trợ dịch vụ công trực tuyến 24/7 cho người dân.');
               const img = post?.image_url || 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80';
-              const author = post?.company_name || 'Ban Biên tập VTV8.vn';
+              const author = post?.company_name || 'Ban Biên tập Nghean.today';
               const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
               const targetUrl = '/posts/tro-ly-ai-phuong-xa';
 
               return (
                 <div
-                  className="vtv8-dest-card card-hover-effect"
+                  className="nghean-dest-card card-hover-effect"
                   style={{
                     backgroundColor: 'rgba(11, 37, 69, 0.75)',
                     backdropFilter: 'blur(16px)',
@@ -1030,13 +1030,13 @@ export const Home = () => {
                 ? 'A comprehensive artificial intelligence ecosystem for business automation, advanced deep data analysis, and modern digital connectivity.'
                 : 'Nền tảng trí tuệ nhân tạo toàn diện giúp tự động hóa quy trình nghiệp vụ, phân tích dữ liệu chuyên sâu và kết nối chuỗi giá trị số hiện đại.');
               const img = post?.image_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';
-              const author = post?.company_name || 'Ban Biên tập VTV8.vn';
+              const author = post?.company_name || 'Ban Biên tập Nghean.today';
               const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
               const targetUrl = '/posts/orion-chat-loc-tinh-hoa-cua-erp-multimodel-ai-va-nen-tang-xay-dung-ai-agent-de-tao-thanh-mot-he-dieu-hanh-quan-tri-thong-minh-danh-cho-doanh-nghiep';
 
               return (
                 <div
-                  className="vtv8-dest-card card-hover-effect"
+                  className="nghean-dest-card card-hover-effect"
                   style={{
                     backgroundColor: 'rgba(11, 37, 69, 0.75)',
                     backdropFilter: 'blur(16px)',
@@ -1145,13 +1145,13 @@ export const Home = () => {
                 ? 'Educational programs and practical toolkits for mastering Generative AI and unlocking peak productivity for tomorrow’s leaders.'
                 : 'Chương trình đào tạo số hóa, nâng cao năng lực ứng dụng công nghệ AI và trang bị bộ công cụ kiến tạo tương lai số.');
               const img = post?.image_url || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80';
-              const author = post?.company_name || 'Ban Biên tập VTV8.vn';
+              const author = post?.company_name || 'Ban Biên tập Nghean.today';
               const date = post?.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : '2026';
               const targetUrl = '/posts/edunowai-giai-phap-tro-ly-ai-tuyen-sinh-thong-minh-danh-cho-cac-co-so-giao-duc';
 
               return (
                 <div
-                  className="vtv8-dest-card card-hover-effect"
+                  className="nghean-dest-card card-hover-effect"
                   style={{
                     backgroundColor: 'rgba(11, 37, 69, 0.75)',
                     backdropFilter: 'blur(16px)',
@@ -1334,7 +1334,7 @@ export const Home = () => {
           }}>
             {currentLang === 'en'
               ? 'Top attractive destinations across the Central Coast, Central Highlands, and nationwide.'
-              : 'Những tọa độ du lịch hấp dẫn hàng đầu tại miền Trung - Tây Nguyên và mở rộng trên khắp mọi miền Tổ quốc.'}
+              : 'Những tọa độ du lịch hấp dẫn hàng đầu tại miền Bắc Trung Bộ & Xứ Nghệ và mở rộng trên khắp mọi miền Tổ quốc.'}
           </p>
 
           <div style={{
@@ -1344,7 +1344,7 @@ export const Home = () => {
             textAlign: 'left'
           }}>
             {FEATURED_DESTINATIONS.map((dest) => (
-              <div key={dest.id} className="vtv8-dest-card">
+              <div key={dest.id} className="nghean-dest-card">
                 <div className="img-wrap">
                   <img src={dest.img} alt={dest.name} />
                   <div style={{
@@ -1381,7 +1381,7 @@ export const Home = () => {
                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                     <Link
                       to={`/posts?category=Điểm đến nổi bật&search=${encodeURIComponent(dest.name)}`}
-                      className="btn-vtv8-red"
+                      className="btn-nghean-red"
                       style={{ flex: 1, padding: '0.65rem 1rem', fontSize: '13px' }}
                     >
                       <span>{currentLang === 'en' ? 'View Itinerary' : 'Xem hành trình'}</span>
@@ -1433,7 +1433,7 @@ export const Home = () => {
             color: '#0f172a',
             marginBottom: '1rem'
           }}>
-            {currentLang === 'en' ? 'Stories from VTV8.vn Ecosystem' : 'Khám phá câu chuyện mới nhất từ VTV8.vn'}
+            {currentLang === 'en' ? 'Stories from Nghean.today Ecosystem' : 'Khám phá câu chuyện mới nhất từ Nghean.today'}
           </h2>
           <p style={{
             color: '#475569',
@@ -1468,7 +1468,7 @@ export const Home = () => {
               {latestPosts.map((post) => (
                 <div
                   key={post.id}
-                  className="vtv8-dest-card"
+                  className="nghean-dest-card"
                   style={{ cursor: 'pointer' }}
                   onClick={() => navigate(`/posts/${post.slug || post.id}`)}
                 >
@@ -1573,7 +1573,7 @@ export const Home = () => {
                       marginTop: 'auto'
                     }}>
                       <span style={{ fontSize: '12px', color: '#475569', fontWeight: '600' }}>
-                        ✍️ {post.company_name || 'Ban Biên tập VTV8'}
+                        ✍️ {post.company_name || 'Ban Biên tập Nghệ An'}
                       </span>
                       <span style={{ fontSize: '12px', fontWeight: '700', color: '#dc2626', display: 'flex', alignItems: 'center', gap: '3px' }}>
                         <span>{currentLang === 'en' ? 'Read article' : 'Đọc tiếp'}</span>
@@ -1589,7 +1589,7 @@ export const Home = () => {
           {/* View All Posts Button */}
           <Link
             to="/posts"
-            className="btn-vtv8-red"
+            className="btn-nghean-red"
             style={{ fontSize: '14.5px', padding: '0.9rem 2.4rem' }}
           >
             <i className="ti ti-layout-grid"></i>
@@ -1653,7 +1653,7 @@ export const Home = () => {
               {eventsList.map((event) => (
                 <div
                   key={event.id}
-                  className="vtv8-dest-card"
+                  className="nghean-dest-card"
                   style={{ cursor: 'pointer' }}
                   onClick={() => navigate('/events')}
                 >
@@ -1747,7 +1747,7 @@ export const Home = () => {
                       overflow: 'hidden',
                       height: '42px'
                     }}>
-                      {event.description || 'Sự kiện văn hóa du lịch tiêu biểu do VTV8.vn đồng hành tổ chức...'}
+                      {event.description || 'Sự kiện văn hóa du lịch tiêu biểu do Nghean.today đồng hành tổ chức...'}
                     </p>
 
                     {/* Bottom Organizer & CTA */}
@@ -1760,7 +1760,7 @@ export const Home = () => {
                       marginTop: 'auto'
                     }}>
                       <span style={{ fontSize: '11.5px', color: '#64748b', fontWeight: '500', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        🏛️ {event.organizer || 'VTV8.vn'}
+                        🏛️ {event.organizer || 'Nghean.today'}
                       </span>
                       <span style={{ fontSize: '12px', fontWeight: '700', color: '#0284c7', display: 'flex', alignItems: 'center', gap: '3px' }}>
                         <span>{currentLang === 'en' ? 'Details' : 'Xem chi tiết'}</span>
@@ -1776,7 +1776,7 @@ export const Home = () => {
           {/* View All Events Button */}
           <Link
             to="/events"
-            className="btn-vtv8-gold"
+            className="btn-nghean-gold"
             style={{ fontSize: '14.5px', padding: '0.9rem 2.4rem' }}
           >
             <i className="ti ti-calendar"></i>
@@ -1815,8 +1815,8 @@ export const Home = () => {
             lineHeight: '1.7'
           }}>
             {currentLang === 'en'
-              ? 'Connect directly with premium hospitality, tour operators, resorts, and cultural culinary brands in the VTV8.vn ecosystem.'
-              : 'Không gian giới thiệu các thương hiệu lưu trú, lữ hành, nghỉ dưỡng và ẩm thực du lịch uy tín trong hệ sinh thái VTV8.vn.'}
+              ? 'Connect directly with premium hospitality, tour operators, resorts, and cultural culinary brands in the Nghean.today ecosystem.'
+              : 'Không gian giới thiệu các thương hiệu lưu trú, lữ hành, nghỉ dưỡng và ẩm thực du lịch uy tín trong hệ sinh thái Nghean.today.'}
           </p>
 
           {loadingMembers ? (
@@ -1845,7 +1845,7 @@ export const Home = () => {
                 return (
                   <div
                     key={member.id}
-                    className="vtv8-dest-card"
+                    className="nghean-dest-card"
                     style={{
                       cursor: 'pointer',
                       border: isPlat ? '2px solid rgba(245, 158, 11, 0.4)' : '1px solid #e2e8f0',
@@ -1960,7 +1960,7 @@ export const Home = () => {
                         overflow: 'hidden',
                         height: '42px'
                       }}>
-                        {member.description || 'Doanh nghiệp hội viên uy tín thuộc hệ sinh thái số du lịch, văn hóa VTV8.vn.'}
+                        {member.description || 'Doanh nghiệp hội viên uy tín thuộc hệ sinh thái số du lịch, văn hóa Nghean.today.'}
                       </p>
 
                       {/* Bottom Button */}
@@ -1990,7 +1990,7 @@ export const Home = () => {
           {/* View All Members Button */}
           <Link
             to="/members"
-            className="btn-vtv8-red"
+            className="btn-nghean-red"
             style={{ fontSize: '14.5px', padding: '0.9rem 2.4rem' }}
           >
             <i className="ti ti-building"></i>
@@ -2040,7 +2040,7 @@ export const Home = () => {
             textAlign: 'left'
           }}>
             {SUGGESTED_ITINERARIES.map((itin) => (
-              <div key={itin.id} className="vtv8-itin-card">
+              <div key={itin.id} className="nghean-itin-card">
                 <div className="img-wrap">
                   <img src={itin.img} alt={itin.name} />
                 </div>
@@ -2070,7 +2070,7 @@ export const Home = () => {
                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                     <Link
                       to="/posts?category=Điểm đến nổi bật"
-                      className="btn-vtv8-red"
+                      className="btn-nghean-red"
                       style={{ flex: 1, padding: '0.65rem 1rem', fontSize: '13px' }}
                     >
                       <span>{currentLang === 'en' ? 'View Details' : 'Xem chi tiết'}</span>
@@ -2129,7 +2129,7 @@ export const Home = () => {
             color: '#ffffff',
             marginBottom: '1rem'
           }}>
-            {currentLang === 'en' ? 'Join the VTV8.vn Ecosystem' : 'Gia nhập cộng đồng VTV8.vn'}
+            {currentLang === 'en' ? 'Join the Nghean.today Ecosystem' : 'Gia nhập cộng đồng Nghean.today'}
           </h2>
           <p style={{
             color: '#94a3b8',
@@ -2150,7 +2150,7 @@ export const Home = () => {
             textAlign: 'left',
             marginBottom: '3.5rem'
           }}>
-            <div className="vtv8-member-card">
+            <div className="nghean-member-card">
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.2rem' }}>
                 <i className="ti ti-user" style={{ color: '#f59e0b', fontSize: '24px' }}></i>
                 <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff' }}>
@@ -2177,7 +2177,7 @@ export const Home = () => {
               </ul>
             </div>
 
-            <div className="vtv8-member-card">
+            <div className="nghean-member-card">
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.2rem' }}>
                 <i className="ti ti-camera" style={{ color: '#38bdf8', fontSize: '24px' }}></i>
                 <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff' }}>
@@ -2204,7 +2204,7 @@ export const Home = () => {
               </ul>
             </div>
 
-            <div className="vtv8-member-card">
+            <div className="nghean-member-card">
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.2rem' }}>
                 <i className="ti ti-building" style={{ color: '#ec4899', fontSize: '24px' }}></i>
                 <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff' }}>
@@ -2231,7 +2231,7 @@ export const Home = () => {
               </ul>
             </div>
 
-            <div className="vtv8-member-card">
+            <div className="nghean-member-card">
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.2rem' }}>
                 <i className="ti ti-map-2" style={{ color: '#a855f7', fontSize: '24px' }}></i>
                 <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff' }}>
@@ -2261,7 +2261,7 @@ export const Home = () => {
 
           <Link
             to="/register"
-            className="btn-vtv8-gold"
+            className="btn-nghean-gold"
             style={{ fontSize: '15px', padding: '0.9rem 2.2rem' }}
           >
             <span>{currentLang === 'en' ? 'Register and Join Now' : 'Đăng ký tham gia ngay'}</span>
@@ -2307,8 +2307,8 @@ export const Home = () => {
               marginBottom: '2rem'
             }}>
               {currentLang === 'en'
-                ? 'VTV8.vn AI Assistant helps travelers explore destinations, understand historical culture, design customized itineraries, and find verified services in multiple languages accurately.'
-                : 'Trợ lý AI VTV8.vn giúp du khách khám phá điểm đến, tìm hiểu lịch sử – văn hóa, lập lịch trình, tìm sự kiện và kết nối dịch vụ bằng nhiều ngôn ngữ một cách nhanh chóng, chính xác.'}
+                ? 'Nghean.today AI Assistant helps travelers explore destinations, understand historical culture, design customized itineraries, and find verified services in multiple languages accurately.'
+                : 'Trợ lý AI Nghean.today giúp du khách khám phá điểm đến, tìm hiểu lịch sử – văn hóa, lập lịch trình, tìm sự kiện và kết nối dịch vụ bằng nhiều ngôn ngữ một cách nhanh chóng, chính xác.'}
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '2.5rem' }}>
@@ -2332,7 +2332,7 @@ export const Home = () => {
 
             <Link
               to="/ai-chat"
-              className="btn-vtv8-red"
+              className="btn-nghean-red"
               style={{ fontSize: '14.5px', padding: '0.85rem 1.8rem' }}
             >
               <i className="ti ti-sparkles"></i>
@@ -2360,7 +2360,7 @@ export const Home = () => {
               </div>
               <div>
                 <div style={{ color: '#ffffff', fontWeight: '700', fontSize: '13.5px' }}>
-                  {currentLang === 'en' ? 'VTV8.vn Travel Assistant' : 'Trợ lý du lịch VTV8.vn'}
+                  {currentLang === 'en' ? 'Nghean.today Travel Assistant' : 'Trợ lý du lịch Nghean.today'}
                 </div>
                 <div style={{ color: '#93c5fd', fontSize: '11px' }}>
                   {currentLang === 'en' ? 'Multilingual Support 24/7' : 'Sẵn sàng hỗ trợ đa ngôn ngữ 24/7'}
@@ -2459,29 +2459,29 @@ export const Home = () => {
           gap: '1rem',
           textAlign: 'center'
         }}>
-          <div className="vtv8-stat-item">
-            <div className="vtv8-stat-num">150+</div>
-            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Featured Destinations' : 'Điểm đến giới thiệu'}</div>
+          <div className="nghean-stat-item">
+            <div className="nghean-stat-num">150+</div>
+            <div className="nghean-stat-label">{currentLang === 'en' ? 'Featured Destinations' : 'Điểm đến giới thiệu'}</div>
           </div>
-          <div className="vtv8-stat-item">
-            <div className="vtv8-stat-num">500+</div>
-            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Cultural Stories' : 'Câu chuyện văn hóa - di sản'}</div>
+          <div className="nghean-stat-item">
+            <div className="nghean-stat-num">500+</div>
+            <div className="nghean-stat-label">{currentLang === 'en' ? 'Cultural Stories' : 'Câu chuyện văn hóa - di sản'}</div>
           </div>
-          <div className="vtv8-stat-item">
-            <div className="vtv8-stat-num">120+</div>
-            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Member Enterprises' : 'Doanh nghiệp hội viên'}</div>
+          <div className="nghean-stat-item">
+            <div className="nghean-stat-num">120+</div>
+            <div className="nghean-stat-label">{currentLang === 'en' ? 'Member Enterprises' : 'Doanh nghiệp hội viên'}</div>
           </div>
-          <div className="vtv8-stat-item">
-            <div className="vtv8-stat-num">1,200+</div>
-            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Itineraries Created' : 'Hành trình được tạo'}</div>
+          <div className="nghean-stat-item">
+            <div className="nghean-stat-num">1,200+</div>
+            <div className="nghean-stat-label">{currentLang === 'en' ? 'Itineraries Created' : 'Hành trình được tạo'}</div>
           </div>
-          <div className="vtv8-stat-item">
-            <div className="vtv8-stat-num">34</div>
-            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Provinces Participating' : 'Tỉnh thành tham gia'}</div>
+          <div className="nghean-stat-item">
+            <div className="nghean-stat-num">34</div>
+            <div className="nghean-stat-label">{currentLang === 'en' ? 'Provinces Participating' : 'Tỉnh thành tham gia'}</div>
           </div>
-          <div className="vtv8-stat-item">
-            <div className="vtv8-stat-num">02</div>
-            <div className="vtv8-stat-label">{currentLang === 'en' ? 'Bilingual Support (VI/EN)' : 'Ngôn ngữ hỗ trợ (VI/EN)'}</div>
+          <div className="nghean-stat-item">
+            <div className="nghean-stat-num">02</div>
+            <div className="nghean-stat-label">{currentLang === 'en' ? 'Bilingual Support (VI/EN)' : 'Ngôn ngữ hỗ trợ (VI/EN)'}</div>
           </div>
         </div>
       </section>
@@ -2506,7 +2506,7 @@ export const Home = () => {
             color: '#0f172a',
             marginBottom: '1rem'
           }}>
-            {currentLang === 'en' ? 'Be Part of VTV8.vn' : 'Trở thành một phần của VTV8.vn'}
+            {currentLang === 'en' ? 'Be Part of Nghean.today' : 'Trở thành một phần của Nghean.today'}
           </h2>
           <p style={{
             color: '#475569',
@@ -2537,12 +2537,12 @@ export const Home = () => {
                 </h3>
                 <p style={{ color: '#64748b', fontSize: '14px', lineHeight: '1.6' }}>
                   {currentLang === 'en'
-                    ? 'Thank you for joining VTV8.vn. Our editorial and development team will contact you shortly.'
-                    : 'Cảm ơn bạn đã tham gia hệ sinh thái VTV8.vn. Đội ngũ phát triển sẽ liên hệ với bạn trong thời gian sớm nhất.'}
+                    ? 'Thank you for joining Nghean.today. Our editorial and development team will contact you shortly.'
+                    : 'Cảm ơn bạn đã tham gia hệ sinh thái Nghean.today. Đội ngũ phát triển sẽ liên hệ với bạn trong thời gian sớm nhất.'}
                 </p>
                 <button
                   onClick={() => setFormSubmitted(false)}
-                  className="btn-vtv8-red"
+                  className="btn-nghean-red"
                   style={{ marginTop: '1.5rem', fontSize: '13.5px' }}
                 >
                   {currentLang === 'en' ? 'Submit Another Request' : 'Gửi thêm thông tin'}
@@ -2662,14 +2662,14 @@ export const Home = () => {
                     style={{ width: '16px', height: '16px', cursor: 'pointer' }}
                   />
                   <label htmlFor="agreeCheck" style={{ cursor: 'pointer' }}>
-                    {currentLang === 'en' ? 'I agree with VTV8.vn data protection policy and terms of service.' : 'Tôi đồng ý với chính sách bảo vệ dữ liệu và điều khoản sử dụng của VTV8.vn.'}
+                    {currentLang === 'en' ? 'I agree with Nghean.today data protection policy and terms of service.' : 'Tôi đồng ý với chính sách bảo vệ dữ liệu và điều khoản sử dụng của Nghean.today.'}
                   </label>
                 </div>
 
                 <button
                   type="submit"
                   disabled={formLoading}
-                  className="btn-vtv8-red"
+                  className="btn-nghean-red"
                   style={{ width: '100%', padding: '0.9rem', fontSize: '15px' }}
                 >
                   {formLoading 
@@ -2711,22 +2711,22 @@ export const Home = () => {
             marginBottom: '3rem'
           }}>
             {currentLang === 'en'
-              ? 'Detailed insights on operations, membership advantages, and strategic vision of VTV8.vn.'
-              : 'Tổng hợp thông tin chi tiết về cơ chế hoạt động, quyền lợi hội viên và định hướng phát triển của VTV8.vn.'}
+              ? 'Detailed insights on operations, membership advantages, and strategic vision of Nghean.today.'
+              : 'Tổng hợp thông tin chi tiết về cơ chế hoạt động, quyền lợi hội viên và định hướng phát triển của Nghean.today.'}
           </p>
 
           <div style={{ textAlign: 'left' }}>
             {FAQS.map((faq, index) => (
-              <div key={index} className="vtv8-faq-item">
+              <div key={index} className="nghean-faq-item">
                 <button
-                  className="vtv8-faq-question"
+                  className="nghean-faq-question"
                   onClick={() => setActiveFaq(activeFaq === index ? null : index)}
                 >
                   <span>{faq.q}</span>
                   <i className={`ti ${activeFaq === index ? 'ti-chevron-up' : 'ti-chevron-down'}`} style={{ color: '#64748b' }}></i>
                 </button>
                 {activeFaq === index && (
-                  <div className="vtv8-faq-answer">
+                  <div className="nghean-faq-answer">
                     {faq.a}
                   </div>
                 )}
@@ -2761,8 +2761,8 @@ export const Home = () => {
             marginBottom: '2.5rem'
           }}>
             {currentLang === 'en'
-              ? 'Join VTV8.vn in honoring Vietnamese heritage, connecting communities, and creating inspirational new journeys.'
-              : 'Hãy cùng VTV8.vn tôn vinh những giá trị của Việt Nam, kết nối cộng đồng và kiến tạo những hành trình mới.'}
+              ? 'Join Nghean.today in honoring Vietnamese heritage, connecting communities, and creating inspirational new journeys.'
+              : 'Hãy cùng Nghean.today tôn vinh những giá trị của Việt Nam, kết nối cộng đồng và kiến tạo những hành trình mới.'}
           </p>
 
           <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -2771,14 +2771,14 @@ export const Home = () => {
                 const el = document.getElementById('danh-muc-noi-dung');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="btn-vtv8-gold"
+              className="btn-nghean-gold"
               style={{ fontSize: '14.5px', padding: '0.85rem 1.8rem' }}
             >
               {currentLang === 'en' ? 'Explore Now' : 'Khám phá ngay'}
             </button>
             <Link
               to="/register"
-              className="btn-vtv8-red"
+              className="btn-nghean-red"
               style={{ fontSize: '14.5px', padding: '0.85rem 1.8rem' }}
             >
               {currentLang === 'en' ? 'Register as Member' : 'Đăng ký hội viên'}
