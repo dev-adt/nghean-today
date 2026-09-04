@@ -39,7 +39,7 @@ export const Navbar = () => {
   return <>
     <header className="na-navbar">
       <div className="na-nav-inner">
-        <Link className="na-brand" to="/" onClick={handleLogo} aria-label="Nghean.today - Lên đầu trang"><span className="na-logo-mark"><i className="ti ti-mountain" /></span><span><strong>Nghean.today</strong><small>Kết nối Nghệ An – Lan tỏa giá trị</small></span></Link>
+        <Link className="na-brand" to="/" onClick={handleLogo} aria-label="Nghean.today - Lên đầu trang"><span className="na-logo-mark"><img src="/nghean-logo.svg" alt="" /></span><span><strong>Nghean.today</strong><small>Kết nối Nghệ An – Lan tỏa giá trị</small></span></Link>
         <nav className="na-desktop-nav" aria-label="Chuyên mục">
           {categories.map(cat => {
             const subs = subcategories(cat);

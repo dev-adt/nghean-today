@@ -5,7 +5,7 @@ import brandConfig from '../brand.config';
 export const Footer = () => <footer className="na-footer"><div className="na-container">
   <div className="na-footer-grid">
     <div className="na-footer-brand">
-      <Link className="na-brand footer" to="/"><span className="na-logo-mark"><i className="ti ti-mountain" /></span><span><strong>Nghean.today</strong><small>Kết nối Nghệ An – Lan tỏa giá trị</small></span></Link>
+      <Link className="na-brand footer" to="/"><span className="na-logo-mark"><img src="/nghean-logo.svg" alt="" /></span><span><strong>Nghean.today</strong><small>Kết nối Nghệ An – Lan tỏa giá trị</small></span></Link>
       <p>Nền tảng kết nối người dân, doanh nghiệp, nhà đầu tư và những người yêu mến Nghệ An trên toàn thế giới.</p>
       <div className="na-socials"><a href={brandConfig.socials.facebook} target="_blank" rel="noreferrer" aria-label="Facebook"><i className="ti ti-brand-facebook" /></a><a href={brandConfig.socials.youtube} target="_blank" rel="noreferrer" aria-label="YouTube"><i className="ti ti-brand-youtube" /></a><a href={brandConfig.socials.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok"><i className="ti ti-brand-tiktok" /></a></div>
     </div>
