@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -10,6 +10,8 @@ export const Events = () => {
   const { role, token } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedEvent = searchParams.get('event');
 
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,8 +19,11 @@ export const Events = () => {
   const [error, setError] = useState('');
   
   // Modal State
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [manualEvent, setSelectedEvent] = useState(null);
+  const [manualModalOpen, setModalOpen] = useState(false);
+  const linkedEvent = token && requestedEvent ? events.find(event => String(event.id) === requestedEvent) : null;
+  const selectedEvent = linkedEvent || manualEvent;
+  const modalOpen = Boolean(linkedEvent) || manualModalOpen;
 
   const loadEvents = async () => {
     setLoading(true);
@@ -46,6 +51,7 @@ export const Events = () => {
     return e.title.toLowerCase().includes(q) || (e.organizer && e.organizer.toLowerCase().includes(q));
   });
 
+
   const openEventModal = (event) => {
     if (!token) {
       if (confirm(t('login_required_event_confirm'))) {
@@ -58,6 +64,7 @@ export const Events = () => {
   };
 
   const closeEventModal = () => {
+    if (requestedEvent) setSearchParams(previous => { const next = new URLSearchParams(previous); next.delete('event'); return next; }, { replace: true });
     setSelectedEvent(null);
     setModalOpen(false);
   };
@@ -93,6 +100,7 @@ export const Events = () => {
 
         if (selectedEvent && selectedEvent.id === eventId) {
           setSelectedEvent(prev => {
+            if (!prev) return prev;
             const diff = data.is_interested ? 1 : -1;
             return {
               ...prev,
@@ -157,6 +165,8 @@ export const Events = () => {
           </div>
         </div>
 
+        {requestedEvent && !token && <p role="status">Vui lòng <Link to="/login" state={{ eventReturnTo: `/events?event=${encodeURIComponent(requestedEvent)}` }}>đăng nhập</Link> để xem chi tiết sự kiện.</p>}
+        {requestedEvent && !loading && !error && token && !events.some(event => String(event.id) === requestedEvent) && <p role="status">Không tìm thấy sự kiện được yêu cầu. Bạn có thể xem các sự kiện khác bên dưới.</p>}
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '5rem' }}>
             <div style={{ textAlign: 'center', color: 'var(--text-muted)' }}>

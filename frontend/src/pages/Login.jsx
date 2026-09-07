@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export const Login = () => {
@@ -15,6 +15,7 @@ export const Login = () => {
   const [forgotError, setForgotError] = useState('');
   const [forgotLoading, setForgotLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleForgotSubmit = async (e) => {
     e.preventDefault();
@@ -53,6 +54,11 @@ export const Login = () => {
 
     try {
       const data = await login(username, password);
+      const eventReturnTo = location.state?.eventReturnTo;
+      if (typeof eventReturnTo === 'string' && /^\/events\?event=\d+$/.test(eventReturnTo)) {
+        navigate(eventReturnTo, { replace: true });
+        return;
+      }
       // Đăng nhập thành công -> Điều hướng tương ứng với vai trò
       if (data.role === 'admin') {
         navigate('/admin-dashboard');

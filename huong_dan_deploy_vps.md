@@ -176,7 +176,7 @@ Bấm **Save**.
 Mỗi khi có tính năng hoặc code mới được đẩy lên GitHub, bạn chỉ cần mở Terminal VPS và chạy:
 
 ```bash
-cd /www/wwwroot/vtv8.vn
+cd /www/wwwroot/nghean.today
 git fetch origin deploy && git reset --hard origin/deploy
-pm2 restart all
+pm2 restart nghean-today
 ```
