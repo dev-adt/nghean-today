@@ -14,8 +14,17 @@ export const Footer = () => <footer className="na-footer"><div className="na-con
     <div><h3>Đăng ký nhận bản tin</h3><p>Nhận những thông tin mới về Nghệ An, kết nối doanh nghiệp và cơ hội đầu tư.</p><form onSubmit={e => e.preventDefault()}><input type="email" aria-label="Email nhận bản tin" placeholder="Email của bạn..." /><button>Đăng ký</button></form></div>
   </div>
   <div className="na-imc-strip">
-    <div><span className="na-imc-label">Đơn vị đồng hành</span><strong>Công ty Cổ phần Tư vấn Quản lý Quốc tế – IMC</strong><span>MST: 5700647507</span></div>
-    <div className="na-imc-contact"><span><i className="ti ti-map-pin" /> Tầng 5, Tòa nhà Trung Anh, Km2 Đại lộ V.I. Lê Nin, phường Vinh Phú, tỉnh Nghệ An</span><a href="tel:02383525456"><i className="ti ti-phone" /> 0238 352 5456 – 0913 244 286</a><a href="mailto:imc.vietnam@gmail.com"><i className="ti ti-mail" /> imc.vietnam@gmail.com</a></div>
+    <div className="na-imc-intro">
+      <span className="na-imc-label">Đơn vị đồng hành</span>
+      <div className="na-imc-identity"><img src="/images/logo-imc.png" alt="Logo IMC" width="72" height="56" loading="lazy" /><strong>Công ty Cổ phần Tư vấn Quản lý Quốc tế – IMC</strong></div>
+      <p>Chuyên nghiệp và Tận tâm. Đồng hành cùng các cơ quan hành chính, đơn vị sự nghiệp và doanh nghiệp trên hành trình chuẩn hóa quản trị, làm chủ dữ liệu và ứng dụng AI hiệu quả.</p>
+    </div>
+    <div className="na-imc-legal"><p><strong>Mã số thuế:</strong> 5700647507</p><p><strong>Người đại diện:</strong><br />Ông Phan Thành Chung – Chủ tịch HĐQT kiêm Giám đốc</p></div>
+    <div className="na-imc-contact">
+      <span><i className="ti ti-map-pin" aria-hidden="true" /><span>Tầng 5, Tòa nhà Trung Anh, Km2 Đại lộ V.I. Lê Nin, xóm 18, phường Vinh Phú, tỉnh Nghệ An.</span></span>
+      <span><i className="ti ti-phone" aria-hidden="true" /><span><a href="tel:02383525456">0238 352 5456</a> – <a href="tel:0913244286">0913 244 286</a></span></span>
+      <a href="mailto:lmc.vietnam@gmail.com"><i className="ti ti-mail" aria-hidden="true" />lmc.vietnam@gmail.com</a>
+    </div>
   </div>
   <div className="na-copyright"><span>© 2026 Nghean.today. Kết nối người dân, lan tỏa giá trị và đồng hành cùng Nghệ An vươn ra thế giới.</span><span><Link to="/guide">Điều khoản sử dụng</Link><Link to="/guide">Chính sách bảo mật</Link></span></div>
 </div></footer>;
