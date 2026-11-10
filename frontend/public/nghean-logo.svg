@@ -1,15 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
-  <title id="title">Nghean.today</title>
-  <desc id="desc">Biểu tượng núi, dòng chảy và nhịp kết nối của Nghệ An</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Nghean.today Logo">
   <defs>
-    <linearGradient id="brand" x1="10" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse"><stop stop-color="#159fd0"/><stop offset=".52" stop-color="#22ae94"/><stop offset="1" stop-color="#0b7e79"/></linearGradient>
-    <linearGradient id="river" x1="19" y1="40" x2="47" y2="55" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#dffaf4"/></linearGradient>
+    <!-- Background Squircle Gradient -->
+    <linearGradient id="naBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="48%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <!-- Mountain Layers Gradients -->
+    <linearGradient id="naMtBack" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#7dd3fc"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+
+    <linearGradient id="naMtFront" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+
+    <!-- Sacred Golden Lotus & Sunrise Gradients -->
+    <linearGradient id="naLotus" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="50%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#fef08a"/>
+    </linearGradient>
+
+    <!-- Flowing Lam River Gradient -->
+    <linearGradient id="naRiver" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="50%" stop-color="#bae6fd" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.75"/>
+    </linearGradient>
+
+    <!-- Ambient Shadow & Glow Filters -->
+    <filter id="naGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
   </defs>
-  <circle cx="32" cy="32" r="29.5" fill="url(#brand)"/>
-  <path fill="#fff" fill-opacity=".18" d="M14.2 40.9 26.8 19l7.1 11.1 5.8-8.7 11.1 19.5H14.2Z"/>
-  <path fill="#fff" d="m12.4 42.2 14.2-25 7.3 11.4 5.9-8.9 12.6 22.5h-8.2l-5-9-5.4 8.1-7-11-6.7 11.9h-7.7Z"/>
-  <path fill="url(#river)" d="M14.5 44.7c8.6-3.7 15-2.5 18.8-.9 5 2.1 8.9 2.1 16.2-1.1-4 6.8-9.9 11.4-17 13-5.4-1.2-11-4.5-18-11Z"/>
-  <circle cx="45.8" cy="14.8" r="5" fill="#ffd24a"/>
-  <path fill="none" stroke="#ffd24a" stroke-linecap="round" stroke-width="2" d="M11.2 27.2C13.5 14.1 24.6 6 37.5 7.2"/>
-  <circle cx="11.1" cy="27.4" r="2.6" fill="#ffd24a"/><circle cx="37.7" cy="7.3" r="2.1" fill="#fff"/>
+
+  <!-- Modern Rounded Squircle Base (App Icon standard) -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#naBg)"/>
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-opacity="0.25"/>
+
+  <!-- Orbital Digital Arc (Symbolizing "Today" / Global connectivity) -->
+  <path d="M 10 38 A 22 22 0 0 1 54 18" fill="none" stroke="#fef08a" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.65"/>
+  <circle cx="53.5" cy="18.5" r="2.2" fill="#fef08a" filter="url(#naGlow)"/>
+
+  <!-- Majestic Núi Hồng Lĩnh (Back Peak) -->
+  <polygon points="12,47 28,21 38,36 31,47" fill="url(#naMtBack)" opacity="0.9"/>
+
+  <!-- Majestic Núi Hồng Lĩnh (Front Peak - Strength & Resilience) -->
+  <polygon points="23,47 36,25 50,47" fill="url(#naMtFront)"/>
+
+  <!-- Cánh Sen Vàng Kim Liên (Sacred Lotus Petal of Uncle Ho's Village) -->
+  <path d="M 29 45 C 26 36, 29 25, 34 15 C 39 25, 42 36, 39 45 C 36 47, 32 47, 29 45 Z" fill="url(#naLotus)" filter="url(#naGlow)"/>
+  <!-- Central Lotus Vein (Ray of Enlightenment) -->
+  <line x1="34" y1="17" x2="34" y2="44" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.85"/>
+
+  <!-- Dòng Sông Lam (Soft, graceful curves of Lam River) -->
+  <path d="M 7 48 C 17 41, 26 49, 38 43 C 45 39, 52 45, 57 47 C 51 53, 31 54, 7 48 Z" fill="url(#naRiver)"/>
+  <path d="M 11 51 C 21 45, 31 50, 44 45" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.95"/>
+
+  <!-- Dawn Star / Tinh tú dẫn lối (North Star of Cultural & Tech Growth) -->
+  <circle cx="16" cy="19" r="2" fill="#fef08a" filter="url(#naGlow)"/>
+  <line x1="16" y1="15" x2="16" y2="23" stroke="#fef08a" stroke-width="1.2" stroke-linecap="round" opacity="0.85"/>
+  <line x1="12" y1="19" x2="20" y2="19" stroke="#fef08a" stroke-width="1.2" stroke-linecap="round" opacity="0.85"/>
 </svg>
